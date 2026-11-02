@@ -90,6 +90,10 @@ Nominal ratings, component estimates, variable loads, and assumed schedules do n
 
 The example contains entirely fictional power values and an illustrative rate of R$1/kWh. It is not an appliance specification or a current utility tariff. Component watts should represent electrical input at the wall; component DC ratings can omit power-supply losses.
 
+### Large-consumer data (ANEEL BDGD)
+
+Two optional scripts summarise public ANEEL data on medium-voltage customers (industries, water utilities, hospitals, public buildings) for the pitch's market sizing. They need a separate BDGD download and `pip install -r requirements-bdgd.txt` in a virtual environment; the app does not depend on them. See [the BDGD data guide](docs/BDGD_DATA.md).
+
 ## Evidence labels
 
 | Label | Meaning |

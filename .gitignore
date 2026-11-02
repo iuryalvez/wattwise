@@ -5,3 +5,8 @@ __pycache__/
 !.env.example
 .venv/
 .devtools/
+
+# ANEEL BDGD downloads and local outputs (see docs/BDGD_DATA.md)
+*.gdb/
+*.gdb.zip
+saida-bdgd/
