@@ -181,18 +181,18 @@ MIN_FILLED_MONTHS = 6
 
 
 def estimated_annual_kwh(row: dict) -> tuple[float, int]:
-    """Annual kWh with empty months filled by the mean of the filled ones.
+    """Optional scenario treating zero months as gaps, not a correction of the data.
 
-    Some BDGD submissions leave whole months at zero for many units at once
-    (a reporting gap, not a shutdown). Returns (estimate, number of empty
-    months); with fewer than MIN_FILLED_MONTHS filled months the raw sum is kept.
+    Returns (estimate, number of zero months). A zero may be genuine seasonal
+    consumption. Only an explicit caller opts into this assumption; with fewer
+    than MIN_FILLED_MONTHS positive months the reported sum is kept.
     """
     months = monthly_kwh(row)
     filled = [value for value in months if value > 0]
-    missing = 12 - len(filled)
+    missing = sum(value == 0 for value in months)
     if missing == 0 or len(filled) < MIN_FILLED_MONTHS:
         return sum(months), missing
-    return sum(filled) / len(filled) * 12, missing
+    return sum(months) + missing * sum(filled) / len(filled), missing
 
 
 def cnae_division(value) -> str:
@@ -210,7 +210,8 @@ def division_label(code: str) -> str:
     return f"{code} · {CNAE_DIVISIONS.get(code, 'Divisão ' + code)}"
 
 
-def summarize(rows: list[dict], min_mwh: float, classes: list[str] | None) -> dict:
+def summarize(rows: list[dict], min_mwh: float, classes: list[str] | None,
+              estimate_zero_months: bool = False) -> dict:
     if rows and not any(ENERGY_RE.match(key.upper()) for key in rows[0]):
         raise SystemExit("A camada não tem colunas ENE_01..ENE_12. Confira se é a UCMT da BDGD.")
     kept = []
@@ -223,30 +224,38 @@ def summarize(rows: list[dict], min_mwh: float, classes: list[str] | None) -> di
         clas = str(field(row, "CLAS_SUB") or "").strip().upper()
         if classes and not any(clas.startswith(prefix) for prefix in classes):
             continue
-        estimate, missing = estimated_annual_kwh(row)
-        mwh = estimate / 1000
         raw_mwh = annual_kwh(row) / 1000
-        if mwh < min_mwh:
+        # Cohort membership always uses reported consumption, even in a scenario.
+        if raw_mwh < min_mwh:
             continue
+        estimated_mwh = estimated_annual_kwh(row)[0] / 1000 if estimate_zero_months else None
         kept.append({
             "cnae": cnae_division(field(row, "CNAE")),
             "mun": str(field(row, "MUN") or "").strip().split(".")[0] or "--",
             "clas": clas or "--",
-            "mwh": mwh,
+            "mwh": raw_mwh,
             "raw_mwh": raw_mwh,
-            "missing": missing,
+            "estimated_mwh": estimated_mwh,
+            "zero_months": sum(value == 0 for value in monthly_kwh(row)),
         })
     by_cnae: dict[str, list[float]] = defaultdict(list)
     by_mun: dict[str, list[float]] = defaultdict(list)
+    by_cnae_estimated: dict[str, list[float]] = defaultdict(list)
+    by_mun_estimated: dict[str, list[float]] = defaultdict(list)
     for unit in kept:
         by_cnae[unit["cnae"]].append(unit["mwh"])
         by_mun[unit["mun"]].append(unit["mwh"])
+        if estimate_zero_months:
+            by_cnae_estimated[unit["cnae"]].append(unit["estimated_mwh"])
+            by_mun_estimated[unit["mun"]].append(unit["estimated_mwh"])
     return {
         "total_rows": len(rows),
         "inactive": skipped_inactive,
         "kept": kept,
         "by_cnae": by_cnae,
         "by_mun": by_mun,
+        "by_cnae_estimated": by_cnae_estimated,
+        "by_mun_estimated": by_mun_estimated,
     }
 
 
@@ -273,17 +282,22 @@ def municipality_names(codes: set[str], fetch: bool, mapping_csv: Path | None) -
 
 # ---------------------------------------------------------------- output
 
-def ranking(groups: dict[str, list[float]], label) -> list[dict]:
+def ranking(groups: dict[str, list[float]], label,
+            estimated_groups: dict[str, list[float]] | None = None) -> list[dict]:
     items = [
-        {"codigo": code, "nome": label(code), "unidades": len(values), "mwh_ano": round(sum(values), 1)}
+        {"codigo": code, "nome": label(code), "unidades": len(values),
+         "criterio_selecao": "consumo_informado",
+         "mwh_ano_informado": round(sum(values), 1),
+         "mwh_ano_estimado": round(sum(estimated_groups[code]), 1) if estimated_groups is not None else None}
         for code, values in groups.items()
     ]
-    return sorted(items, key=lambda item: item["mwh_ano"], reverse=True)
+    return sorted(items, key=lambda item: item["mwh_ano_informado"], reverse=True)
 
 
 def write_csv(path: Path, items: list[dict]) -> None:
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["codigo", "nome", "unidades", "mwh_ano"])
+        writer = csv.DictWriter(handle, fieldnames=["codigo", "nome", "unidades", "criterio_selecao",
+                                                   "mwh_ano_informado", "mwh_ano_estimado"])
         writer.writeheader()
         writer.writerows(items)
 
@@ -293,12 +307,13 @@ def fmt(number: float) -> str:
 
 
 def default_bar_label(item: dict) -> str:
-    return f'{fmt(item["mwh_ano"])} MWh · {item["unidades"]} un.'
+    return f'{fmt(item["mwh_ano_informado"])} MWh · {item["unidades"]} un.'
 
 
-def bar_chart_svg(items: list[dict], title: str, subtitle: str, top: int, value_key: str = "mwh_ano",
+def bar_chart_svg(items: list[dict], title: str, subtitle: str, top: int, value_key: str = "mwh_ano_informado",
                   bar_label=default_bar_label,
-                  footer: str = "Fonte: ANEEL, Base de Dados Geográfica da Distribuidora (camada UCMT). Consumo dos últimos 12 meses.") -> str:
+                  footer: str = "Fonte: ANEEL, BDGD (UCMT). Consumo informado dos últimos 12 meses; não são economias medidas.",
+                  note: str = "") -> str:
     items = items[:top]
     width, height = 1600, 900
     left, right, top_y = 560, 300, 200
@@ -324,6 +339,8 @@ def bar_chart_svg(items: list[dict], title: str, subtitle: str, top: int, value_
             f'<text x="{left + bar_w + 12:.1f}" y="{mid + 7:.1f}" font-size="18" fill="{PALETTE["muted"]}">'
             f'{escape(bar_label(item))}</text>'
         )
+    if note:
+        parts.append(f'<text x="80" y="{height - 52}" font-size="15" fill="{PALETTE["muted"]}">{escape(note)}</text>')
     parts.append(f'<text x="80" y="{height - 30}" font-size="15" fill="{PALETTE["muted"]}">{escape(footer)}</text>')
     parts.append("</svg>")
     return "\n".join(parts)
@@ -335,6 +352,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--layer", help="nome da camada (padrão: UCMT_tab ou UCMT)")
     parser.add_argument("--min-mwh", type=float, default=600.0, help="consumo anual mínimo em MWh (padrão 600 = 50 MWh/mês)")
     parser.add_argument("--classes", help="prefixos de CLAS_SUB separados por vírgula, ex.: IN,CO,PP")
+    parser.add_argument("--estimate-zero-months", action="store_true",
+                        help="cenário opcional: estima meses zerados pela média dos positivos (mínimo 6); o filtro usa consumo informado")
     parser.add_argument("--top", type=int, default=12, help="itens por gráfico (padrão 12)")
     parser.add_argument("--distribuidora", default="", help="nome da distribuidora para os títulos")
     parser.add_argument("--nomes-municipios", action="store_true", help="busca nomes dos municípios na API do IBGE")
@@ -346,43 +365,69 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit(f"Arquivo não encontrado: {args.entrada}")
     classes = [item.strip().upper() for item in args.classes.split(",")] if args.classes else None
     rows = read_rows(args.entrada, args.layer)
-    result = summarize(rows, args.min_mwh, classes)
+    result = summarize(rows, args.min_mwh, classes, args.estimate_zero_months)
     if not result["kept"]:
         raise SystemExit(f"Nenhuma unidade ativa com {args.min_mwh:g} MWh/ano ou mais. Tente um --min-mwh menor.")
 
     names = municipality_names(set(result["by_mun"]), args.nomes_municipios, args.municipios_csv)
-    cnae_rank = ranking(result["by_cnae"], division_label)
-    mun_rank = ranking(result["by_mun"], lambda code: names.get(code, f"Município {code}"))
+    cnae_rank = ranking(result["by_cnae"], division_label,
+                        result["by_cnae_estimated"] if args.estimate_zero_months else None)
+    mun_rank = ranking(result["by_mun"], lambda code: names.get(code, f"Município {code}"),
+                       result["by_mun_estimated"] if args.estimate_zero_months else None)
 
     args.out.mkdir(parents=True, exist_ok=True)
     write_csv(args.out / "por_cnae.csv", cnae_rank)
     write_csv(args.out / "por_municipio.csv", mun_rank)
-    total_mwh = sum(unit["mwh"] for unit in result["kept"])
     raw_total = sum(unit["raw_mwh"] for unit in result["kept"])
-    gaps = sum(1 for unit in result["kept"] if unit["missing"])
+    estimated_total = sum(unit["estimated_mwh"] for unit in result["kept"]) if args.estimate_zero_months else None
+    zero_units = sum(1 for unit in result["kept"] if unit["zero_months"])
     count = len(result["kept"])
     where = f" · {args.distribuidora}" if args.distribuidora else ""
-    subtitle = f"{count} unidades de média tensão acima de {fmt(args.min_mwh)} MWh/ano{where} · {fmt(total_mwh)} MWh no total"
+    subtitle = f"{count} unidades com consumo informado ≥ {fmt(args.min_mwh)} MWh/ano{where}"
+    value_key = "mwh_ano_estimado" if args.estimate_zero_months else "mwh_ano_informado"
+    basis = "Estimativa de consumo" if args.estimate_zero_months else "Consumo informado"
+    note = f"Total informado: {fmt(raw_total)} MWh/ano. Zeros preservados; sem preenchimento."
+    if args.estimate_zero_months:
+        note = (f"Informado: {fmt(raw_total)} MWh/ano · Estimativa: {fmt(estimated_total)} MWh/ano. "
+                "Hipótese: zeros como lacunas; média dos meses positivos (mín. 6).")
+
+    def chart_label(item):
+        suffix = " MWh est." if args.estimate_zero_months else " MWh"
+        return f'{fmt(item[value_key])}{suffix} · {item["unidades"]} un.'
+
+    chart_options = {"value_key": value_key, "bar_label": chart_label, "note": note}
+    if args.estimate_zero_months:
+        chart_options["footer"] = "Fonte: ANEEL, BDGD (UCMT). Cenário hipotético de consumo; não são dados corrigidos nem economias medidas."
     (args.out / "grafico_cnae.svg").write_text(
-        bar_chart_svg(cnae_rank, "Onde está o grande consumo, por setor", subtitle, args.top), encoding="utf-8")
+        bar_chart_svg(sorted(cnae_rank, key=lambda item: item[value_key], reverse=True),
+                      f"{basis}, por setor", subtitle, args.top, **chart_options), encoding="utf-8")
     (args.out / "grafico_municipio.svg").write_text(
-        bar_chart_svg(mun_rank, "Onde está o grande consumo, por município", subtitle, args.top), encoding="utf-8")
+        bar_chart_svg(sorted(mun_rank, key=lambda item: item[value_key], reverse=True),
+                      f"{basis}, por município", subtitle, args.top, **chart_options), encoding="utf-8")
 
     top3 = cnae_rank[:3]
-    share = sum(item["mwh_ano"] for item in top3) / total_mwh * 100 if total_mwh else 0
+    share = sum(item["mwh_ano_informado"] for item in top3) / raw_total * 100 if raw_total else 0
+    estimate_lines = []
+    if args.estimate_zero_months:
+        estimate_lines = [
+            f"- Estimativa opcional para as mesmas unidades: **{fmt(estimated_total)} MWh/ano**.",
+            "- Hipótese do cenário: tratar meses zerados como lacunas e preenchê-los pela média dos meses positivos, "
+            "com pelo menos 6 meses positivos; nas demais unidades, manter a soma informada. "
+            "Isso não demonstra falha de reporte nem corrige os dados da ANEEL.",
+        ]
     lines = [
         f"# Grandes consumidores de média tensão{where}",
         "",
         f"- Unidades lidas na UCMT: {result['total_rows']} (inativas ignoradas: {result['inactive']})",
-        f"- Unidades ativas com {fmt(args.min_mwh)} MWh/ano ou mais: **{count}**",
-        f"- Consumo somado dessas unidades: **{fmt(total_mwh)} MWh/ano**",
-        f"- Unidades com algum mês zerado na BDGD: {gaps} de {count}. Meses vazios foram preenchidos pela média "
-        f"dos meses informados de cada unidade; sem esse ajuste a soma seria {fmt(raw_total)} MWh/ano.",
-        f"- Os 3 setores no topo somam {share:.0f}% desse consumo: " + "; ".join(item["nome"] for item in top3),
+        f"- Unidades ativas com consumo informado de {fmt(args.min_mwh)} MWh/ano ou mais: **{count}**",
+        f"- Consumo informado somado dessas unidades: **{fmt(raw_total)} MWh/ano** (zeros preservados).",
+        f"- Unidades com algum mês zerado na BDGD: {zero_units} de {count}. Zero não comprova ausência de dados.",
+        *estimate_lines,
+        f"- Os 3 setores no topo somam {share:.0f}% do consumo informado: " + "; ".join(item["nome"] for item in top3),
         "",
         "Frase para o slide: "
-        f"\"{count} unidades de média tensão consomem {fmt(total_mwh)} MWh por ano; "
-        f"cada 10% de economia equivale a {fmt(total_mwh * 0.1)} MWh.\"",
+        f"\"{count} unidades de média tensão têm consumo informado de {fmt(raw_total)} MWh por ano; "
+        f"uma redução hipotética de 10% equivaleria a {fmt(raw_total * 0.1)} MWh, sem comprovação de economia.\"",
         "",
         "Arquivos: por_cnae.csv, por_municipio.csv, grafico_cnae.svg, grafico_municipio.svg.",
         "Fonte: ANEEL, Base de Dados Geográfica da Distribuidora (BDGD), camada UCMT. Dados anônimos e agregados.",

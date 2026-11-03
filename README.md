@@ -92,7 +92,7 @@ The example contains entirely fictional power values and an illustrative rate of
 
 ### Large-consumer data (ANEEL BDGD)
 
-Two optional scripts summarise public ANEEL data on medium-voltage customers (industries, water utilities, hospitals, public buildings) for the pitch's market sizing. They need a separate BDGD download and `pip install -r requirements-bdgd.txt` in a virtual environment; the app does not depend on them. See [the BDGD data guide](docs/BDGD_DATA.md).
+An optional script summarises public ANEEL data on medium-voltage customers (industries, water utilities, hospitals, public buildings) for market research. It needs a separate BDGD download and `pip install -r requirements-bdgd.txt` in a virtual environment; the app does not depend on it. Reported consumption, including zero months, determines the selected units. An explicit `--estimate-zero-months` scenario adds separately labeled estimates without changing that selection. See [the BDGD data guide](docs/BDGD_DATA.md).
 
 ## Evidence labels
 

@@ -1,4 +1,6 @@
 import csv
+from contextlib import redirect_stdout
+from io import StringIO
 import sys
 import tempfile
 import unittest
@@ -48,7 +50,7 @@ class BdgdTests(unittest.TestCase):
         result = bdgd.summarize(bdgd.read_csv(self.csv), 600, ["IN"])
         self.assertEqual({u["cnae"] for u in result["kept"]}, {"23", "10"})
 
-    def test_empty_months_are_filled_with_mean(self):
+    def test_explicit_estimate_uses_positive_mean_and_keeps_sparse_data(self):
         row = unit("1", "2330301", "3550308", 50_000)
         row["ENE_06"] = "0"
         row["ENE_05"] = "0"
@@ -56,6 +58,76 @@ class BdgdTests(unittest.TestCase):
         sparse = unit("2", "2330301", "3550308", 0)
         sparse["ENE_01"] = "1000"
         self.assertEqual(bdgd.estimated_annual_kwh(sparse), (1000, 11))
+
+    def test_seasonal_zeros_are_preserved_and_do_not_cross_threshold(self):
+        row = unit("seasonal", "1011201", "3550308", 50_000)
+        for month in range(7, 13):
+            row[f"ENE_{month:02d}"] = "0"
+        self.assertEqual(bdgd.summarize([row], 600, None)["kept"], [])
+        result = bdgd.summarize([row], 300, None)
+        self.assertEqual(result["by_cnae"]["10"], [300])
+        self.assertEqual(result["kept"][0]["zero_months"], 6)
+        self.assertIsNone(result["kept"][0]["estimated_mwh"])
+
+    def test_optional_estimate_never_changes_reported_cohort(self):
+        below = unit("below", "1011201", "3550308", 50_000)
+        eligible = unit("eligible", "2330301", "3550308", 100_000)
+        for row in (below, eligible):
+            for month in range(7, 13):
+                row[f"ENE_{month:02d}"] = "0"
+        reported = bdgd.summarize([below, eligible], 600, None)
+        scenario = bdgd.summarize([below, eligible], 600, None, estimate_zero_months=True)
+        self.assertEqual(scenario["by_cnae"], reported["by_cnae"])
+        self.assertEqual(scenario["by_cnae"]["23"], [600])
+        self.assertEqual(scenario["by_cnae_estimated"]["23"], [1200])
+        self.assertEqual(len(scenario["kept"]), 1)
+
+    def test_zero_month_outputs_separate_reported_and_estimated_consumption(self):
+        row = unit("seasonal", "1011201", "3550308", 50_000)
+        for month in range(7, 13):
+            row[f"ENE_{month:02d}"] = "0"
+        with self.csv.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=list(row))
+            writer.writeheader()
+            writer.writerow(row)
+        for estimate in (False, True):
+            with self.subTest(estimate=estimate):
+                out = self.dir / ("scenario" if estimate else "reported")
+                args = [str(self.csv), "--min-mwh", "300", "--out", str(out)]
+                if estimate:
+                    args.append("--estimate-zero-months")
+                with redirect_stdout(StringIO()):
+                    self.assertEqual(bdgd.main(args), 0)
+                for filename in ("por_cnae.csv", "por_municipio.csv"):
+                    with (out / filename).open(encoding="utf-8") as handle:
+                        item = next(csv.DictReader(handle))
+                    self.assertEqual(item["criterio_selecao"], "consumo_informado")
+                    self.assertEqual(float(item["mwh_ano_informado"]), 300)
+                    if estimate:
+                        self.assertEqual(float(item["mwh_ano_estimado"]), 600)
+                    else:
+                        self.assertEqual(item["mwh_ano_estimado"], "")
+                for filename in ("grafico_cnae.svg", "grafico_municipio.svg"):
+                    svg = (out / filename).read_text(encoding="utf-8")
+                    if estimate:
+                        self.assertIn("Estimativa de consumo", svg)
+                        self.assertIn("600 MWh est.", svg)
+                        self.assertIn("Informado: 300 MWh/ano", svg)
+                        self.assertIn("média dos meses positivos (mín. 6)", svg)
+                    else:
+                        self.assertIn("Consumo informado", svg)
+                        self.assertIn("300 MWh", svg)
+                        self.assertIn("Zeros preservados; sem preenchimento", svg)
+                summary = (out / "resumo.md").read_text(encoding="utf-8")
+                self.assertIn("Consumo informado somado dessas unidades: **300 MWh/ano**", summary)
+                self.assertIn("redução hipotética de 10% equivaleria a 30 MWh", summary)
+                self.assertEqual("Estimativa opcional" in summary, estimate)
+
+    def test_optional_estimate_preserves_nonzero_negative_values(self):
+        row = unit("adjustment", "1011201", "3550308", 50_000)
+        row["ENE_01"] = "-1000"
+        row["ENE_02"] = "0"
+        self.assertEqual(bdgd.estimated_annual_kwh(row), (549_000, 1))
 
     def test_ponta_fora_ponta_columns_are_summed(self):
         row = {"ENE_P_01": "1000", "ENE_F_01": "4000", "ENE_02": "500"}
