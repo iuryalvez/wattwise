@@ -1,134 +1,96 @@
-# WattWise — working title
+# WattWise
 
-An open-source household energy agent for Hackday 2026. Help a household understand consumption, choose one practical change, and follow up on its outcome.
+**Understand energy use. Choose one practical change. Track what happens next.**
 
-**Current MVP:** a Portuguese local web app with manual appliance/component entry, household context, estimated consumption, one-change comparisons, saved simulations, JSON export, and a Gemma 4 advisor through local Ollama. It also includes an illustrative industrial example with production constraints. The original command-line calculator remains available. Hardware measurements are a later milestone.
+WattWise is an open-source energy planning app that runs on your computer. Compare appliance usage, preserve essential activities, and explore one change at a time, with an optional local Gemma advisor.
 
-## Run
+[Get started](#get-started) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md) · [Roadmap](docs/ROADMAP.md) · [Report a bug](https://github.com/rafaelsilvabr/wattwise/issues/new?template=bug_report.yml)
 
-Requires Python 3.11+; no dependencies to install.
+**Status: development preview.** The interface is in Brazilian Portuguese, with BRL cost estimates. Household planning is the primary implemented journey; an industrial example explores an additional use case. Real-device monitoring and measured savings are planned work.
 
-```powershell
+## What you can do today
+
+- Enter appliances, current usage, proposed usage, and an energy price.
+- Protect essential activities from proposed reductions.
+- Compare the projected energy and variable cost of one selected change.
+- Ask Gemma through local Ollama to choose among eligible changes or clarify your routine.
+- Use a deterministic ranking when you prefer the calculator without AI.
+- Save the last ten simulations in your browser and export a JSON report.
+- Explore a separate monitoring demonstration with fictional sensors and readings.
+
+All example data is fictional. Manual estimates and simulated readings are labeled separately. Savings are projections, and the entered variable rate does not reconstruct a complete electricity bill. Numerical results come from the calculator; the advisor selects and explains a change.
+
+## Get started
+
+Requires **Python 3.11 or newer**. Running the app requires no Python packages, Node.js, account, or API key.
+
+```sh
+git clone https://github.com/rafaelsilvabr/wattwise.git
+cd wattwise
 python app.py
 ```
 
-Open **http://127.0.0.1:8765/**. Add an appliance or select **Carregar exemplo**. The example values are fictional. Edit an appliance to specify current and proposed watts/hours; protect essential usage when it must remain unchanged. Set the variable rate and period, describe household constraints, and choose a plan. Only one selected change is included in the comparison; other usage stays at baseline.
+Open **http://127.0.0.1:8765/**.
 
-The default example now covers a three-person family with eleven appliances or operating modes, including an electric shower, refrigerator, bedroom air conditioner, washing machine, microwave, air fryer, and router. Read [the family use case and its assumptions](docs/FAMILY_USE_CASE.md). The refrigerator remains protected; its wattage represents a fictional average across compressor cycles.
+1. Select **Carregar exemplo** to explore a fictional household or industrial profile, or add your own appliances.
+2. Review watts, hours, proposed usage, and the energy price. Mark essential usage with **Preservar uso**.
+3. Describe your constraints and choose **Usar maior potencial, sem IA** for a calculator comparison.
+4. Review the selected change, save the simulation, or export its assumptions and results.
 
-For a larger expense scenario, choose **Alto consumo · 5 pessoas** in the example picker and select **Carregar exemplo**. Its 18 appliances or operating modes include three air conditioners, a dryer, electric cooking, and protected EV charging for work. At the same fictional R$1.05/kWh rate, it projects **2,011.20 kWh and R$2,111.76 over 30 days**, compared with the original example's 480.24 kWh and R$504.25. Its largest single proposed change projects **R$283.50 less variable cost (13.42%)**, leaving R$1,828.26: living-room cooling drops from eight to two hours, conditional on comfortable natural ventilation during the remaining hours. Read [the high-consumption use case](docs/HIGH_CONSUMPTION_USE_CASE.md) for assumptions and the one-change comparison.
+Use `python app.py --port 8766` to choose another port. Browser storage belongs to the address and port you use. Restart the Python process after changing backend code.
 
-Choose **Indústria · embalagens** for a fictional factory with 11 equipment/mode entries and 24 eight-hour production days across a 30-day period. It projects **21,645.60 kWh and R$22,727.88**, with **R$2,419.20 (10.64%)** from one proposed change to compressor idle time under an assumed, already approved shutdown schedule. Production, extraction, cooling, and safety loads stay protected. Read [the industrial use case](docs/INDUSTRIAL_USE_CASE.md) for calendar-day equivalents and limitations. This is an illustrative energy-cost comparison, not a complete industrial billing or equipment-control system.
+### Optional local advisor
 
-Loading an example can be undone; all examples remain fictional manual estimates, separate from monitoring telemetry. Load an example again after a fixture update to replace its previously saved version.
+Install [Ollama](https://ollama.com/download) and run:
 
-The UI starts empty and stores household inputs and the last ten simulations in this browser's local storage. It supports editing, deletion with undo, and exported reports. There is no account, payment flow, remote database, or real meter adapter in this MVP. Use a different `--port` if necessary; saved browser data is specific to the origin, including the port.
-
-After updating Python server code, stop the running app with **Ctrl+C**, run `python app.py` again, and refresh the browser. This server does not reload Python code automatically. Refreshing alone can show a new interface while the old server still lacks a newly added example endpoint.
-
-### Smart-home monitoring mockup
-
-Open **Casa conectada** in the sidebar, or visit **http://127.0.0.1:8765/monitor**, to explore a clickable five-room blueprint, nine mock sensors, simulated pairing/disconnection, three household scenarios, a changing power chart, and an energy counter for the active session. Monitoring has its own page and only loads its simulation scripts there; the overview keeps appliance planning and Gemma. Four demo sensors start connected; connection choices are saved separately from household estimates. Pause or resume the simulation at any time.
-
-All these connections and readings are fictional. The monitoring mockup never accesses hardware, requests credentials, controls appliances, or supplies readings to the savings calculator or Gemma. Disconnected sensors show missing data rather than a zero-watt reading. See [the monitoring demo guide](docs/MONITORING_DEMO.md).
-
-Developer checks (Node is only needed for these checks):
-
-```powershell
-node tests/test_monitor.js
-node tests/test_samples.js
-node --check web/monitor.js
-```
-
-### Gemma through local Ollama
-
-Install [Ollama](https://ollama.com/download), then download and run a local Gemma 4 model:
-
-```powershell
+```sh
 ollama run gemma4:e2b
 ```
 
-Keep Ollama running. In WattWise select the connection refresh button, then **Encontrar uma mudança com Gemma**. Start with E2B and benchmark latency on your machine. A supported larger local model can be selected before starting the app:
+Keep Ollama running, refresh its connection status in WattWise, and choose **Encontrar uma mudança com Gemma**. Model downloads and inference are optional; response time depends on your hardware. The app does not install or download models for you.
 
-```powershell
-$env:OLLAMA_MODEL = 'gemma4:e4b'
-python app.py
+See the [usage guide](docs/USAGE.md) for model configuration, troubleshooting, all examples, and the optional hosted CLI integration.
+
+## A look at the monitoring demo
+
+![WattWise monitoring demo with fictional sensors and readings](docs/screenshots/monitor-page.jpg)
+
+The `/monitor` page demonstrates the interaction with simulated telemetry. It does not connect to hardware or supply readings to the planning calculator. See the [monitoring guide](docs/MONITORING_DEMO.md).
+
+## Contribute
+
+Contributions can include bug fixes, accessibility improvements, documentation, translations, example reviews, and model evaluations. English and Portuguese are welcome in issues and pull requests.
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup and the review process. The [roadmap](docs/ROADMAP.md) lists scoped starting tasks with acceptance criteria; propose a task in an issue before taking on a larger change.
+
+With Python and **Node.js 24** installed, run all offline contributor checks:
+
+```sh
+python scripts/check.py
 ```
 
-The backend calls `http://127.0.0.1:11434/api/chat` with non-streaming structured output and `think: false` for concise, interactive replies. It uses a 4096-token context and bounded output. Model-generated choices are checked against eligible, precomputed changes. Protected uses cannot be changed. The interface renders the model's explanation as text; the numerical results come from the calculator. The local integration rejects cloud model tags.
+The same command is configured in [GitHub Actions](.github/workflows/ci.yml) for Ubuntu and Windows with Python 3.11, 3.13, and 3.14. Checks need no model, credentials, or real hardware. Live model evaluation is separate.
 
-The advisor loads its behavior from `skills/household-energy-coach/SKILL.md`. It can ask for clarification before recommending a change and considers up to four follow-up answers. Editing inputs resets those answers. Recommendations include a seven-day experiment; savings remain projections until supported by real measurements. The industrial profile supplies `site_type: industrial` to the advisor and uses follow-up language about production, quality, and safety. Legacy profiles default to household behavior.
+## Project guide
 
-No Ollama installation or model weights are included in this repository or automatically downloaded by the app. After the model is downloaded, local inference does not require a hosted API key. Performance depends on hardware; the first load can be slower. If Ollama is unavailable, **Usar maior potencial, sem IA** remains available and explicitly labels its numerical ranking as non-AI. It does not impersonate a model response.
-
-Local smoke tests on 31 October 2026: Ollama 0.40.13 with `gemma4:e2b` produced a valid plan for the original workstation fixture in 7.39 seconds using CPU inference. The expanded three-person household case passed in 29.56 seconds and selected the shorter-shower proposal. These are individual calls, not general latency guarantees. The original browser workflow was also exercised with a real model response. See [the latest recorded smoke test](docs/ollama-smoke-test.json).
-
-To repeat the live check with Ollama running:
-
-```powershell
-python scripts/verify_ollama.py
-```
-
-See the official [Gemma 4 Ollama library](https://ollama.com/library/gemma4) and [chat API](https://docs.ollama.com/api/chat).
-
-### CLI and tests
-
-```powershell
-python demo.py
-python demo.py --mode simulated
-python -m unittest discover -s tests -v
-```
-
-Edit `examples/household.json` to enter an illustrative variable energy rate in BRL/kWh, component watts, and hours of use. Each appliance has a baseline and a proposed daily schedule. States are mutually exclusive; any unallocated hours have an explicit assumption of zero consumption. A state accepts either total `watts` or a `components` list, so a total and its components cannot be counted twice.
-
-```text
-energy (kWh) = power (W) × hours / 1000
-estimated variable cost = energy × entered BRL/kWh rate
-```
-
-Nominal ratings, component estimates, variable loads, and assumed schedules do not establish actual consumption. In particular, a computer power supply's maximum rating is not its continuous power consumption.
-
-The example contains entirely fictional power values and an illustrative rate of R$1/kWh. It is not an appliance specification or a current utility tariff. Component watts should represent electrical input at the wall; component DC ratings can omit power-supply losses.
-
-## Evidence labels
-
-| Label | Meaning |
+| Resource | What it covers |
 | --- | --- |
-| `manual_estimate` | Calculated from the entered watts and schedule; projected savings |
-| `simulated` | Generated interval readings; demonstrates the calculation, not a real experiment |
-| Measured — future | Readings from a supported energy monitor, with coverage and comparison checks |
+| [Documentation](docs/README.md) | Setup, examples, and project references |
+| [Architecture](docs/ARCHITECTURE.md) | Code map, request flow, and calculation boundaries |
+| [Roadmap](docs/ROADMAP.md) | Priorities, contribution ideas, and acceptance criteria |
+| [Changelog](CHANGELOG.md) | Unreleased changes and release history |
+| [Contribution guide](CONTRIBUTING.md) | Development workflow, checks, and pull requests |
+| [Support](SUPPORT.md) | Questions, troubleshooting, and bug reports |
+| [Security policy](SECURITY.md) | Private reporting and the local-only deployment scope |
+| [Code of conduct](CODE_OF_CONDUCT.md) | Community expectations and moderation |
+| [Maintainer guide](docs/MAINTAINING.md) | Triage, GitHub setup, and release preparation |
 
-Manual mode projects 30 days according to the input. Simulated mode generates two complete 24-hour windows from those same assumptions and compares their integrated energy. It is a software demonstration, not independent evidence of savings. Missing meter intervals are rejected instead of treated as zero consumption.
+## Data and privacy
 
-The rate is a simplified constant variable rate. Whole electricity bills also include taxes and other charges; a reduction in the modeled energy cost is not a prediction of an identical bill reduction. Time-of-use pricing and minimum billing charges are not modeled.
+Household inputs, follow-up answers, and saved simulations stay in this browser's local storage. The web app sends your inputs to the local Python server; using the advisor also sends routine text and candidate data to local Ollama. Clearing browser data removes saved profiles and history.
 
-## Optional hosted Gemma integration for the CLI
+The separate CLI sends a calculated summary to a hosted provider only when you explicitly use `python demo.py --gemma`. Read the [usage guide](docs/USAGE.md#optional-hosted-gemma-integration-for-the-cli) before enabling it. Do not include personal information or secrets in public issues, screenshots, or exported reports.
 
-Set `GEMINI_API_KEY` privately in your terminal environment, then run:
+## License
 
-```powershell
-python demo.py --gemma
-```
-
-This explicitly sends the calculated summary to Google's hosted Gemma API. It requests a Portuguese explanation, a useful follow-up question, and a practical next measurement. The numerical calculation is performed locally. No account names, addresses, or bills are included in this prototype's request. Never commit an API key.
-
-The default is `gemma-4-26b-a4b-it`. Override with `GEMMA_MODEL` for another supported model. The non-AI mode is explicitly a calculator; it does not pretend to have invoked a model. Live API execution requires credentials and has not been validated in this checkout.
-
-## Hackday handoff
-
-Use [the demo script and acceptance checklist](docs/HACKATHON.md). The MVP has one complete manual-input-to-plan journey and a fallback demonstration without a model. Gemma is used for context-sensitive choice and explanation; the model is never trusted to supply the energy calculation.
-
-Automated verification covers energy units, incomplete simulated windows, essential-use protection, single-change comparison, model-choice validation, unavailable Ollama, and cloud-tag rejection. Model responses in the unit suite are mocked; the separate live smoke test calls the actual installed model.
-
-## Next product milestones
-
-See [PROJECT.md](PROJECT.md) for the customer journey and revenue hypothesis and [the current application assessment](docs/CURRENT_STATE.md) for architecture, verification, and known gaps. A recorded four-case local evaluation is available in [skill-evaluation.json](docs/skill-evaluation.json); repeat it with `python scripts/evaluate_skill.py` after changing the model or skill. Next, broaden model evaluation, test the product with households, and connect one real energy monitor. Hardware can supply measured input through a device adapter.
-
-## References
-
-- [Gemma hosted API and supported models](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api)
-- [Home Assistant energy inputs, power, and energy](https://www.home-assistant.io/docs/energy/)
-- [ANEEL tariff information and excluded bill components](https://www.gov.br/aneel/pt-br/centrais-de-conteudos/relatorios-e-indicadores/tarifas-e-informacoes-economico-financeiras)
-- [UN SDG 7, including target 7.3](https://sdgs.un.org/goals/goal7)
-
-Code license: MIT. The model and hosted API have their own applicable terms.
+WattWise code is available under the [MIT License](LICENSE). Model weights, hosted services, and their tools have separate terms. WattWise began as a Hackday 2026 project; the [original demo guide](docs/HACKATHON.md) remains available as project history.

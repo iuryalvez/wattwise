@@ -1,0 +1,35 @@
+name: Feature proposal
+description: Describe a user problem and a useful change.
+title: "[Feature]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English and Portuguese are welcome. Please check existing issues and the [roadmap](https://github.com/rafaelsilvabr/wattwise/blob/main/docs/ROADMAP.md) before proposing a change.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Who needs this, and what problem do they have?
+      description: Explain the current difficulty with a concrete example. Specify household or industrial use when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Proposed outcome
+      description: Describe what the user should be able to do and how we would verify that it works.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and smallest useful scope
+      description: Include existing workarounds, simpler approaches, or what could wait for later.
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Would you like to help?
+      options:
+        - I am sharing an idea or user feedback.
+        - I can help test or document it.
+        - I would like to work on an implementation after discussion.
