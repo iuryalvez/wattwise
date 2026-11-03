@@ -32,6 +32,12 @@
       <label>Período <div class="input-unit"><input id="days" type="number" min="1" max="366" step="1" required aria-label="Período em dias"><span>dias</span></div></label>
       <p>O consumo é calculado com <strong>watts × horas ÷ 1.000</strong>. Informe uma potência média e seu tempo de uso.</p>
     </section>
+    <section id="storage-recovery" class="error recovery" role="status" aria-label="Recuperação dos dados salvos" hidden>
+      <p id="recovery-summary"></p>
+      <details><summary>Ver detalhes da recuperação</summary><ul id="recovery-details"></ul></details>
+      <p id="recovery-backup"></p>
+      <button id="download-recovery" class="button secondary small" type="button" hidden>Baixar dados originais</button>
+    </section>
     <p id="form-error" class="error" role="alert" hidden></p>
     <section class="metrics" aria-label="Resumo estimado" aria-live="polite">
       <article class="metric"><div class="metric-label">Custo de energia estimado <span>↗</span></div><div class="metric-value" id="cost">—</div><p id="cost-caption">Para o período informado</p></article>

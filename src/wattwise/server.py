@@ -4,6 +4,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 
 from .advisor.ollama import advise, ollama_status
+from .advisor.skill import answer_history
+from .errors import AppError
 from .paths import WEB_DIR
 from .planning import analyze
 from .samples import HIGH_CONSUMPTION_SAMPLE, INDUSTRIAL_SAMPLE, SAMPLE
@@ -28,7 +30,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if not self.valid_host():
-            return self.send(403, {"error": "Use o endereço local do aplicativo."})
+            return self.send(403, {"error": "Use o endereço local do aplicativo.", "code": "invalid_origin"})
         if self.path == "/api/sample":
             return self.send(200, SAMPLE)
         if self.path == "/api/sample/high-consumption":
@@ -46,36 +48,39 @@ class Handler(BaseHTTPRequestHandler):
                       "/monitor-core.js": ("monitor-core.js", "text/javascript; charset=utf-8"),
                       "/monitor.js": ("monitor.js", "text/javascript; charset=utf-8")})
         if self.path not in files:
-            return self.send(404, {"error": "Página não encontrada."})
+            return self.send(404, {"error": "Página não encontrada.", "code": "not_found"})
         name, content_type = files[self.path]
         return self.send(200, (WEB_DIR / name).read_bytes(), content_type)
 
     def do_POST(self):
         if not self.valid_host():
-            return self.send(403, {"error": "Origem inválida."})
+            return self.send(403, {"error": "Origem inválida.", "code": "invalid_origin"})
         origin = self.headers.get("Origin")
         if origin and origin not in {f"http://127.0.0.1:{self.server.server_port}", f"http://localhost:{self.server.server_port}"}:
-            return self.send(403, {"error": "Origem inválida."})
+            return self.send(403, {"error": "Origem inválida.", "code": "invalid_origin"})
         if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
-            return self.send(415, {"error": "Envie application/json."})
+            return self.send(415, {"error": "Envie application/json.", "code": "unsupported_media_type"})
         if self.path not in {"/api/analyze", "/api/advise"}:
-            return self.send(404, {"error": "Operação não encontrada."})
+            return self.send(404, {"error": "Operação não encontrada.", "code": "not_found"})
         try:
             size = int(self.headers.get("Content-Length", "0"))
-            if not 0 < size <= 65536:
-                return self.send(413, {"error": "Envie até 64 KB de dados."})
-            data = json.loads(self.rfile.read(size))
-            report = analyze(data)
-        except (ValueError, TypeError, KeyError, AttributeError):
-            return self.send(400, {"error": "Dados inválidos. Confira nomes, potências, horários e uso essencial."})
-        if self.path == "/api/analyze":
-            return self.send(200, report)
+        except ValueError:
+            return self.send(400, {"error": "Content-Length deve ser um número inteiro.",
+                                   "code": "invalid_request", "field": "Content-Length"})
+        if not 0 < size <= 65536:
+            return self.send(413, {"error": "Envie até 64 KB de dados.", "code": "payload_too_large"})
         try:
+            data = json.loads(self.rfile.read(size))
+        except ValueError:
+            return self.send(400, {"error": "Envie um documento JSON válido em UTF-8.", "code": "invalid_json"})
+        try:
+            report = analyze(data)
+            answer_history(data)
+            if self.path == "/api/analyze":
+                return self.send(200, report)
             return self.send(200, advise(data))
-        except ValueError as exc:
-            return self.send(502, {"error": str(exc)})
-        except (TypeError, KeyError, AttributeError):
-            return self.send(502, {"error": "Ollama retornou uma resposta inesperada. Tente novamente."})
+        except AppError as exc:
+            return self.send(exc.status, exc.as_dict())
 
 
 def serve(port=8765):

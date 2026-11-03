@@ -4,6 +4,11 @@ User-facing changes and contributor infrastructure will be recorded here. There 
 
 ## Unreleased
 
+### Fixed
+
+- Return consistent API diagnostic codes and field validation errors for expected configuration, Ollama transport, timeout, and malformed-response failures.
+- Recover usable saved planning data without startup crashes or silent replacement of the original; explain exclusions, preserve a verified raw backup before later writes, and keep the calculator usable when browser storage fails.
+
 ### Added
 
 - Contribution guide, support guidance, code of conduct, and security-reporting policy.

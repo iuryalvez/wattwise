@@ -2,6 +2,7 @@
 
 import hashlib
 from ..paths import SKILL_PATH
+from ..errors import InputError
 
 
 def load_skill():
@@ -19,13 +20,15 @@ def load_skill():
 def answer_history(config):
     answers = config.get("advisorAnswers", [])
     if not isinstance(answers, list) or len(answers) > 4:
-        raise ValueError("Use até quatro respostas de acompanhamento; atualize a rotina para recomeçar.")
-    for item in answers:
+        raise InputError("Use até quatro respostas de acompanhamento; atualize a rotina para recomeçar.", "advisorAnswers")
+    for index, item in enumerate(answers):
+        field = f"advisorAnswers[{index}]"
         if not isinstance(item, dict):
-            raise ValueError("Resposta de acompanhamento inválida.")
+            raise InputError("Resposta de acompanhamento inválida.", field)
         for key, limit in [("question", 180), ("answer", 300)]:
             if not isinstance(item.get(key), str) or not item[key].strip() or len(item[key]) > limit:
-                raise ValueError("Mantenha as respostas de acompanhamento curtas e preenchidas.")
+                label = "a pergunta" if key == "question" else "a resposta"
+                raise InputError(f"Preencha {label} com até {limit} caracteres no acompanhamento.", field + "." + key)
     return answers
 
 

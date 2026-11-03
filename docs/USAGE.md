@@ -24,6 +24,8 @@ Loading an example can be undone; all examples remain fictional manual estimates
 
 The UI starts empty and stores household inputs and the last ten simulations in this browser's local storage. It supports editing, deletion with undo, and exported reports. There is no account, payment flow, remote database, or real meter adapter in this MVP. Use a different `--port` if necessary; saved browser data is specific to the origin, including the port.
 
+If saved browser data is malformed, a recovery notice lists the affected fields and records while keeping usable data available. Use **Ver detalhes da recuperação** to review exclusions and **Baixar dados originais** to keep the original. The app does not rewrite the original on startup; the first later save must create and verify a separate original backup before replacing the active data. If browser storage is blocked or full, you can still calculate and export in this session, but edits may not survive a reload. See [recovery behavior and diagnostic codes](API_ERRORS.md).
+
 After updating Python server code, stop the running app with **Ctrl+C**, run `python scripts/run.py serve` again, and refresh the browser. This server does not reload Python code automatically. Refreshing alone can show a new interface while the old server still lacks a newly added example endpoint.
 
 ### Smart-home monitoring mockup
@@ -60,6 +62,8 @@ The backend calls `http://127.0.0.1:11434/api/chat` with non-streaming structure
 The advisor loads its behavior from `skills/household-energy-coach/SKILL.md`. It can ask for clarification before recommending a change and considers up to four follow-up answers. Editing inputs resets those answers. Recommendations include a seven-day experiment; savings remain projections until supported by real measurements. The industrial profile supplies `site_type: industrial` to the advisor and uses follow-up language about production, quality, and safety. Legacy profiles default to household behavior.
 
 No Ollama installation or model weights are included in this repository or automatically downloaded by the app. After the model is downloaded, local inference does not require a hosted API key. Performance depends on hardware; the first load can be slower. If Ollama is unavailable, **Usar maior potencial, sem IA** remains available and explicitly labels its numerical ranking as non-AI. It does not impersonate a model response.
+
+The connection status and advisor errors explain invalid model configuration, missing models, transport failures, timeouts, and malformed replies. Correct the problem and retry, or continue with the calculator. The [API error reference](API_ERRORS.md) documents codes and HTTP statuses.
 
 To check the current model and instructions with Ollama running:
 

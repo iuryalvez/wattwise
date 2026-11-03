@@ -8,6 +8,7 @@ WattWise is a local application with a Python standard-library backend and plain
 | --- | --- |
 | `src/wattwise/__main__.py` | Command routing for `serve` and `estimate` |
 | `src/wattwise/server.py` | Loopback HTTP server, static routes, and JSON endpoints |
+| `src/wattwise/errors.py` | Expected failures with diagnostic codes, HTTP status, and optional field paths |
 | `src/wattwise/planning.py` | Web-profile validation and single-change analysis |
 | `src/wattwise/energy.py` | Numeric helpers, state/component calculations, and synthetic interval integration |
 | `src/wattwise/cli.py` | Command-line estimates and optional hosted explanation orchestration |
@@ -73,7 +74,7 @@ The web profile uses `rate`, `days`, `devices`, `context`, optional `siteType`, 
 | POST | `/api/analyze` | Validated manual estimates and eligible opportunities |
 | POST | `/api/advise` | Structured local-model recommendation or clarification |
 
-Static assets use explicit route mappings. POST bodies must use JSON and are limited to 64 KB. Host and supplied Origin headers must match the loopback origin. This surface is an internal development interface rather than a versioned public API.
+Static assets use explicit route mappings. POST bodies must use JSON and are limited to 64 KB. Host and supplied Origin headers must match the loopback origin. Expected failures preserve `error` and add stable `code` and optional `field` values. Status checks return HTTP 200 with diagnostic availability; advisor failures use 502/503/504 and invalid client input uses 400. See [API errors](API_ERRORS.md) for the contract. This surface is an internal development interface rather than a versioned public API.
 
 ## Calculation and evidence boundaries
 
@@ -85,7 +86,7 @@ Protected usage is validated in the backend. Candidate membership is also valida
 
 ## Persistence and external calls
 
-Planning data uses browser key `wattwise-mvp-v1`; simulated sensor connections use `wattwise-simulated-connections-v1`. There is no cross-device synchronization or server-side history. Saved planning records are capped at ten and do not yet include a complete reusable input snapshot.
+Planning data uses browser key `wattwise-mvp-v1`; simulated sensor connections use `wattwise-simulated-connections-v1`. There is no cross-device synchronization or server-side history. Saved planning records are capped at ten and do not yet include a complete reusable input snapshot. Startup validates each stored section independently, retains usable records, and explains recovery. The original active value is not overwritten on startup; a verified separate raw backup is required before later writes after recovery. Storage failures leave the calculator usable in memory. See [saved-state recovery](API_ERRORS.md#browser-recovery).
 
 The web advisor calls loopback Ollama at `127.0.0.1:11434`. Only the explicit CLI `--gemma` option invokes the hosted provider. See [SECURITY.md](../SECURITY.md) before changing deployment or data-flow assumptions.
 

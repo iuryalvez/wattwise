@@ -13,22 +13,138 @@ let config = {rate: 1.05, days: 30, context: '', devices: []};
 let history = [], report = null, chosen = null, version = 0, editing = null, sample = false, followupQuestion = '';
 let toastTimer, analysisTimer, analysisController;
 
-try {
-  const stored = JSON.parse(localStorage.getItem(KEY));
-  if (stored && Array.isArray(stored.config?.devices) && Array.isArray(stored.history)) {
-    config = stored.config; history = stored.history.slice(0, 10); sample = !!stored.sample;
+// Recovery keeps the raw input untouched until a verified backup exists.
+let recoveryOriginal = null, recoveryBackup = null;
+const recoveryMessages = [];
+const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+const bounded = (value, max, positive = false) => typeof value === 'number' && Number.isFinite(value)
+  && value >= 0 && value <= max && (!positive || value > 0);
+const text = (value, max) => typeof value === 'string' && !!value.trim() && value.length <= max;
+function rejected(field, reason) { recoveryMessages.push(`${field}: ${reason}`); }
+function recoverStored(stored) {
+  if (!record(stored)) { rejected('Dados salvos', 'formato inválido; iniciamos um perfil vazio.'); return; }
+  if (record(stored.config)) {
+    const saved = stored.config;
+    config = {...saved, devices: [], advisorAnswers: []};
+    for (const [key, fallback, max, positive] of [['rate', 1.05, 1000, false], ['days', 30, 366, true]]) {
+      if (!bounded(saved[key], max, positive)) {
+        config[key] = fallback; rejected(key, `valor inválido; usamos ${num(fallback)} para continuar. Confira este campo.`);
+      }
+    }
+    if (saved.context === undefined) config.context = '';
+    else if (typeof saved.context !== 'string' || saved.context.length > 2000) {
+      config.context = ''; rejected('context', 'rotina inválida; preencha novamente.');
+    }
+    if (saved.siteType === undefined) config.siteType = 'household';
+    else if (!['household', 'industrial'].includes(saved.siteType)) {
+      config.siteType = 'household'; rejected('siteType', 'perfil inválido; confira o tipo de local.');
+    }
+    const ids = new Set();
+    if (!Array.isArray(saved.devices)) rejected('devices', 'lista de aparelhos inválida.');
+    else saved.devices.forEach((device, index) => {
+      const field = `devices[${index}]`;
+      if (!record(device)) { rejected(field, 'aparelho inválido; registro separado.'); return; }
+      if (!text(device.id, 80) || !/^[\p{L}\p{N}_-]+$/u.test(device.id) || ids.has(device.id)) {
+        rejected(field + '.id', 'identificador inválido ou duplicado; registro separado.'); return;
+      }
+      if (!text(device.name, 100)) { rejected(field + '.name', 'nome inválido; registro separado.'); return; }
+      for (const [key, max] of [['watts', 100000], ['plannedWatts', 100000], ['hours', 24], ['plannedHours', 24]]) {
+        if (!bounded(device[key], max)) { rejected(field + '.' + key, 'valor inválido; registro separado.'); return; }
+      }
+      if (device.protected !== undefined && typeof device.protected !== 'boolean') {
+        rejected(field + '.protected', 'proteção inválida; registro separado.'); return;
+      }
+      if (config.devices.length >= 50) { rejected(field, 'limite de 50 aparelhos; registro separado.'); return; }
+      const recovered = {...device, protected: device.protected ?? false};
+      if (recovered.protected && (device.watts !== device.plannedWatts || device.hours !== device.plannedHours)) {
+        recovered.plannedWatts = device.watts; recovered.plannedHours = device.hours;
+        rejected(field + '.protected', 'proposta incompatível; mantivemos o uso essencial atual.');
+      }
+      if (device.note !== undefined && typeof device.note !== 'string') {
+        delete recovered.note; rejected(field + '.note', 'nota inválida; aparelho mantido.');
+      }
+      config.devices.push(recovered); ids.add(device.id);
+    });
+    if (saved.advisorAnswers !== undefined) {
+      if (!Array.isArray(saved.advisorAnswers)) rejected('advisorAnswers', 'lista de respostas inválida.');
+      else saved.advisorAnswers.forEach((item, index) => {
+        if (!record(item) || !text(item.question, 180) || !text(item.answer, 300)) {
+          rejected(`advisorAnswers[${index}]`, 'pergunta ou resposta inválida; registro separado.');
+        } else if (config.advisorAnswers.length >= 4) {
+          rejected(`advisorAnswers[${index}]`, 'limite de quatro respostas; registro separado.');
+        } else config.advisorAnswers.push(item);
+      });
+    }
+    // Obsolete field; do not write a migration during startup.
+    delete config.voltage;
+  } else rejected('config', 'perfil inválido; iniciamos um perfil vazio.');
+  if (!Array.isArray(stored.history)) rejected('history', 'histórico inválido.');
+  else stored.history.forEach((item, index) => {
+    const candidate = item?.plan?.candidate;
+    if (!record(item) || !text(item.date, 80) || !Number.isFinite(Date.parse(item.date))
+      || !bounded(item.days, 366, true) || (item.sample !== undefined && typeof item.sample !== 'boolean')
+      || !record(candidate) || !text(candidate.name, 100)
+      || !bounded(candidate.modeled_variable_cost_reduction_brl, Number.MAX_VALUE)
+      || (item.plan.evidence !== undefined && item.plan.evidence !== 'manual_estimate')) {
+      rejected(`history[${index}]`, 'simulação inválida; registro separado.');
+    } else if (history.length >= 10) rejected(`history[${index}]`, 'limite de dez simulações; registro separado.');
+    else history.push(item);
+  });
+  sample = stored.sample === true;
+  if (stored.sample !== undefined && typeof stored.sample !== 'boolean') {
+    rejected('sample', 'origem fictícia inválida; confira a origem dos dados.');
   }
-} catch { $('storage-status').textContent = 'Armazenamento local indisponível'; }
-
-// Migrate saved profiles without changing appliance usage or conversation history.
-if ('voltage' in config) { delete config.voltage; persist(); }
-
+}
+function showRecovery() {
+  if (!recoveryMessages.length) return;
+  $('storage-recovery').hidden = false;
+  $('recovery-summary').textContent = recoveryOriginal !== null
+    ? 'Recuperamos os dados utilizáveis. O original foi preservado e pode ser baixado. Confira os itens abaixo antes de continuar.'
+    : 'O armazenamento local está indisponível. Você pode calcular nesta sessão; os dados podem não continuar disponíveis após recarregar.';
+  $('recovery-details').innerHTML = recoveryMessages.map(message => `<li>${esc(message)}</li>`).join('');
+  $('download-recovery').hidden = recoveryOriginal === null;
+}
+try {
+  const raw = localStorage.getItem(KEY);
+  if (raw !== null) {
+    try { recoverStored(JSON.parse(raw)); }
+    catch { rejected('Dados salvos', 'JSON inválido; iniciamos um perfil vazio.'); }
+    if (recoveryMessages.length) recoveryOriginal = raw;
+    $('storage-status').textContent = recoveryMessages.length ? 'Dados recuperados · confira o aviso' : '● Salvo neste navegador';
+  } else $('storage-status').textContent = 'Pronto para salvar neste navegador';
+} catch {
+  rejected('Armazenamento', 'não foi possível ler os dados salvos.');
+  $('storage-status').textContent = 'Armazenamento local indisponível';
+}
+showRecovery();
 function persist() {
   try {
+    if (recoveryOriginal !== null && recoveryBackup === null) {
+      let suffix = Date.now(), backup;
+      do { backup = `${KEY}-recovery-${suffix++}`; } while (localStorage.getItem(backup) !== null);
+      localStorage.setItem(backup, recoveryOriginal);
+      if (localStorage.getItem(backup) !== recoveryOriginal) throw new Error('Backup não confirmado');
+      recoveryBackup = backup;
+      $('recovery-backup').textContent = `Cópia original preservada neste navegador: ${backup}`;
+    }
     localStorage.setItem(KEY, JSON.stringify({config, history, sample}));
     $('storage-status').textContent = '● Salvo neste navegador';
-  } catch { $('storage-status').textContent = 'Não foi possível salvar neste navegador'; }
+  } catch {
+    $('storage-status').textContent = 'Não foi possível salvar · dados apenas nesta sessão';
+    if (!recoveryMessages.includes('Armazenamento: não foi possível salvar; mantenha esta página aberta ou exporte seus dados.')) {
+      rejected('Armazenamento', 'não foi possível salvar; mantenha esta página aberta ou exporte seus dados.');
+    }
+    showRecovery();
+  }
 }
+function download(content, filename) {
+  const url = URL.createObjectURL(new Blob([content], {type: 'application/json'}));
+  const link = document.createElement('a'); link.href = url; link.download = filename; link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+$('download-recovery').onclick = () => {
+  if (recoveryOriginal !== null) download(recoveryOriginal, 'wattwise-dados-originais.json');
+};
 function toast(message, action) {
   clearTimeout(toastTimer);
   $('toast').replaceChildren(document.createTextNode(message));
@@ -43,7 +159,7 @@ async function api(path, body, signal) {
   const data = await response.json();
   if (!response.ok) {
     const error = new Error(data.error || 'Não foi possível concluir. Tente novamente.');
-    error.status = response.status;
+    error.status = response.status; error.code = data.code; error.field = data.field;
     throw error;
   }
   return data;
@@ -182,7 +298,7 @@ async function status() {
   try {
     const data = await api('/api/status');
     $('model-dot').classList.toggle('ready', data.available);
-    $('model-status').textContent = data.available ? `${data.model} · pronto neste computador` : data.running ? `${data.model} · modelo não instalado` : 'Ollama não conectado · modo manual disponível';
+    $('model-status').textContent = data.error || (data.available ? `${data.model} · pronto neste computador` : data.running ? `${data.model} · modelo não instalado` : 'Ollama não conectado · modo manual disponível');
   } catch { $('model-status').textContent = 'Não foi possível verificar o Ollama'; $('model-dot').classList.remove('ready'); }
 }
 $('check-model').onclick = status;
