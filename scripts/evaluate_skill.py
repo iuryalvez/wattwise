@@ -52,7 +52,9 @@ def main():
 
     result = {"fixture": "synthetic_skill_behavior_v1", "passed": sum(row["passed"] for row in outcomes),
               "total": len(outcomes), "scope": "Small local smoke evaluation, not a general model benchmark", "cases": outcomes}
-    (ROOT / "docs" / "skill-evaluation.json").write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    output = ROOT / "artifacts" / "evaluations" / "skill-evaluation.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Passed {result['passed']}/{result['total']}", flush=True)
     return 0 if result["passed"] == result["total"] else 1
 

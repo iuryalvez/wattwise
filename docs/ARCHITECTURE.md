@@ -17,7 +17,7 @@ WattWise is a local application with a Python standard-library backend and plain
 | `examples/` | Fictional input fixtures for the web app and CLI |
 | `tests/` | Python unit tests and Node tests using built-ins and browser doubles |
 | `scripts/check.py` | Shared offline entry point for local and CI checks |
-| `scripts/verify_ollama.py`, `scripts/evaluate_skill.py` | Optional live-model checks that write evaluation records |
+| `scripts/verify_ollama.py`, `scripts/evaluate_skill.py` | Optional live-model checks that write ignored reports in `artifacts/evaluations/` |
 
 ## Planning flow
 
@@ -61,4 +61,4 @@ The web advisor calls loopback Ollama at `127.0.0.1:11434`. Only the explicit CL
 
 ## Verification limits
 
-The offline suite covers calculations, example profiles, protected usage, candidate validation, sample selection, persistence behavior, and simulated monitoring. Model responses and browser APIs are mocked in those tests. Live-model checks and real-browser interaction are separate activities; passing CI does not establish model quality or measured savings.
+The offline suite covers calculations, example profiles, protected usage, candidate validation, sample selection, persistence behavior, and simulated monitoring. Model responses and browser APIs are mocked in those tests. Live-model checks and real-browser interaction are separate activities; passing CI does not establish model quality or measured savings. See the [evaluation guide](EVALUATION.md) for commands and review criteria.

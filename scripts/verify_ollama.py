@@ -26,7 +26,8 @@ def main():
               "checks": {"real_local_inference": True, "choice_validated_by_backend": True,
                          "protected_work_unchanged": plan["candidate"]["id"] != "work",
                          "savings_are_estimates": plan["evidence"] == "manual_estimate"}, "plan": plan}
-    output = ROOT / "docs" / "ollama-smoke-test.json"
+    output = ROOT / "artifacts" / "evaluations" / "ollama-smoke-test.json"
+    output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps({"status": result["status"], "model": plan["model"], "latency_seconds": result["latency_seconds"],
                       "selected_appliance": plan["candidate"]["name"], "report": str(output)}, ensure_ascii=False))

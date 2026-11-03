@@ -93,4 +93,4 @@ The separate CLI sends a calculated summary to a hosted provider only when you e
 
 ## License
 
-WattWise code is available under the [MIT License](LICENSE). Model weights, hosted services, and their tools have separate terms. WattWise began as a Hackday 2026 project; the [original demo guide](docs/HACKATHON.md) remains available as project history.
+WattWise code is available under the [MIT License](LICENSE). Model weights, hosted services, and their tools have separate terms.

@@ -37,7 +37,7 @@ There is no automated package publishing or deployment workflow. Before creating
 1. Select a reviewed commit and run the offline checks from a clean checkout.
 2. Confirm the corresponding GitHub CI jobs succeeded.
 3. Exercise the documented first-use, editing, protection, persistence, export, and monitoring flows in a real browser at desktop and mobile widths.
-4. For changes that affect advisor behavior, run and review the relevant live-model checks, recording the model, skill hash, and limitations.
+4. For changes that affect advisor behavior, follow the [evaluation guide](EVALUATION.md) and review the relevant live-model checks, recording the model, skill hash, and limitations. Reports are local artifacts; attach reviewed results to the PR or release when useful.
 5. Update the changelog, usage instructions, and security support policy as needed. Distinguish shipped behavior from roadmap work.
 6. Write release notes with changes, upgrade steps, data-format effects, checks performed, and known limitations. Tag the selected commit when the release is actually ready.
 

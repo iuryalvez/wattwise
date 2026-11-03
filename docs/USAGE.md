@@ -61,13 +61,13 @@ The advisor loads its behavior from `skills/household-energy-coach/SKILL.md`. It
 
 No Ollama installation or model weights are included in this repository or automatically downloaded by the app. After the model is downloaded, local inference does not require a hosted API key. Performance depends on hardware; the first load can be slower. If Ollama is unavailable, **Usar maior potencial, sem IA** remains available and explicitly labels its numerical ranking as non-AI. It does not impersonate a model response.
 
-Local smoke tests on 31 October 2026: Ollama 0.40.13 with `gemma4:e2b` produced a valid plan for the original workstation fixture in 7.39 seconds using CPU inference. The expanded three-person household case passed in 29.56 seconds and selected the shorter-shower proposal. These are individual calls, not general latency guarantees. The original browser workflow was also exercised with a real model response. See [the latest recorded smoke test](ollama-smoke-test.json).
-
-To repeat the live check with Ollama running:
+To check the current model and instructions with Ollama running:
 
 ```powershell
 python scripts/verify_ollama.py
 ```
+
+The script writes a local report to `artifacts/evaluations/ollama-smoke-test.json`. Generated reports are ignored by Git. See the [evaluation guide](EVALUATION.md) for behavioral checks and how to interpret results.
 
 See the official [Gemma 4 Ollama library](https://ollama.com/library/gemma4) and [chat API](https://docs.ollama.com/api/chat).
 
@@ -114,15 +114,9 @@ This explicitly sends the calculated summary to Google's hosted Gemma API. It re
 
 The default is `gemma-4-26b-a4b-it`. Override with `GEMMA_MODEL` for another supported model. The non-AI mode is explicitly a calculator; it does not pretend to have invoked a model. Live API execution requires credentials and has not been validated in this checkout.
 
-## Hackday handoff
-
-Use [the demo script and acceptance checklist](HACKATHON.md). The MVP has one complete manual-input-to-plan journey and a fallback demonstration without a model. Gemma is used for context-sensitive choice and explanation; the model is never trusted to supply the energy calculation.
-
-Automated verification covers energy units, incomplete simulated windows, essential-use protection, single-change comparison, model-choice validation, unavailable Ollama, and cloud-tag rejection. Model responses in the unit suite are mocked; the separate live smoke test calls the actual installed model.
-
 ## Next product milestones
 
-See the [roadmap](ROADMAP.md) for current priorities and contribution ideas and the [architecture guide](ARCHITECTURE.md) for implementation boundaries. The [original project brief](../PROJECT.md) and [31 October 2026 assessment](CURRENT_STATE.md) preserve the customer hypothesis and prototype assessment. A recorded four-case local evaluation is available in [skill-evaluation.json](skill-evaluation.json); repeat it with `python scripts/evaluate_skill.py` after changing the model or skill. Hardware can eventually supply measured input through a device adapter.
+See the [roadmap](ROADMAP.md) for current priorities and contribution ideas, the [architecture guide](ARCHITECTURE.md) for implementation boundaries, and the [evaluation guide](EVALUATION.md) for verification. Hardware can eventually supply measured input through a device adapter.
 
 ## References
 

@@ -17,10 +17,5 @@ Start with the [project README](../README.md) for a quick introduction and a loc
 - [Architecture](ARCHITECTURE.md): where the code lives and how data flows.
 - [Roadmap](ROADMAP.md): product priorities and scoped contribution ideas.
 - [Maintainer guide](MAINTAINING.md): triage, repository settings, and release preparation.
+- [Evaluation guide](EVALUATION.md): offline checks, browser verification, and local-model reports.
 - [Security policy](../SECURITY.md) and [code of conduct](../CODE_OF_CONDUCT.md).
-
-## Evaluation and project history
-
-The [Ollama smoke record](ollama-smoke-test.json) and [skill evaluation](skill-evaluation.json) are recorded runs. They are not continuous test results or a broad model benchmark. Model and skill changes may make them stale; read their provenance before using them as evidence.
-
-The [31 October 2026 assessment](CURRENT_STATE.md), [Hackday handoff](HACKATHON.md), and [original project brief](../PROJECT.md) document the prototype's history and business hypotheses. Use the roadmap for current contribution priorities.

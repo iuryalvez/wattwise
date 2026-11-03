@@ -58,7 +58,7 @@ python scripts/verify_ollama.py
 python scripts/evaluate_skill.py
 ```
 
-These scripts overwrite their recorded JSON reports in `docs/`. Review those diffs and only include them intentionally. Record the model tag, skill hash, timing, and any limitations in your PR. A successful candidate choice alone does not establish that every generated sentence is supported; read the output. The smoke script currently assumes a recommendation, so a valid clarification needs manual review until the [roadmap task](docs/ROADMAP.md#starting-tasks) is completed.
+These scripts create their output directory and overwrite JSON reports in `artifacts/evaluations/`, which Git ignores. Record the model tag, skill hash when available, timing, and any limitations in your PR; attach a reviewed report when it helps explain a change. A successful candidate choice alone does not establish that every generated sentence is supported; read the output. See the [evaluation guide](docs/EVALUATION.md) for scope and current limitations.
 
 ## Design principles
 
