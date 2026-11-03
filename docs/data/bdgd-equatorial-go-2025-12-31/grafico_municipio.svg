@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter, 'Segoe UI', Arial, sans-serif">
+<rect width="1600" height="900" fill="#F6F7F3"/>
+<text x="80" y="84" font-size="15" font-weight="700" letter-spacing="2" fill="#63715C">WATTWISE · DADOS ABERTOS ANEEL (BDGD)</text>
+<text x="80" y="134" font-size="40" font-weight="550" letter-spacing="-1.2" fill="#203C33">Onde está o grande consumo, por município</text>
+<text x="80" y="172" font-size="20" fill="#63715C">1615 unidades de média tensão acima de 600 MWh/ano · Equatorial Goiás · 4.181.636 MWh no total</text>
+<text x="540" y="233.2" font-size="20" text-anchor="end" fill="#203C33">Goiânia/GO</text>
+<rect x="560" y="209.4" width="740.0" height="33.6" rx="4" fill="#174D40"/>
+<text x="1312.0" y="233.2" font-size="18" fill="#63715C">923.439 MWh · 394 un.</text>
+<text x="540" y="285.8" font-size="20" text-anchor="end" fill="#203C33">Anápolis/GO</text>
+<rect x="560" y="261.9" width="316.8" height="33.6" rx="4" fill="#174D40"/>
+<text x="888.8" y="285.8" font-size="18" fill="#63715C">395.306 MWh · 102 un.</text>
+<text x="540" y="338.2" font-size="20" text-anchor="end" fill="#203C33">Aparecida de Goiânia/GO</text>
+<rect x="560" y="314.4" width="206.3" height="33.6" rx="4" fill="#174D40"/>
+<text x="778.3" y="338.2" font-size="18" fill="#63715C">257.447 MWh · 118 un.</text>
+<text x="540" y="390.8" font-size="20" text-anchor="end" fill="#203C33">Rio Verde/GO</text>
+<rect x="560" y="366.9" width="128.9" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="700.9" y="390.8" font-size="18" fill="#63715C">160.840 MWh · 79 un.</text>
+<text x="540" y="443.2" font-size="20" text-anchor="end" fill="#203C33">Cristalina/GO</text>
+<rect x="560" y="419.4" width="111.2" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="683.2" y="443.2" font-size="18" fill="#63715C">138.733 MWh · 72 un.</text>
+<text x="540" y="495.8" font-size="20" text-anchor="end" fill="#203C33">Itumbiara/GO</text>
+<rect x="560" y="471.9" width="109.9" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="681.9" y="495.8" font-size="18" fill="#63715C">137.161 MWh · 31 un.</text>
+<text x="540" y="548.2" font-size="20" text-anchor="end" fill="#203C33">Formosa/GO</text>
+<rect x="560" y="524.5" width="92.6" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="664.6" y="548.2" font-size="18" fill="#63715C">115.552 MWh · 32 un.</text>
+<text x="540" y="600.8" font-size="20" text-anchor="end" fill="#203C33">Jataí/GO</text>
+<rect x="560" y="577.0" width="80.8" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="652.8" y="600.8" font-size="18" fill="#63715C">100.803 MWh · 40 un.</text>
+<text x="540" y="653.2" font-size="20" text-anchor="end" fill="#203C33">Trindade/GO</text>
+<rect x="560" y="629.5" width="67.5" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="639.5" y="653.2" font-size="18" fill="#63715C">84.288 MWh · 20 un.</text>
+<text x="540" y="705.8" font-size="20" text-anchor="end" fill="#203C33">Luziânia/GO</text>
+<rect x="560" y="682.0" width="64.9" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="636.9" y="705.8" font-size="18" fill="#63715C">81.024 MWh · 27 un.</text>
+<text x="540" y="758.2" font-size="20" text-anchor="end" fill="#203C33">Bela Vista de Goiás/GO</text>
+<rect x="560" y="734.5" width="57.6" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="629.6" y="758.2" font-size="18" fill="#63715C">71.891 MWh · 9 un.</text>
+<text x="540" y="810.8" font-size="20" text-anchor="end" fill="#203C33">Caldas Novas/GO</text>
+<rect x="560" y="787.0" width="53.0" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="625.0" y="810.8" font-size="18" fill="#63715C">66.097 MWh · 41 un.</text>
+<text x="80" y="870" font-size="15" fill="#63715C">Fonte: ANEEL, Base de Dados Geográfica da Distribuidora (camada UCMT). Consumo dos últimos 12 meses.</text>
+</svg>

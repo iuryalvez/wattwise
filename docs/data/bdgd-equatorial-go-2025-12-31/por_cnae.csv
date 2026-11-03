@@ -1,0 +1,58 @@
+codigo,nome,unidades,mwh_ano
+10,10 · Alimentos,167,898025.6
+36,36 · Captação e tratamento de água,139,581334.0
+01,01 · Agricultura e pecuária,284,556145.1
+47,"47 · Comércio varejista (supermercados, lojas)",225,347753.5
+22,22 · Borracha e plástico,54,169926.0
+52,52 · Armazenamento e logística,80,160123.9
+21,21 · Farmacêuticos,19,138318.6
+46,46 · Comércio atacadista,71,123605.5
+08,08 · Extração de minerais não metálicos,45,117179.6
+86,86 · Saúde (hospitais),71,116431.1
+23,"23 · Minerais não metálicos (cimento, vidro, cerâmica)",47,84019.3
+55,55 · Hotéis,40,77741.0
+84,84 · Administração pública,33,56673.4
+25,25 · Produtos de metal,13,56199.9
+81,81 · Serviços para edifícios,18,56191.3
+68,"68 · Atividades imobiliárias (shoppings, condomínios)",30,50929.2
+85,85 · Educação,20,45162.7
+20,20 · Produtos químicos,21,42589.6
+11,11 · Bebidas,9,42181.7
+41,41 · Construção de edifícios,15,40522.7
+19,19 · Coque e derivados de petróleo,15,40125.0
+64,64 · Serviços financeiros,12,37509.6
+61,61 · Telecomunicações,18,31207.8
+93,93 · Esporte e lazer,18,29932.1
+17,17 · Papel e celulose,6,24500.4
+15,15 · Couro e calçados,11,21699.2
+07,07 · Extração de minerais metálicos,6,19785.9
+94,94 · Organizações associativas,10,18738.2
+32,32 · Produtos diversos,7,18237.5
+37,37 · Esgoto,7,16643.2
+28,28 · Máquinas e equipamentos,3,15832.9
+82,82 · Serviços de escritório,8,14641.1
+38,38 · Resíduos,6,13765.4
+35,35 · Eletricidade e gás,4,11144.7
+42,42 · Obras de infraestrutura,8,11057.2
+49,49 · Transporte terrestre,7,9519.8
+59,"59 · Cinema, vídeo e TV",7,8744.5
+24,24 · Metalurgia,4,8027.1
+60,60 · Rádio e televisão,6,7977.9
+56,56 · Restaurantes,9,7763.8
+27,27 · Máquinas e materiais elétricos,5,7146.3
+65,65 · Seguros,4,6326.7
+13,13 · Têxteis,4,5963.0
+45,45 · Comércio de veículos,7,5659.0
+14,14 · Vestuário,3,5473.9
+09,09 · Apoio à extração de minerais,2,4753.7
+96,96 · Outros serviços pessoais,3,4102.0
+--,Sem CNAE informado,3,3683.3
+31,31 · Móveis,2,2925.1
+69,69 · Jurídico e contabilidade,2,1727.2
+75,75 · Veterinária,1,1334.2
+18,18 · Impressão e gravações,1,984.8
+02,02 · Produção florestal,1,908.9
+43,43 · Serviços de construção,1,797.2
+72,72 · Pesquisa e desenvolvimento,1,672.9
+53,53 · Correios,1,647.8
+88,88 · Assistência social sem alojamento,1,622.8
