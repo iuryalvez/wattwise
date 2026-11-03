@@ -1,0 +1,151 @@
+codigo,nome,unidades,criterio_selecao,mwh_ano_informado,mwh_ano_estimado
+5208707,Goiânia/GO,394,estimativa_legada,,923438.6
+5201108,Anápolis/GO,102,estimativa_legada,,395305.6
+5201405,Aparecida de Goiânia/GO,118,estimativa_legada,,257447.3
+5218805,Rio Verde/GO,79,estimativa_legada,,160840.2
+5206206,Cristalina/GO,72,estimativa_legada,,138732.9
+5211503,Itumbiara/GO,31,estimativa_legada,,137161.4
+5208004,Formosa/GO,32,estimativa_legada,,115552.0
+5211909,Jataí/GO,40,estimativa_legada,,100802.8
+5221403,Trindade/GO,20,estimativa_legada,,84287.5
+5212501,Luziânia/GO,27,estimativa_legada,,81024.1
+5203302,Bela Vista de Goiás/GO,9,estimativa_legada,,71890.7
+5204508,Caldas Novas/GO,41,estimativa_legada,,66097.3
+5220454,Senador Canedo/GO,21,estimativa_legada,,57770.5
+5208608,Goianésia/GO,15,estimativa_legada,,56359.8
+5205109,Catalão/GO,24,estimativa_legada,,56114.7
+5205901,Corumbaíba/GO,2,estimativa_legada,,52139.6
+5214507,Nerópolis/GO,6,estimativa_legada,,51944.5
+5209705,Hidrolândia/GO,19,estimativa_legada,,48613.8
+5213103,Mineiros/GO,8,estimativa_legada,,48201.0
+5213806,Morrinhos/GO,14,estimativa_legada,,47393.4
+5202502,Aruanã/GO,9,estimativa_legada,,40882.5
+5209952,Indiara/GO,13,estimativa_legada,,37045.7
+5210109,Ipameri/GO,13,estimativa_legada,,34363.2
+5214408,Nazário/GO,5,estimativa_legada,,33997.9
+5210000,Inhumas/GO,13,estimativa_legada,,33952.0
+5208806,Goianira/GO,6,estimativa_legada,,33228.2
+5200258,Águas Lindas de Goiás/GO,13,estimativa_legada,,32327.9
+5217609,Planaltina/GO,13,estimativa_legada,,31591.3
+5215009,Nova Veneza/GO,3,estimativa_legada,,31135.0
+5218003,Porangatu/GO,8,estimativa_legada,,30977.9
+5212204,Jussara/GO,6,estimativa_legada,,29768.0
+5219308,Santa Helena de Goiás/GO,13,estimativa_legada,,28703.7
+5221858,Valparaíso de Goiás/GO,10,estimativa_legada,,24150.5
+5218789,Rio Quente/GO,6,estimativa_legada,,23320.8
+5220405,São Simão/GO,6,estimativa_legada,,22729.4
+5200308,Alexânia/GO,5,estimativa_legada,,21338.3
+5204003,Cabeceiras/GO,8,estimativa_legada,,21265.4
+5211800,Jaraguá/GO,5,estimativa_legada,,20753.1
+5213756,Montividiu/GO,13,estimativa_legada,,20259.7
+5215603,Padre Bernardo/GO,7,estimativa_legada,,20029.1
+5200175,Água Fria de Goiás/GO,17,estimativa_legada,,19571.2
+5203906,Buriti Alegre/GO,3,estimativa_legada,,19275.5
+5218300,Posse/GO,6,estimativa_legada,,19222.8
+5220108,São Luís de Montes Belos/GO,8,estimativa_legada,,19087.9
+5219258,Santa Fé de Goiás/GO,5,estimativa_legada,,17998.7
+5209101,Goiatuba/GO,11,estimativa_legada,,17577.3
+5222302,Vila Propício/GO,4,estimativa_legada,,16822.9
+5204805,Campo Alegre de Goiás/GO,7,estimativa_legada,,14554.3
+5215702,Palmeiras de Goiás/GO,10,estimativa_legada,,14261.5
+5218508,Quirinópolis/GO,11,estimativa_legada,,14049.6
+5205513,Cocalzinho de Goiás/GO,2,estimativa_legada,,13622.1
+5203807,Britânia/GO,5,estimativa_legada,,13562.9
+5208905,Goiás/GO,7,estimativa_legada,,13234.0
+5221601,Uruaçu/GO,9,estimativa_legada,,13151.9
+5204854,Campo Limpo de Goiás/GO,4,estimativa_legada,,12554.3
+5210208,Iporá/GO,6,estimativa_legada,,12448.9
+5215306,Orizona/GO,5,estimativa_legada,,11364.8
+5209408,Guarani de Goiás/GO,2,estimativa_legada,,11309.4
+5200134,Acreúna/GO,8,estimativa_legada,,11181.0
+5204904,Campos Belos/GO,5,estimativa_legada,,11017.7
+5217203,Piranhas/GO,1,estimativa_legada,,10878.4
+5220009,São João d'Aliança/GO,8,estimativa_legada,,10750.2
+5203559,Bonfinópolis/GO,1,estimativa_legada,,10630.7
+5214838,Nova Crixás/GO,6,estimativa_legada,,10416.9
+5200100,Abadiânia/GO,9,estimativa_legada,,10400.0
+5216403,Paraúna/GO,6,estimativa_legada,,9306.5
+5203401,Bom Jardim de Goiás/GO,1,estimativa_legada,,8906.5
+5208400,Goianápolis/GO,4,estimativa_legada,,8500.4
+5201306,Anicuns/GO,6,estimativa_legada,,8335.2
+5210406,Itaberaí/GO,9,estimativa_legada,,8301.7
+5204409,Caiapônia/GO,6,estimativa_legada,,8097.6
+5220603,Silvânia/GO,6,estimativa_legada,,8018.6
+5209903,Iaciara/GO,5,estimativa_legada,,7726.2
+5205497,Cidade Ocidental/GO,3,estimativa_legada,,7369.7
+5204102,Cachoeira Alta/GO,3,estimativa_legada,,7319.9
+5222005,Vianópolis/GO,6,estimativa_legada,,7070.4
+5209200,Guapó/GO,5,estimativa_legada,,7064.1
+5203500,Bom Jesus de Goiás/GO,7,estimativa_legada,,7020.4
+5203203,Barro Alto/GO,2,estimativa_legada,,6522.7
+5217104,Piracanjuba/GO,7,estimativa_legada,,6329.4
+5217302,Pirenópolis/GO,5,estimativa_legada,,6256.3
+5219753,Santo Antônio do Descoberto/GO,4,estimativa_legada,,6069.8
+5213087,Minaçu/GO,3,estimativa_legada,,6029.4
+5219902,São Francisco de Goiás/GO,1,estimativa_legada,,5968.8
+5208301,Divinópolis de Goiás/GO,1,estimativa_legada,,5718.4
+5200605,Alto Paraíso de Goiás/GO,2,estimativa_legada,,5578.8
+5214606,Niquelândia/GO,5,estimativa_legada,,5446.0
+5217401,Pires do Rio/GO,5,estimativa_legada,,5226.0
+5220686,Simolândia/GO,2,estimativa_legada,,5117.8
+5221007,Taquaral de Goiás/GO,1,estimativa_legada,,5003.2
+5209804,Hidrolina/GO,1,estimativa_legada,,4940.9
+5220207,São Miguel do Araguaia/GO,5,estimativa_legada,,4784.9
+5204300,Caçu/GO,2,estimativa_legada,,4642.0
+5211404,Itauçu/GO,2,estimativa_legada,,4549.4
+5214051,Mundo Novo/GO,1,estimativa_legada,,4303.6
+5206800,Damolândia/GO,3,estimativa_legada,,4296.4
+5205471,Chapadão do Céu/GO,5,estimativa_legada,,4241.8
+5207907,Flores de Goiás/GO,2,estimativa_legada,,4238.1
+5215231,Novo Gama/GO,3,estimativa_legada,,4113.5
+5211701,Jandaia/GO,3,estimativa_legada,,3913.2
+5220702,Sítio d'Abadia/GO,2,estimativa_legada,,3723.0
+5221551,Turvelândia/GO,3,estimativa_legada,,3490.0
+5215207,Novo Brasil/GO,1,estimativa_legada,,3389.1
+5221197,Terezópolis de Goiás/GO,2,estimativa_legada,,3378.1
+5220157,São Luiz do Norte/GO,4,estimativa_legada,,3348.2
+5215900,Palminópolis/GO,4,estimativa_legada,,3181.1
+5212006,Jaupaci/GO,1,estimativa_legada,,3169.8
+5219704,Santa Terezinha de Goiás/GO,1,estimativa_legada,,2926.5
+5202353,Arenópolis/GO,1,estimativa_legada,,2912.5
+5212303,Leopoldo de Bulhões/GO,2,estimativa_legada,,2690.7
+5201504,Aporé/GO,1,estimativa_legada,,2668.3
+5215504,Ouvidor/GO,2,estimativa_legada,,2510.6
+5222203,Vila Boa/GO,1,estimativa_legada,,2461.5
+5207501,Estrela do Norte/GO,1,estimativa_legada,,2415.4
+5218102,Portelândia/GO,3,estimativa_legada,,2310.3
+5219100,Santa Bárbara de Goiás/GO,1,estimativa_legada,,2217.9
+5203575,Bonópolis/GO,1,estimativa_legada,,2138.3
+5207535,Faina/GO,1,estimativa_legada,,2135.8
+5205208,Caturaí/GO,2,estimativa_legada,,1946.5
+5210901,Itapaci/GO,2,estimativa_legada,,1817.2
+5218391,Professor Jamil/GO,1,estimativa_legada,,1796.2
+5212956,Matrinchã/GO,2,estimativa_legada,,1792.6
+5212105,Joviânia/GO,1,estimativa_legada,,1778.5
+5218904,Rubiataba/GO,2,estimativa_legada,,1763.2
+5216007,Panamá/GO,1,estimativa_legada,,1756.9
+5214903,Nova Roma/GO,2,estimativa_legada,,1714.8
+5222054,Vicentinópolis/GO,2,estimativa_legada,,1698.6
+5203609,Brazabrantes/GO,1,estimativa_legada,,1676.4
+5205802,Corumbá de Goiás/GO,1,estimativa_legada,,1639.3
+5219456,Santa Rita do Novo Destino/GO,1,estimativa_legada,,1610.0
+5207402,Edéia/GO,1,estimativa_legada,,1571.9
+5220264,São Miguel do Passa Quatro/GO,2,estimativa_legada,,1542.1
+5209150,Gouvelândia/GO,1,estimativa_legada,,1518.5
+5217708,Pontalina/GO,2,estimativa_legada,,1489.1
+5211206,Itapuranga/GO,2,estimativa_legada,,1459.5
+5213707,Montes Claros de Goiás/GO,1,estimativa_legada,,1371.6
+5200050,Abadia de Goiás/GO,2,estimativa_legada,,1364.5
+5207253,Doverlândia/GO,1,estimativa_legada,,1328.9
+5221304,Três Ranchos/GO,1,estimativa_legada,,1289.2
+5219712,Santo Antônio da Barra/GO,1,estimativa_legada,,1089.9
+5219001,Sanclerlândia/GO,1,estimativa_legada,,899.4
+5216452,Perolândia/GO,1,estimativa_legada,,868.6
+5213004,Maurilândia/GO,1,estimativa_legada,,802.4
+5202601,Aurilândia/GO,1,estimativa_legada,,770.9
+5202809,Avelinópolis/GO,1,estimativa_legada,,726.2
+5213772,Montividiu do Norte/GO,1,estimativa_legada,,692.1
+5212808,Mara Rosa/GO,1,estimativa_legada,,662.4
+5205455,Cezarina/GO,1,estimativa_legada,,657.3
+5211008,Itapirapuã/GO,1,estimativa_legada,,656.5
+5213905,Mossâmedes/GO,1,estimativa_legada,,607.8

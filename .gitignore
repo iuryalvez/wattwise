@@ -8,3 +8,8 @@ __pycache__/
 
 # Local evaluation reports and other generated outputs.
 /artifacts/
+
+# ANEEL BDGD downloads and local outputs (see docs/BDGD_DATA.md)
+*.gdb/
+*.gdb.zip
+saida-bdgd/

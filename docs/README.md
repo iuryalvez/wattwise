@@ -9,6 +9,7 @@ Start with the [project README](../README.md) for a quick introduction and a loc
 - [High-consumption example](HIGH_CONSUMPTION_USE_CASE.md): the fictional five-person household.
 - [Industrial example](INDUSTRIAL_USE_CASE.md): packaging operations, protected loads, and calendar-day equivalents.
 - [Monitoring demonstration](MONITORING_DEMO.md): simulated sensors, connection state, and session energy.
+- [ANEEL BDGD data](BDGD_DATA.md): optional medium-voltage consumption analysis, separate from the planning app.
 - [Support](../SUPPORT.md): troubleshooting, questions, and bug reports.
 
 ## Develop and contribute

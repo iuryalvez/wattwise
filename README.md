@@ -57,6 +57,10 @@ See the [usage guide](docs/USAGE.md) for model configuration, troubleshooting, a
 
 The `/monitor` page demonstrates the interaction with simulated telemetry. It does not connect to hardware or supply readings to the planning calculator. See the [monitoring guide](docs/MONITORING_DEMO.md).
 
+## Optional public-data analysis
+
+An optional script summarises public ANEEL BDGD data on medium-voltage customers for market research. It needs a separate data download and `pip install -r requirements-bdgd.txt` in a virtual environment; the app does not depend on it. Reported consumption, including zero months, determines the selected units. An explicit `--estimate-zero-months` scenario adds separately labeled estimates without changing that selection. See the [BDGD data guide](docs/BDGD_DATA.md).
+
 ## Contribute
 
 Contributions can include bug fixes, accessibility improvements, documentation, translations, example reviews, and model evaluations. English and Portuguese are welcome in issues and pull requests.

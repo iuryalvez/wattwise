@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="Inter, 'Segoe UI', Arial, sans-serif">
+<rect width="1600" height="900" fill="#F6F7F3"/>
+<text x="80" y="84" font-size="15" font-weight="700" letter-spacing="2" fill="#63715C">WATTWISE · ESTIMATIVA LEGADA · ANEEL (BDGD)</text>
+<text x="80" y="134" font-size="40" font-weight="550" letter-spacing="-1.2" fill="#203C33">Estimativa legada de consumo, por setor</text>
+<text x="80" y="172" font-size="20" fill="#63715C">1615 unidades selecionadas pela estimativa ≥ 600 MWh/ano · Equatorial Goiás</text>
+<text x="540" y="233.2" font-size="20" text-anchor="end" fill="#203C33">10 · Alimentos</text>
+<rect x="560" y="209.4" width="740.0" height="33.6" rx="4" fill="#174D40"/>
+<text x="1312.0" y="233.2" font-size="18" fill="#63715C">898.026 MWh est. · 167 un.</text>
+<text x="540" y="285.8" font-size="20" text-anchor="end" fill="#203C33">36 · Captação e tratamento de água</text>
+<rect x="560" y="261.9" width="479.0" height="33.6" rx="4" fill="#174D40"/>
+<text x="1051.0" y="285.8" font-size="18" fill="#63715C">581.334 MWh est. · 139 un.</text>
+<text x="540" y="338.2" font-size="20" text-anchor="end" fill="#203C33">01 · Agricultura e pecuária</text>
+<rect x="560" y="314.4" width="458.3" height="33.6" rx="4" fill="#174D40"/>
+<text x="1030.3" y="338.2" font-size="18" fill="#63715C">556.145 MWh est. · 284 un.</text>
+<text x="540" y="390.8" font-size="20" text-anchor="end" fill="#203C33">47 · Comércio varejista (supermercados, loj…</text>
+<rect x="560" y="366.9" width="286.6" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="858.6" y="390.8" font-size="18" fill="#63715C">347.754 MWh est. · 225 un.</text>
+<text x="540" y="443.2" font-size="20" text-anchor="end" fill="#203C33">22 · Borracha e plástico</text>
+<rect x="560" y="419.4" width="140.0" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="712.0" y="443.2" font-size="18" fill="#63715C">169.926 MWh est. · 54 un.</text>
+<text x="540" y="495.8" font-size="20" text-anchor="end" fill="#203C33">52 · Armazenamento e logística</text>
+<rect x="560" y="471.9" width="131.9" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="703.9" y="495.8" font-size="18" fill="#63715C">160.124 MWh est. · 80 un.</text>
+<text x="540" y="548.2" font-size="20" text-anchor="end" fill="#203C33">21 · Farmacêuticos</text>
+<rect x="560" y="524.5" width="114.0" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="686.0" y="548.2" font-size="18" fill="#63715C">138.319 MWh est. · 19 un.</text>
+<text x="540" y="600.8" font-size="20" text-anchor="end" fill="#203C33">46 · Comércio atacadista</text>
+<rect x="560" y="577.0" width="101.9" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="673.9" y="600.8" font-size="18" fill="#63715C">123.606 MWh est. · 71 un.</text>
+<text x="540" y="653.2" font-size="20" text-anchor="end" fill="#203C33">08 · Extração de minerais não metálicos</text>
+<rect x="560" y="629.5" width="96.6" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="668.6" y="653.2" font-size="18" fill="#63715C">117.180 MWh est. · 45 un.</text>
+<text x="540" y="705.8" font-size="20" text-anchor="end" fill="#203C33">86 · Saúde (hospitais)</text>
+<rect x="560" y="682.0" width="95.9" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="667.9" y="705.8" font-size="18" fill="#63715C">116.431 MWh est. · 71 un.</text>
+<text x="540" y="758.2" font-size="20" text-anchor="end" fill="#203C33">23 · Minerais não metálicos (cimento, vidro…</text>
+<rect x="560" y="734.5" width="69.2" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="641.2" y="758.2" font-size="18" fill="#63715C">84.019 MWh est. · 47 un.</text>
+<text x="540" y="810.8" font-size="20" text-anchor="end" fill="#203C33">55 · Hotéis</text>
+<rect x="560" y="787.0" width="64.1" height="33.6" rx="4" fill="#CBD9B4"/>
+<text x="636.1" y="810.8" font-size="18" fill="#63715C">77.741 MWh est. · 40 un.</text>
+<text x="80" y="848" font-size="15" fill="#63715C">Informado (mesmas unidades): 3.661.722 MWh/ano · Estimativa legada: 4.181.636 MWh/ano.</text>
+<text x="80" y="870" font-size="15" fill="#63715C">Fonte: ANEEL, BDGD (UCMT). Hipótese legada: zeros preenchidos pela média dos meses positivos (mín. 6); não são economias medidas.</text>
+</svg>
