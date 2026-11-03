@@ -1,6 +1,6 @@
 'use strict';
 const assert = require('node:assert/strict');
-const core = require('../web/monitor-core.js');
+const core = require('../../web/monitor-core.js');
 assert.equal(core.integrate(0,1000,3600),1,'1 kW for an hour is 1 kWh');
 assert.equal(core.integrate(2,null,3600),2,'Missing readings do not become fabricated zero-consumption samples');
 assert.throws(()=>core.integrate(0,-1,10));

@@ -5,7 +5,10 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from app import HIGH_CONSUMPTION_SAMPLE, INDUSTRIAL_SAMPLE, Handler, SAMPLE, advise, analyze, ollama_model, ollama_status
+from wattwise.advisor.ollama import advise, ollama_model, ollama_status
+from wattwise.planning import analyze
+from wattwise.samples import HIGH_CONSUMPTION_SAMPLE, INDUSTRIAL_SAMPLE, SAMPLE
+from wattwise.server import Handler
 
 
 class AppTests(unittest.TestCase):
@@ -141,7 +144,7 @@ class AppTests(unittest.TestCase):
         return BytesIO(json.dumps({"message": {"content": content}}).encode())
 
     def test_model_selects_only_precomputed_candidate(self):
-        with patch("app.request.urlopen", return_value=self.model_response()) as mocked:
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response()) as mocked:
             result = advise(self.config)
             payload = json.loads(mocked.call_args.args[0].data)
         self.assertFalse(payload["stream"])
@@ -156,17 +159,17 @@ class AppTests(unittest.TestCase):
 
     def test_advisor_accepts_high_consumption_choice_and_rejects_essential_cooling(self):
         config = copy.deepcopy(HIGH_CONSUMPTION_SAMPLE)
-        with patch("app.request.urlopen", return_value=self.model_response("ac-living")):
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("ac-living")):
             result = advise(config)
         self.assertEqual(result["candidate"]["household_after_cost_brl"], 1828.26)
         self.assertEqual(result["experiment"]["appliance_id"], "ac-living")
-        with patch("app.request.urlopen", return_value=self.model_response("ac-bedroom")):
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("ac-bedroom")):
             with self.assertRaisesRegex(ValueError, "fora das opções"):
                 advise(config)
 
     def test_industrial_advisor_uses_operational_context_and_protects_active_equipment(self):
         config = copy.deepcopy(INDUSTRIAL_SAMPLE)
-        with patch("app.request.urlopen", return_value=self.model_response("compressor-idle")) as mocked:
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("compressor-idle")) as mocked:
             result = advise(config)
         payload = json.loads(mocked.call_args.args[0].data)
         self.assertEqual(json.loads(payload["messages"][1]["content"])["site_type"], "industrial")
@@ -174,18 +177,18 @@ class AppTests(unittest.TestCase):
         self.assertIn("qualidade", result["experiment"]["check"])
         self.assertNotIn("conforto", result["experiment"]["check"])
         self.assertEqual(result["candidate"]["household_after_cost_brl"], 20308.68)
-        with patch("app.request.urlopen", return_value=self.model_response("compressor-active")):
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("compressor-active")):
             with self.assertRaisesRegex(ValueError, "fora das opções"):
                 advise(config)
 
     def test_invalid_or_protected_model_choice_is_rejected(self):
         for identity in ["invented", "work"]:
-            with self.subTest(identity=identity), patch("app.request.urlopen", return_value=self.model_response(identity)):
+            with self.subTest(identity=identity), patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response(identity)):
                 with self.assertRaisesRegex(ValueError, "fora das opções"):
                     advise(self.config)
 
     def test_missing_model_does_not_report_ready(self):
-        with patch("app.request.urlopen", side_effect=ConnectionRefusedError):
+        with patch("wattwise.advisor.ollama.request.urlopen", side_effect=ConnectionRefusedError):
             self.assertFalse(ollama_status()["available"])
 
     def test_cloud_tags_are_not_accepted_as_local(self):
@@ -196,7 +199,7 @@ class AppTests(unittest.TestCase):
     def test_no_eligible_change_can_be_clarified_without_inventing_savings(self):
         for device in self.config["devices"]:
             device["plannedHours"], device["plannedWatts"] = device["hours"], device["watts"]
-        with patch("app.request.urlopen", return_value=self.model_response("none", "clarify")):
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("none", "clarify")):
             result = advise(self.config)
         self.assertEqual(result["decision"], "clarify")
         self.assertIsNone(result["candidate"])
@@ -204,23 +207,23 @@ class AppTests(unittest.TestCase):
 
     def test_answers_and_real_skill_are_loaded_into_model_request(self):
         self.config["advisorAnswers"] = [{"question": "Qual uso pode mudar?", "answer": "A televisão pode ser reduzida."}]
-        with patch("app.request.urlopen", return_value=self.model_response()) as mocked:
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response()) as mocked:
             result = advise(self.config)
         payload = json.loads(mocked.call_args.args[0].data)
-        from energy_skill import load_skill
+        from wattwise.advisor.skill import load_skill
         self.assertEqual(payload["messages"][0]["content"], load_skill()["body"])
         supplied = json.loads(payload["messages"][1]["content"])
         self.assertEqual(supplied["answers"], self.config["advisorAnswers"])
         self.assertEqual(result["answers_considered"], 1)
 
     def test_clarification_cannot_smuggle_an_action(self):
-        with patch("app.request.urlopen", return_value=self.model_response("ac", "clarify")):
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("ac", "clarify")):
             with self.assertRaises(ValueError):
                 advise(self.config)
 
     def test_missing_routine_constrains_generation_to_a_question(self):
         self.config["context"] = ""
-        with patch("app.request.urlopen", return_value=self.model_response("none", "clarify")) as mocked:
+        with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("none", "clarify")) as mocked:
             result = advise(self.config)
         payload = json.loads(mocked.call_args.args[0].data)
         self.assertEqual(payload["format"]["properties"]["decision"]["enum"], ["clarify"])

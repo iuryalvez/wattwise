@@ -54,8 +54,8 @@ The constant variable rate does not reconstruct an industrial bill: demand charg
 
 ## Load it
 
-Start or restart `python app.py`, refresh the overview, choose **Indústria · embalagens** in **Escolha um exemplo fictício**, and select **Carregar exemplo**. The profile and advisor description switch to factory language. **Usar maior potencial, sem IA** shows the deterministic comparison. Local Gemma can select an eligible candidate or ask a question; tests use mocked industrial responses, and no live industrial model result is claimed. Undo restores the previous profile and wording, and reloading retains the selected industrial example.
+Start or restart `python scripts/run.py serve`, refresh the overview, choose **Indústria · embalagens** in **Escolha um exemplo fictício**, and select **Carregar exemplo**. The profile and advisor description switch to factory language. **Usar maior potencial, sem IA** shows the deterministic comparison. Local Gemma can select an eligible candidate or ask a question; tests use mocked industrial responses, and no live industrial model result is claimed. Undo restores the previous profile and wording, and reloading retains the selected industrial example.
 
 Fixture: [industrial-packaging.json](../examples/industrial-packaging.json). Endpoint: `GET /api/sample/industrial`. It uses the web-app input schema; the workstation-only CLI retains its separate schedule schema.
 
-Run `python -m unittest discover -s tests -v` and `node tests/test_samples.js` to check calendar normalization, totals, essential-load protection, advisor context, loading, reload, and undo.
+Run `python -m unittest discover -s tests/python -t . -v` and `node tests/javascript/test_samples.js` to check calendar normalization, totals, essential-load protection, advisor context, loading, reload, and undo.

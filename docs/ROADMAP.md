@@ -25,7 +25,7 @@ These are contribution ideas, not assigned issues. Check existing issues and ope
 
 | Task | Starting point | Acceptance criteria |
 | --- | --- | --- |
-| Handle invalid model configuration in status | `app.py`: `ollama_status`, `Handler.do_GET` | An invalid `OLLAMA_MODEL` yields a documented JSON response without an uncaught request failure; the calculator remains usable; add a regression check |
+| Handle invalid model configuration in status | `src/wattwise/advisor/ollama.py`: `ollama_status`; `src/wattwise/server.py`: `Handler.do_GET` | An invalid `OLLAMA_MODEL` yields a documented JSON response without an uncaught request failure; the calculator remains usable; add a regression check |
 | Handle clarification in the live smoke script | `scripts/verify_ollama.py` | A valid clarification does not dereference a missing candidate; the report distinguishes clarification from recommendation and validates each contract |
 | Preserve device assumptions when editing | `web/app.js`: device-form submission | Editing an example retains its note and unrelated metadata; changes to modeled fields still invalidate the plan; add a focused frontend regression check |
 | Recover from malformed local history | `web/app.js`: storage load and `renderHistory` | Invalid record shapes cannot crash startup; valid records remain available and a recovery message explains discarded data |

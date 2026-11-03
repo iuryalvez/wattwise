@@ -55,10 +55,10 @@ The suggested experiment lasts seven days to observe practicality and comfort; t
 
 ## Load and verify
 
-Start `python app.py`, refresh the overview, select **Alto consumo · 5 pessoas** under **Escolha um exemplo fictício**, and select **Carregar exemplo**. Use **Usar maior potencial, sem IA** to inspect the deterministic comparison, or consult local Gemma when available. **Desfazer** restores the prior profile. Reloading the browser retains the loaded case; selecting the original family and loading it remains available. The monitoring page keeps its independent simulated sensors.
+Start `python scripts/run.py serve`, refresh the overview, select **Alto consumo · 5 pessoas** under **Escolha um exemplo fictício**, and select **Carregar exemplo**. Use **Usar maior potencial, sem IA** to inspect the deterministic comparison, or consult local Gemma when available. **Desfazer** restores the prior profile. Reloading the browser retains the loaded case; selecting the original family and loading it remains available. The monitoring page keeps its independent simulated sensors.
 
 After updating the fixture, restart the server and load this example again. Refreshing the browser alone keeps the older household values already saved in local storage.
 
 Fixture: [high-consumption-household.json](../examples/high-consumption-household.json). The app serves it at `GET /api/sample/high-consumption`; the original `GET /api/sample` is unchanged.
 
-Verification: `python -m unittest discover -s tests -v` covers totals, protected loads, the one-change calculation, sample routes, and advisor validation. `node tests/test_samples.js` covers picker behavior, persistence, reload, undo, and failed-load recovery.
+Verification: `python -m unittest discover -s tests/python -t . -v` covers totals, protected loads, the one-change calculation, sample routes, and advisor validation. `node tests/javascript/test_samples.js` covers picker behavior, persistence, reload, undo, and failed-load recovery.

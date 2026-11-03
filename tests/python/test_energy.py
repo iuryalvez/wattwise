@@ -3,12 +3,13 @@ from pathlib import Path
 import unittest
 from unittest.mock import patch
 
-from demo import daily_energy, estimate_household, gemma_explanation, integrate_simulated_day, simulate_intervals
+from wattwise.advisor.hosted import gemma_explanation
+from wattwise.energy import daily_energy, estimate_household, integrate_simulated_day, simulate_intervals
 
 
 class EnergyTests(unittest.TestCase):
     def setUp(self):
-        self.config = json.loads((Path(__file__).parents[1] / "examples" / "household.json").read_text())
+        self.config = json.loads((Path(__file__).parents[2] / "examples" / "household.json").read_text(encoding="utf-8"))
 
     def test_one_kw_for_one_hour_is_one_kwh(self):
         self.assertEqual(daily_energy([{"hours": 1, "watts": 1000}]), 1)

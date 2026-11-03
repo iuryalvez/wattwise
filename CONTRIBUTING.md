@@ -20,10 +20,10 @@ Small fixes can go straight to a pull request. For a new dependency, framework c
 git clone https://github.com/YOUR-USERNAME/wattwise.git
 cd wattwise
 git switch -c fix/describe-your-change
-python app.py
+python scripts/run.py serve
 ```
 
-Open http://127.0.0.1:8765/. The runtime and offline checks use Python's standard library and Node built-ins, so there is no required package installation or frontend build step. A virtual environment is optional.
+Open http://127.0.0.1:8765/. The runtime and offline checks use Python's standard library and Node built-ins, so there is no required package installation or frontend build step. A virtual environment is optional. The launcher resolves `src/wattwise/` automatically. Make backend changes inside that package, frontend changes in `web/`, and add tests under `tests/python/` or `tests/javascript/`.
 
 Ollama and Gemma are optional. Follow the [usage guide](docs/USAGE.md) if your work needs a live advisor. The server must be restarted after backend changes; it does not reload Python automatically.
 
@@ -40,9 +40,9 @@ The script checks prerequisites, runs the Python unit suite, checks JavaScript s
 Individual checks are useful while developing:
 
 ```sh
-python -B -m unittest discover -s tests -v
-node tests/test_monitor.js
-node tests/test_samples.js
+python -B -m unittest discover -s tests/python -t . -v
+node tests/javascript/test_monitor.js
+node tests/javascript/test_samples.js
 node --check web/app.js
 node --check web/monitor.js
 ```

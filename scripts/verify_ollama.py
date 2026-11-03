@@ -6,9 +6,10 @@ import sys
 from time import perf_counter
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 
-from app import SAMPLE, advise, ollama_status
+from wattwise.advisor.ollama import advise, ollama_status
+from wattwise.samples import SAMPLE
 
 
 def main():

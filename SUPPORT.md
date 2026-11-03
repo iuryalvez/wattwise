@@ -4,11 +4,11 @@ WattWise is a community-maintained development preview. Support happens through 
 
 ## Before opening an issue
 
-Check the [usage guide](docs/USAGE.md) and search existing issues. Start from the repository root with `python app.py`, then open http://127.0.0.1:8765/.
+Check the [usage guide](docs/USAGE.md) and search existing issues. Start from the repository root with `python scripts/run.py serve`, then open http://127.0.0.1:8765/.
 
 | Symptom | First check |
 | --- | --- |
-| The port is already in use | Stop the previous server or run `python app.py --port 8766` |
+| The port is already in use | Stop the previous server or run `python scripts/run.py serve --port 8766` |
 | A new example returns 404 after an update | Restart the Python server and refresh the page |
 | The profile disappeared | Use the same browser, address, and port; local storage is specific to that origin |
 | Gemma is unavailable | Start Ollama, install the configured local model, and refresh the connection status |

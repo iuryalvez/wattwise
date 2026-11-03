@@ -15,6 +15,8 @@ User-facing changes and contributor infrastructure will be recorded here. There 
 
 ### Changed
 
+- Moved backend code into `src/wattwise/`, with separate calculation, planning, server, CLI, and advisor modules. Start the app with `python scripts/run.py serve` and the calculator with `python scripts/run.py estimate`.
+- Grouped tests by language, placed the optional BDGD tool under `scripts/research/`, and moved its dependency file to `requirements/bdgd.txt`.
 - Reorganized the README around product capabilities, a quick start, and contribution entry points.
 - Preserved detailed setup, examples, and model configuration in `docs/USAGE.md`.
 - Live-model scripts now write generated reports to ignored `artifacts/evaluations/` instead of tracked documentation.

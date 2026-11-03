@@ -14,7 +14,7 @@ This runs the Python unit suite, JavaScript syntax checks and tests, and both of
 
 ## Browser verification
 
-For changes that affect user interaction, start `python app.py` and exercise the affected paths in a real browser. A useful planning walkthrough is:
+For changes that affect user interaction, start `python scripts/run.py serve` and exercise the affected paths in a real browser. A useful planning walkthrough is:
 
 1. Start with a new browser profile and confirm that the device list is empty.
 2. Load each example, check the site wording and assumptions, and undo loading to restore the previous profile.

@@ -27,7 +27,7 @@ Shorter showers project 16.5 kWh less use. Do not add savings from other proposa
 
 ## Load it
 
-Start `python app.py`, open the app, refresh it, choose **Família · 3 pessoas**, and select **Carregar exemplo**. Per-appliance assumption details are available under **Hipóteses deste exemplo**. An entered edit replaces its original explanatory note, avoiding a stale assumption after the numbers change. The original workstation-only CLI example remains in `examples/household.json`. For a larger expense scenario at the same rate, see [the five-person high-consumption case](HIGH_CONSUMPTION_USE_CASE.md).
+Start `python scripts/run.py serve`, open the app, refresh it, choose **Família · 3 pessoas**, and select **Carregar exemplo**. Per-appliance assumption details are available under **Hipóteses deste exemplo**. An entered edit replaces its original explanatory note, avoiding a stale assumption after the numbers change. The original workstation-only CLI example remains in `examples/household.json`. For a larger expense scenario at the same rate, see [the five-person high-consumption case](HIGH_CONSUMPTION_USE_CASE.md).
 
 Fixture: [family-household.json](../examples/family-household.json).
 

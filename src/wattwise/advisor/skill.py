@@ -1,9 +1,7 @@
 """Load the actual project skill and validate its observable decision contract."""
 
 import hashlib
-from pathlib import Path
-
-SKILL_PATH = Path(__file__).parent / "skills" / "household-energy-coach" / "SKILL.md"
+from ..paths import SKILL_PATH
 
 
 def load_skill():

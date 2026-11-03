@@ -1,23 +1,53 @@
 # Architecture
 
-WattWise is a local application with a Python standard-library backend and plain HTML, CSS, and JavaScript. It has no required Python packages, frontend compilation step, account system, or server database.
+WattWise is a local application with a Python standard-library backend and plain HTML, CSS, and JavaScript. Its source lives in the `src/wattwise/` package. `python scripts/run.py serve` launches the checkout without installing it. It has no required Python packages, frontend compilation step, account system, or server database.
 
 ## Code map
 
 | Location | Responsibility |
 | --- | --- |
-| `app.py` | Loopback HTTP server, static routes, web-profile validation, single-change analysis, and local Ollama requests |
-| `demo.py` | Numeric helpers, CLI state/component model, energy integration, synthetic intervals, and optional hosted explanation |
-| `energy_skill.py` | Advisor instructions loader, follow-up validation, structured reply contract, and experiment descriptions |
+| `src/wattwise/__main__.py` | Command routing for `serve` and `estimate` |
+| `src/wattwise/server.py` | Loopback HTTP server, static routes, and JSON endpoints |
+| `src/wattwise/planning.py` | Web-profile validation and single-change analysis |
+| `src/wattwise/energy.py` | Numeric helpers, state/component calculations, and synthetic interval integration |
+| `src/wattwise/cli.py` | Command-line estimates and optional hosted explanation orchestration |
+| `src/wattwise/advisor/ollama.py` | Local model configuration, status, and advisor requests |
+| `src/wattwise/advisor/hosted.py` | Explicitly opt-in hosted CLI explanation |
+| `src/wattwise/advisor/skill.py` | Advisor instructions loader, follow-up validation, reply contract, and experiment descriptions |
+| `src/wattwise/paths.py`, `src/wattwise/samples.py` | Checkout-relative resource paths and fictional web profiles |
 | `skills/household-energy-coach/SKILL.md` | Runtime instructions loaded for advisor calls; the response includes their hash |
 | `web/app.js` | Planning-page state, forms, local storage, API requests, comparisons, and saved simulations |
 | `web/monitor-core.js` | Synthetic power snapshots and session-energy integration |
 | `web/monitor.js` | Monitoring-page interaction, connection simulation, and chart updates |
 | `web/*.html`, `web/*.css` | Page structure, accessibility hooks, and responsive styles |
 | `examples/` | Fictional input fixtures for the web app and CLI |
-| `tests/` | Python unit tests and Node tests using built-ins and browser doubles |
+| `tests/python/` | Python unit tests and command-entry checks |
+| `tests/javascript/` | Node tests using built-ins and browser doubles |
+| `scripts/run.py` | Source-checkout launcher that makes `src/` importable |
 | `scripts/check.py` | Shared offline entry point for local and CI checks |
 | `scripts/verify_ollama.py`, `scripts/evaluate_skill.py` | Optional live-model checks that write ignored reports in `artifacts/evaluations/` |
+| `scripts/research/bdgd_grandes_consumidores.py` | Optional BDGD aggregation tool, separate from the planning app |
+| `requirements/bdgd.txt` | Optional geodatabase reader dependency for BDGD research |
+
+## Folder layout
+
+```text
+src/wattwise/          Python application package
+  advisor/            Local and hosted model integrations
+web/                  Browser pages, scripts, and styles
+skills/               Runtime advisor instructions
+examples/             Fictional input profiles
+scripts/              Launch, check, and evaluation tools
+  research/           Standalone public-data analysis
+tests/
+  python/             Backend, CLI, and research tests
+  javascript/         Browser-logic and monitoring tests
+requirements/         Optional tool dependencies
+docs/                 Guides, screenshots, and documented research outputs
+.github/              CI and contribution templates
+```
+
+The root contains project metadata and community documents. Runtime code uses package-relative imports; only launch and test entry points add `src/` to the import path. Resource paths are resolved from the checkout, so the launcher also works when invoked by absolute path from another directory. This layout runs from a source checkout; it does not provide an installable wheel yet.
 
 ## Planning flow
 
@@ -29,7 +59,7 @@ WattWise is a local application with a Python standard-library backend and plain
 6. The backend validates the model's decision and candidate identifier. The browser renders the explanation alongside calculator-derived values.
 7. Saving stores a limited simulation record in local storage. JSON export includes the current config, report, and selected plan.
 
-The web profile uses `rate`, `days`, `devices`, `context`, optional `siteType`, and optional `advisorAnswers`. A device has baseline and proposed watts and hours. The CLI fixture uses a different schema with `variable_rate_brl_per_kwh`, `projection_days`, and `appliances` containing states and optional components. Do not pass a web fixture directly to `demo.py --input`.
+The web profile uses `rate`, `days`, `devices`, `context`, optional `siteType`, and optional `advisorAnswers`. A device has baseline and proposed watts and hours. The CLI fixture uses a different schema with `variable_rate_brl_per_kwh`, `projection_days`, and `appliances` containing states and optional components. Do not pass a web fixture directly to `scripts/run.py estimate --input`.
 
 ## HTTP surface
 

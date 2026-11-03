@@ -7,8 +7,10 @@ import sys
 from time import perf_counter
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from app import SAMPLE, advise, analyze
+sys.path.insert(0, str(ROOT / "src"))
+from wattwise.advisor.ollama import advise
+from wattwise.planning import analyze
+from wattwise.samples import SAMPLE
 
 
 def main():

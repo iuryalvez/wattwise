@@ -17,7 +17,7 @@ The **Casa conectada** page at `/monitor` is a browser-local mockup, separate fr
 - `web/monitor-core.js`: deterministic fictional power profiles, room totals, simulated provenance, and interval energy integration. It can also be loaded by Node for checks.
 - `web/monitor.js`: room selection, pairing mock, browser-local connection storage, scenarios, chart rendering, and active-session integration.
 - `web/monitor.css`: responsive floorplan and monitoring panels.
-- `tests/test_monitor.js`: checks units, missing readings, scenario changes, connected-sensor totals, and room assignment.
+- `tests/javascript/test_monitor.js`: checks units, missing readings, scenario changes, connected-sensor totals, and room assignment.
 
 The session counter integrates held power as `watts × elapsed seconds / 3,600,000`. It is synthetic energy for visible, active simulation time. Unknown data is not filled with fabricated zeros. The chart is a rolling history of generated samples, not imported household history.
 

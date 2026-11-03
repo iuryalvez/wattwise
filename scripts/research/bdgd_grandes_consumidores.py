@@ -11,9 +11,9 @@ command line tool ogr2ogr. A CSV export needs only the standard library:
     ogr2ogr -f CSV ucmt.csv BDGD.gdb UCMT_tab
 
 Usage:
-    python scripts/bdgd_grandes_consumidores.py BDGD.gdb
-    python scripts/bdgd_grandes_consumidores.py ucmt.csv --min-mwh 1200 --out saida-bdgd
-    python scripts/bdgd_grandes_consumidores.py BDGD.gdb --nomes-municipios   # fetch names from IBGE
+    python scripts/research/bdgd_grandes_consumidores.py BDGD.gdb
+    python scripts/research/bdgd_grandes_consumidores.py ucmt.csv --min-mwh 1200 --out saida-bdgd
+    python scripts/research/bdgd_grandes_consumidores.py BDGD.gdb --nomes-municipios   # fetch names from IBGE
 """
 
 from __future__ import annotations

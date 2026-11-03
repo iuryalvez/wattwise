@@ -9,7 +9,7 @@ Detailed setup, example assumptions, model configuration, and command-line usage
 Requires Python 3.11+; no dependencies to install.
 
 ```powershell
-python app.py
+python scripts/run.py serve
 ```
 
 Open **http://127.0.0.1:8765/**. Add an appliance or select **Carregar exemplo**. The example values are fictional. Edit an appliance to specify current and proposed watts/hours; protect essential usage when it must remain unchanged. Set the variable rate and period, describe household constraints, and choose a plan. Only one selected change is included in the comparison; other usage stays at baseline.
@@ -24,7 +24,7 @@ Loading an example can be undone; all examples remain fictional manual estimates
 
 The UI starts empty and stores household inputs and the last ten simulations in this browser's local storage. It supports editing, deletion with undo, and exported reports. There is no account, payment flow, remote database, or real meter adapter in this MVP. Use a different `--port` if necessary; saved browser data is specific to the origin, including the port.
 
-After updating Python server code, stop the running app with **Ctrl+C**, run `python app.py` again, and refresh the browser. This server does not reload Python code automatically. Refreshing alone can show a new interface while the old server still lacks a newly added example endpoint.
+After updating Python server code, stop the running app with **Ctrl+C**, run `python scripts/run.py serve` again, and refresh the browser. This server does not reload Python code automatically. Refreshing alone can show a new interface while the old server still lacks a newly added example endpoint.
 
 ### Smart-home monitoring mockup
 
@@ -35,8 +35,8 @@ All these connections and readings are fictional. The monitoring mockup never ac
 Developer checks (Node is only needed for these checks):
 
 ```powershell
-node tests/test_monitor.js
-node tests/test_samples.js
+node tests/javascript/test_monitor.js
+node tests/javascript/test_samples.js
 node --check web/monitor.js
 ```
 
@@ -52,7 +52,7 @@ Keep Ollama running. In WattWise select the connection refresh button, then **En
 
 ```powershell
 $env:OLLAMA_MODEL = 'gemma4:e4b'
-python app.py
+python scripts/run.py serve
 ```
 
 The backend calls `http://127.0.0.1:11434/api/chat` with non-streaming structured output and `think: false` for concise, interactive replies. It uses a 4096-token context and bounded output. Model-generated choices are checked against eligible, precomputed changes. Protected uses cannot be changed. The interface renders the model's explanation as text; the numerical results come from the calculator. The local integration rejects cloud model tags.
@@ -74,9 +74,9 @@ See the official [Gemma 4 Ollama library](https://ollama.com/library/gemma4) and
 ### CLI and tests
 
 ```powershell
-python demo.py
-python demo.py --mode simulated
-python -m unittest discover -s tests -v
+python scripts/run.py estimate
+python scripts/run.py estimate --mode simulated
+python -m unittest discover -s tests/python -t . -v
 ```
 
 Edit `examples/household.json` to enter an illustrative variable energy rate in BRL/kWh, component watts, and hours of use. Each appliance has a baseline and a proposed daily schedule. States are mutually exclusive; any unallocated hours have an explicit assumption of zero consumption. A state accepts either total `watts` or a `components` list, so a total and its components cannot be counted twice.
@@ -107,7 +107,7 @@ The rate is a simplified constant variable rate. Whole electricity bills also in
 Set `GEMINI_API_KEY` privately in your terminal environment, then run:
 
 ```powershell
-python demo.py --gemma
+python scripts/run.py estimate --gemma
 ```
 
 This explicitly sends the calculated summary to Google's hosted Gemma API. It requests a Portuguese explanation, a useful follow-up question, and a practical next measurement. The numerical calculation is performed locally. No account names, addresses, or bills are included in this prototype's request. Never commit an API key.

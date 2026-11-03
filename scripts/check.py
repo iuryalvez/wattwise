@@ -28,12 +28,12 @@ def main():
         print(f"Could not check the Node.js version: {exc}", file=sys.stderr)
         return 1
 
-    commands = [("Python unit tests", [sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests", "-v"])]
-    for directory in ("web", "tests"):
+    commands = [("Python unit tests", [sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests/python", "-t", ".", "-v"])]
+    for directory in ("web", "tests/javascript"):
         for file in sorted((ROOT / directory).glob("*.js")):
             relative = file.relative_to(ROOT).as_posix()
             commands.append((f"JavaScript syntax: {relative}", [node, "--check", relative]))
-    for file in sorted((ROOT / "tests").glob("test_*.js")):
+    for file in sorted((ROOT / "tests/javascript").glob("test_*.js")):
         relative = file.relative_to(ROOT).as_posix()
         commands.append((f"JavaScript tests: {relative}", [node, relative]))
 
@@ -47,7 +47,7 @@ def main():
 
         for mode in ("manual", "simulated"):
             print(f"\nOffline CLI: {mode}", flush=True)
-            result = subprocess.run([sys.executable, "-B", "demo.py", "--mode", mode],
+            result = subprocess.run([sys.executable, "-B", "scripts/run.py", "estimate", "--mode", mode],
                                     cwd=ROOT, capture_output=True, text=True, encoding="utf-8")
             if result.returncode:
                 print(result.stderr or result.stdout, file=sys.stderr)

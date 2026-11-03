@@ -27,7 +27,7 @@ Requires **Python 3.11 or newer**. Running the app requires no Python packages, 
 ```sh
 git clone https://github.com/rafaelsilvabr/wattwise.git
 cd wattwise
-python app.py
+python scripts/run.py serve
 ```
 
 Open **http://127.0.0.1:8765/**.
@@ -37,7 +37,7 @@ Open **http://127.0.0.1:8765/**.
 3. Describe your constraints and choose **Usar maior potencial, sem IA** for a calculator comparison.
 4. Review the selected change, save the simulation, or export its assumptions and results.
 
-Use `python app.py --port 8766` to choose another port. Browser storage belongs to the address and port you use. Restart the Python process after changing backend code.
+Use `python scripts/run.py serve --port 8766` to choose another port. Browser storage belongs to the address and port you use. Restart the Python process after changing backend code.
 
 ### Optional local advisor
 
@@ -59,7 +59,7 @@ The `/monitor` page demonstrates the interaction with simulated telemetry. It do
 
 ## Optional public-data analysis
 
-An optional script summarises public ANEEL BDGD data on medium-voltage customers for market research. It needs a separate data download and `pip install -r requirements-bdgd.txt` in a virtual environment; the app does not depend on it. Reported consumption, including zero months, determines the selected units. An explicit `--estimate-zero-months` scenario adds separately labeled estimates without changing that selection. See the [BDGD data guide](docs/BDGD_DATA.md).
+An optional script summarises public ANEEL BDGD data on medium-voltage customers for market research. It needs a separate data download and `pip install -r requirements/bdgd.txt` in a virtual environment; the app does not depend on it. Reported consumption, including zero months, determines the selected units. An explicit `--estimate-zero-months` scenario adds separately labeled estimates without changing that selection. See the [BDGD data guide](docs/BDGD_DATA.md).
 
 ## Contribute
 
@@ -77,6 +77,8 @@ The same command is configured in [GitHub Actions](.github/workflows/ci.yml) for
 
 ## Project guide
 
+Application code lives in `src/wattwise/`, with advisor integrations under `src/wattwise/advisor/`. Browser assets stay in `web/`; tests are grouped under `tests/python/` and `tests/javascript/`. Developer commands live in `scripts/`, public-data tools in `scripts/research/`, and optional dependencies in `requirements/`. See the [folder layout](docs/ARCHITECTURE.md#folder-layout) for the full code map.
+
 | Resource | What it covers |
 | --- | --- |
 | [Documentation](docs/README.md) | Setup, examples, and project references |
@@ -93,7 +95,7 @@ The same command is configured in [GitHub Actions](.github/workflows/ci.yml) for
 
 Household inputs, follow-up answers, and saved simulations stay in this browser's local storage. The web app sends your inputs to the local Python server; using the advisor also sends routine text and candidate data to local Ollama. Clearing browser data removes saved profiles and history.
 
-The separate CLI sends a calculated summary to a hosted provider only when you explicitly use `python demo.py --gemma`. Read the [usage guide](docs/USAGE.md#optional-hosted-gemma-integration-for-the-cli) before enabling it. Do not include personal information or secrets in public issues, screenshots, or exported reports.
+The separate CLI sends a calculated summary to a hosted provider only when you explicitly use `python scripts/run.py estimate --gemma`. Read the [usage guide](docs/USAGE.md#optional-hosted-gemma-integration-for-the-cli) before enabling it. Do not include personal information or secrets in public issues, screenshots, or exported reports.
 
 ## License
 

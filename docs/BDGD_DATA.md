@@ -4,7 +4,7 @@ The optional script below turns ANEEL's public *Base de Dados Geográfica da Dis
 
 | Script | What it produces |
 |---|---|
-| `scripts/bdgd_grandes_consumidores.py` | Active medium-voltage units above an annual consumption threshold, grouped by CNAE division and municipality: `por_cnae.csv`, `por_municipio.csv`, `grafico_cnae.svg`, `grafico_municipio.svg`, `resumo.md` |
+| `scripts/research/bdgd_grandes_consumidores.py` | Active medium-voltage units above an annual consumption threshold, grouped by CNAE division and municipality: `por_cnae.csv`, `por_municipio.csv`, `grafico_cnae.svg`, `grafico_municipio.svg`, `resumo.md` |
 
 Charts use the WattWise palette at 1600×900. PowerPoint and Keynote import SVG directly; for Google Slides, open the SVG in a browser and take a screenshot.
 
@@ -22,10 +22,17 @@ The app itself is standard library only. Reading a `.gdb` needs `pyogrio`, whose
 
 ```bash
 python3 -m venv ~/.venvs/bdgd
-~/.venvs/bdgd/bin/pip install -r requirements-bdgd.txt
+~/.venvs/bdgd/bin/pip install -r requirements/bdgd.txt
 ```
 
-On Windows: `py -m venv %USERPROFILE%\.venvs\bdgd` and then `%USERPROFILE%\.venvs\bdgd\Scripts\pip install -r requirements-bdgd.txt`.
+In Windows PowerShell:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements/bdgd.txt
+```
+
+Then use `.\.venv\Scripts\python.exe scripts/research/bdgd_grandes_consumidores.py ...` for the commands below.
 
 Without pyogrio, the script also accepts a CSV export of the layer made with GDAL: `ogr2ogr -f CSV ucmt.csv BDGD.gdb UCMT_tab`.
 
@@ -34,7 +41,7 @@ Without pyogrio, the script also accepts a CSV export of the layer made with GDA
 From the repository root:
 
 ```bash
-~/.venvs/bdgd/bin/python scripts/bdgd_grandes_consumidores.py PATH/TO/BDGD.gdb \
+~/.venvs/bdgd/bin/python scripts/research/bdgd_grandes_consumidores.py PATH/TO/BDGD.gdb \
   --distribuidora "Equatorial Goiás" --nomes-municipios --out ../saida-bdgd
 
 ```
@@ -50,7 +57,7 @@ Useful options:
 | `--municipios-csv` | none | Offline alternative: a `code,name` CSV. |
 | `--layer` | `UCMT_tab` or `UCMT` | Layer name when a BDGD version uses another one. |
 
-Tests use synthetic data and need no download: `python -m unittest discover -s tests -p "test_bdgd_grandes_consumidores.py" -v`.
+Tests use synthetic data and need no download: `python -m unittest discover -s tests/python -t . -p "test_bdgd_grandes_consumidores.py" -v`.
 
 ## How to read the results
 
