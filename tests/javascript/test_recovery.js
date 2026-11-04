@@ -5,7 +5,10 @@ const KEY = 'wattwise-mvp-v1';
 const savedHistory = {date: '2026-01-01T12:00:00Z', days: 30, sample: true,
   plan: {provider: 'calculator', candidate: {name: 'TV', modeled_variable_cost_reduction_brl: 3.15}}};
 const serialize = (config = family, history = [savedHistory]) => JSON.stringify({config, history, sample: true});
-const editRate = app => { app.get('rate').value = '0.95'; app.get('rate').onchange(); };
+const editRate = app => {
+  app.get('open-settings').onclick();app.get('rate').value='0.95';app.get('exchange-brl').value='5';
+  app.get('settings-form').onsubmit({preventDefault(){}});
+};
 
 (async () => {
   const corrupt = serialize({...family, voltage: 220,
@@ -31,7 +34,9 @@ const editRate = app => { app.get('rate').value = '0.95'; app.get('rate').onchan
   const backups = [...app.storage.keys()].filter(key => key.startsWith(`${KEY}-recovery-`));
   assert.equal(backups.length, 1);
   assert.equal(app.storage.get(backups[0]), corrupt, 'Exact original survives the first edit');
-  assert.equal(app.writes[0], backups[0], 'Backup must precede replacement');
+  const householdWrites=app.writes.filter(key=>key.startsWith(KEY));
+  assert.equal(householdWrites[0], backups[0], 'Backup must precede replacement');
+  assert.equal(householdWrites[1],KEY);
   assert.equal(JSON.parse(app.stored()).config.devices.length, 2);
   const reload = createApp(app.stored());
   assert.equal(reload.read('history.length'), 1);

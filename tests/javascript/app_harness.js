@@ -11,12 +11,16 @@ function createApp(saved = JSON.stringify({config: original, history: [], sample
   const elements = new Map(), calls = [], downloads = [], documentListeners = {};
   const storage = new Map();
   if (options.locale !== null) storage.set('wattwise-locale-v1', options.locale || 'pt-BR');
+  if (options.currencyPreference !== undefined) storage.set('wattwise-display-currency-v2', options.currencyPreference);
+  if (options.legacyCurrencyPreference !== undefined) storage.set('wattwise-display-currency-v1', options.legacyCurrencyPreference);
   if (saved !== null) storage.set('wattwise-mvp-v1', saved);
   const writes = [];
   function element() {
-    return {value: '', textContent: '', hidden: false, disabled: false, dataset: {}, children: [],
+    const listeners = {};
+    return {value: '', textContent: '', hidden: false, disabled: false, open: false, dataset: {}, children: [],
       classList: {toggle() {}, add() {}, remove() {}}, querySelectorAll: () => [],
-      checkValidity: () => true, reportValidity() {}, showModal() {}, close() {}, click() {},
+      checkValidity: () => true, reportValidity() {}, showModal() {this.open = true;}, close() {this.open = false; listeners.close?.();}, click() {}, focus() {},
+      addEventListener: (event,listener) => {listeners[event] = listener;},
       replaceChildren(...children) { this.children = children; }, append(child) { this.children.push(child); }};
   }
   const get = id => { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); };
@@ -55,7 +59,7 @@ function createApp(saved = JSON.stringify({config: original, history: [], sample
     }
   };
   vm.createContext(context);
-  for (const file of ['vendor/i18next-25.6.0.min.js', 'locales.js', 'i18n.js']) {
+  for (const file of ['vendor/i18next-25.6.0.min.js', 'locales.js', 'i18n.js', 'currency.js']) {
     vm.runInContext(fs.readFileSync(path.join(root, 'web', file), 'utf8'), context);
     if (file === 'locales.js') {
       for (const locale of options.pendingLocales || []) vm.runInContext(`WattWiseLocaleManifest.locales[${JSON.stringify(locale)}].review.status = 'pending'`, context);

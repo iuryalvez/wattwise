@@ -25,7 +25,7 @@ const context={Intl,Date,console,performance:{now:()=>now},navigator:{languages:
   localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},
   setInterval:fn=>intervals.push(fn),setTimeout:fn=>{timers.set(timers.size+1,fn);return timers.size;},clearTimeout:id=>timers.delete(id)};
 context.window=context;vm.createContext(context);
-for(const file of ['vendor/i18next-25.6.0.min.js','locales.js','i18n.js','monitor-core.js','monitor.js'])vm.runInContext(fs.readFileSync(path.join(root,'web',file),'utf8'),context);
+for(const file of ['vendor/i18next-25.6.0.min.js','locales.js','i18n.js','currency.js','monitor-core.js','monitor.js'])vm.runInContext(fs.readFileSync(path.join(root,'web',file),'utf8'),context);
 for(const locale of ['en','pt-BR','es']) {
   const catalog=context.WattWiseCatalogs[locale].translation;
   for(const key of [...Object.values(context.WattWiseMonitor.rooms),...context.WattWiseMonitor.devices.flatMap(device=>[device.name,device.kind])])assert.equal(typeof catalog[key],'string',`${locale}: missing monitor metadata ${key}`);

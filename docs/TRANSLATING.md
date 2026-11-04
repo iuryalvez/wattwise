@@ -8,7 +8,7 @@ The user's requested rollout makes **English the first-visit default**, includin
 
 The preference is separate from household and sensor storage. If storage is blocked, the selected language works in memory and the live status explains that it cannot survive navigation/reload. Switching languages updates document `lang`, title, description, accessible labels, visible UI, notifications, recovery details, simulation history presentation, and pending dialogs. It preserves draft form values, appliance names, notes, routines, follow-up answers, selected plans, saved simulations, sensor connections, and simulated energy. Example input text remains in its original Portuguese just like user-entered text.
 
-`Intl.NumberFormat`, `Intl.DateTimeFormat`, and i18next's `Intl.PluralRules` integration format presentation. Currency remains **BRL**; no conversion takes place. Watts, hours, kWh, rates, duration, evidence IDs, and deterministic calculations remain unchanged. Date storage and exports keep ISO timestamps. There is no machine translation of household text. Existing model responses remain in their original language; a new advisor request uses the currently selected supported locale.
+`Intl.NumberFormat`, `Intl.DateTimeFormat`, and i18next's `Intl.PluralRules` integration format presentation. **Language selection never changes currency.** Calculations and energy-price inputs remain in BRL; a separate display-currency setting can convert cost presentation to USD or EUR using a user-supplied manual rate. See [currencies](CURRENCIES.md). Watts, hours, kWh, tariffs, duration, evidence IDs, and deterministic calculations remain unchanged. Date storage and exports keep ISO timestamps. There is no machine translation of household text. Existing model responses remain in their original language; a new advisor request uses the currently selected supported locale.
 
 ## Ordinary translation pull requests
 
@@ -43,7 +43,7 @@ For an additional locale, copy the English JSON, complete translations and the l
 | Protected essential activity | preservar uso | preserve usage | preservar uso |
 | Difference in modeled variable cost | redução de custo variável | variable cost reduction | reducción del coste variable |
 
-`manual_estimate` and `simulated` are evidence identifiers and must never be translated. BRL is the configured currency in every locale. Spanish currently uses consistent informal singular address (`tú`), with terms such as `aparato`, `coste`, and `ordenador`; a regional Spanish locale can be proposed separately.
+`manual_estimate` and `simulated` are evidence identifiers and must never be translated. BRL is the calculation currency in every locale; USD/EUR display conversion is a separate explicit choice. Spanish currently uses consistent informal singular address (`tú`), with terms such as `aparato`, `coste`, and `ordenador`; a regional Spanish locale can be proposed separately.
 
 ## Runtime choice and update procedure
 

@@ -136,7 +136,7 @@ class I18nTests(unittest.TestCase):
             canonical = (ROOT / "web/locales" / f"{locale}.json").read_text(encoding="utf-8").encode()
             self.assertEqual(review["status"], "coverage-reviewed")
             self.assertEqual(review["catalog_sha256"], hashlib.sha256(canonical).hexdigest(), f"{locale}: review changed catalog coverage before enabling it")
-        for asset in ["i18n.js", "locales.js", "vendor/i18next-25.6.0.min.js", "locales/en.json", "locales/pt-BR.json", "locales/es.json", "locales/manifest.json"]:
+        for asset in ["i18n.js", "currency.js", "locales.js", "vendor/i18next-25.6.0.min.js", "locales/en.json", "locales/pt-BR.json", "locales/es.json", "locales/manifest.json"]:
             handler = Handler.__new__(Handler)
             handler.server = SimpleNamespace(server_port=8765)
             handler.headers = {"Host": "127.0.0.1:8765"}

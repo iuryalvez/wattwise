@@ -7,9 +7,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "666b7ce149dfc59b83c89e88bc9cfaa2275a8910b2d4e130e40f76dc60b74011",
+        "catalog_sha256": "f875b7bc7ad38afd107a62d217268854f13a68c66aa1fcd350b27332b6ae01cb",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, and evidence terminology",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -20,9 +20,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "5f0f1b348690c3f7c279c9cb5732bb388e04d88fe02b600d1996f1d72b3c5d9f",
+        "catalog_sha256": "e3c10fc821af3a8e052212e6e8cb533524e7bee3dcee3a0c5b4b1daf9f01840f",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, and evidence terminology",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -33,9 +33,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "f7d1bacc3caf12b22cc4cf2b77a2a92c10e39883f17d4de16a3dc6d890174943",
+        "catalog_sha256": "b0ef2b385e3d41b04c30e56e0cc9f2de8a667db772508cb07e773ffca98bad40",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, and evidence terminology",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
