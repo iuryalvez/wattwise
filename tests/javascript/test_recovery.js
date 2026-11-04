@@ -28,7 +28,7 @@ const editRate = app => { app.get('rate').value = '0.95'; app.get('rate').onchan
   app.get('download-recovery').onclick();
   assert.equal(await app.downloads[0].text(), corrupt, 'Download contains the exact original');
   editRate(app);
-  const backups = [...app.storage.keys()].filter(key => key !== KEY);
+  const backups = [...app.storage.keys()].filter(key => key.startsWith(`${KEY}-recovery-`));
   assert.equal(backups.length, 1);
   assert.equal(app.storage.get(backups[0]), corrupt, 'Exact original survives the first edit');
   assert.equal(app.writes[0], backups[0], 'Backup must precede replacement');
@@ -83,12 +83,12 @@ const editRate = app => { app.get('rate').value = '0.95'; app.get('rate').onchan
     offline.get('save-experiment').onclick();
     assert(offline.read('history.length') > 0, 'History can still be used in memory');
   }
-  const validation = createApp(serialize(), {apiError: {error: 'Horas por dia: informe um valor de até 24.', code: 'invalid_input', field: 'devices[0].hours'}});
+  const validation = createApp(serialize(), {apiError: {error: 'Horas por dia: informe um valor de até 24.', code: 'invalid_input', field: 'devices[0].hours', message_key: 'errors.maximum', params: {max: 24}}});
   await validation.get('use-demo-plan').onclick();
-  assert.equal(validation.get('form-error').textContent, 'Horas por dia: informe um valor de até 24.');
+  assert.equal(validation.get('form-error').textContent, 'Aparelho 1 · Horas por dia: informe um valor de até 24.');
   assert.equal(validation.get('form-error').hidden, false);
   const status = createApp(null, {status: {available: false, error: 'Configure OLLAMA_MODEL.', code: 'invalid_model_config'}});
   await status.get('check-model').onclick();
-  assert.equal(status.get('model-status').textContent, 'Configure OLLAMA_MODEL.');
+  assert(status.get('model-status').textContent.includes('Gemma 4 local'));
   console.log('Recovery checks passed: partial records, original backups, blocked storage, and calculator fallback.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

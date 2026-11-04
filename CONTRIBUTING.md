@@ -73,7 +73,7 @@ These scripts create their output directory and overwrite JSON reports in `artif
 
 Use the surrounding style and the repository's `.editorconfig`: four spaces for Python, two for JavaScript and YAML, UTF-8, and LF line endings. Favor small functions and explicit validation over new abstractions that do not yet have a use.
 
-Keep UI text in Brazilian Portuguese. Keep contributor documentation in English for a common reference; translated guides are welcome when linked and maintained alongside the original. Render user and model text as text, or escape it before inserting HTML. Do not commit model weights, local credentials, personal consumption data, caches, or generated build files.
+Keep UI text in the reviewed English, Brazilian Portuguese, and Spanish catalogs under `web/locales/`, with English as the initial default. Follow [the translation guide](docs/TRANSLATING.md) for messages, plural forms, review, and ordinary translation PRs. After editing catalogs, regenerate the committed local bundle with `python -B scripts/build_locales.py`. Keep contributor documentation in English for a common reference; translated guides are welcome when linked and maintained alongside the original. Render user and model text as text, or escape it before inserting HTML. Do not commit model weights, local credentials, personal consumption data, caches, or unrelated generated build files.
 
 Add a focused regression test for behavior fixes when practical. Documentation and visual-only changes need appropriate review rather than tests that merely repeat their content. Update the usage guide when a command or user-visible behavior changes.
 

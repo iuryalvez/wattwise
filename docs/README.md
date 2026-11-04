@@ -1,6 +1,6 @@
 # WattWise documentation
 
-Start with the [project README](../README.md) for a quick introduction and a local run. The interface is currently in Brazilian Portuguese; contributor documentation uses English, and issues and PRs may use either language.
+Start with the [project README](../README.md) for a quick introduction and a local run. The interface starts in English, with Brazilian Portuguese and Spanish in the language selector. Contributor documentation uses English, and issues and PRs may use English or Portuguese. Existing walkthroughs may use Portuguese button names; select Português (Brasil) to follow them verbatim.
 
 ## Use the application
 
@@ -15,6 +15,8 @@ Start with the [project README](../README.md) for a quick introduction and a loc
 ## Develop and contribute
 
 - [Contribution guide](../CONTRIBUTING.md): setup, checks, conventions, and review.
+- [Translation guide](TRANSLATING.md): catalogs, runtime updates, locale review, and optional Weblate.
+- [Internationalization review](I18N_REVIEW.md): verification performed and remaining browser/model limitations.
 - [API errors and recovery](API_ERRORS.md): diagnostic codes, field validation, original backups, and storage failures.
 - [Architecture](ARCHITECTURE.md): where the code lives and how data flows.
 - [Roadmap](ROADMAP.md): product priorities and scoped contribution ideas.

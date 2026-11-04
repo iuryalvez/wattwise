@@ -1,87 +1,90 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#174d40">
-  <meta name="description" content="Entenda o consumo da sua casa e experimente uma mudança por vez com o WattWise.">
-  <title>WattWise · Energia com propósito</title>
+  <meta name="description" content="Understand your home&#x27;s energy use and try one change at a time with WattWise." data-i18n-content="entenda_o_consumo_da_sua_casa_e_experimente">
+  <title data-i18n-text="0:wattwise_energia_com_proposito">WattWise · Energy with purpose</title>
   <link rel="stylesheet" href="/styles.css">
+  <script src="/vendor/i18next-25.6.0.min.js" defer></script>
+  <script src="/locales.js" defer></script>
+  <script src="/i18n.js" defer></script>
   <script src="/app.js" defer></script>
 </head>
 <body>
-<a href="#main" class="skip">Pular para o conteúdo</a>
+<a href="#main" class="skip" data-i18n-text="0:pular_para_o_conteudo">Skip to content</a>
 <aside class="sidebar">
   <a class="brand" href="/"><span class="brand-icon">ϟ</span> WattWise<span class="brand-dot">.</span></a>
-  <p class="sidebar-label" id="sidebar-context">SUA CASA, MAIS CONSCIENTE</p>
-  <nav aria-label="Navegação principal">
-    <a class="nav-link active" href="/"><span>◫</span> Visão geral</a>
-    <a class="nav-link" href="/monitor"><span>⌁</span> Casa conectada</a>
-    <a class="nav-link" href="/#devices-section"><span>⌂</span> Meus aparelhos</a>
-    <a class="nav-link" href="/#plan-section"><span>✧</span> Plano de economia</a>
-    <a class="nav-link" href="/#history-section"><span>↺</span> Simulações salvas</a>
+  <p class="sidebar-label" id="sidebar-context" data-i18n-text="0:sua_casa_mais_consciente">YOUR HOME, MORE MINDFUL</p>
+  <nav aria-label="Main navigation" data-i18n-aria-label="navegacao_principal">
+    <a class="nav-link active" href="/" data-i18n-text="1:visao_geral"><span>◫</span> Overview</a>
+    <a class="nav-link" href="/monitor" data-i18n-text="1:casa_conectada"><span>⌁</span> Connected home</a>
+    <a class="nav-link" href="/#devices-section" data-i18n-text="1:meus_aparelhos"><span>⌂</span> My appliances</a>
+    <a class="nav-link" href="/#plan-section" data-i18n-text="1:plano_de_economia"><span>✧</span> Savings plan</a>
+    <a class="nav-link" href="/#history-section" data-i18n-text="1:simulacoes_salvas"><span>↺</span> Saved simulations</a>
   </nav>
-  <div class="sidebar-bottom"><div class="leaf">↗</div><strong>Menos desperdício.<br>Mais possibilidades.</strong><p>Uma mudança possível de cada vez.</p><span class="sdg">ODS 7 · Energia acessível e limpa</span></div>
+  <div class="sidebar-bottom"><div class="leaf">↗</div><strong data-i18n-text="0:menos_desperdicio|2:mais_possibilidades">Less waste.<br>More possibilities.</strong><p data-i18n-text="0:uma_mudanca_possivel_de_cada_vez">One practical change at a time.</p><span class="sdg" data-i18n-text="0:ods_7_energia_acessivel_e_limpa">SDG 7 · Affordable and clean energy</span></div>
 </aside>
 <div class="workspace">
-  <header class="topbar"><span><span id="site-name">Minha casa</span> <span class="breadcrumb">/ Visão geral</span></span><div class="topbar-right"><span id="storage-status" class="saved">● Salvo neste navegador</span><span class="avatar" aria-label="Perfil local">MC</span></div></header>
+  <header class="topbar"><span><span id="site-name" data-i18n-text="0:minha_casa">My home</span> <span class="breadcrumb" data-i18n-text="0:visao_geral_2">/ Overview</span></span><div class="topbar-right"><label class="language-control" for="language-select"><span data-i18n-text="0:language">Language</span><select id="language-select"><option value="en">English</option><option value="pt-BR">Português (Brasil)</option><option value="es">Español</option><option value="auto" data-i18n-text="0:automatic">Automatic (browser)</option></select></label><span class="sr-only" id="language-notice" role="status" aria-live="polite"></span><span id="storage-status" class="saved" data-i18n-text="0:salvo_neste_navegador">● Saved in this browser</span><span class="avatar" aria-label="Local profile" data-i18n-aria-label="perfil_local">MC</span></div></header>
   <main id="main">
-    <div class="page-heading"><div><div class="eyebrow">ENERGIA QUE FAZ SENTIDO</div><h1>Entenda sua energia.<br><span>Escolha como economizar.</span></h1><p>Descubra o que pesa no consumo e teste uma mudança que cabe na sua rotina.</p></div><div class="sample-controls"><label for="sample-scenario">Escolha um exemplo fictício</label><select id="sample-scenario"><option value="family">Família · 3 pessoas</option><option value="high-consumption">Alto consumo · 5 pessoas</option><option value="industrial">Indústria · embalagens</option></select><button class="button secondary" id="load-demo">↻ Carregar exemplo</button></div></div>
-    <div class="evidence-banner"><span class="evidence-dot"></span><strong id="data-label">Estimativa manual</strong><span>Os valores vêm das potências e dos horários informados. Não são medições reais.</span></div>
-    <section class="home-settings" aria-label="Parâmetros de consumo">
-      <label>Preço da energia <div class="input-unit"><span>R$</span><input id="rate" type="number" min="0" step="0.01" required aria-label="Preço da energia por kWh"><span>/ kWh</span></div></label>
-      <label>Período <div class="input-unit"><input id="days" type="number" min="1" max="366" step="1" required aria-label="Período em dias"><span>dias</span></div></label>
-      <p>O consumo é calculado com <strong>watts × horas ÷ 1.000</strong>. Informe uma potência média e seu tempo de uso.</p>
+    <div class="page-heading"><div><div class="eyebrow" data-i18n-text="0:energia_que_faz_sentido">ENERGY THAT MAKES SENSE</div><h1 data-i18n-text="0:entenda_sua_energia">Understand your energy.<br><span data-i18n-text="0:escolha_como_economizar">Choose how to save.</span></h1><p data-i18n-text="0:descubra_o_que_pesa_no_consumo_e_teste">Discover what uses the most energy and try a change that fits your routine.</p></div><div class="sample-controls"><label for="sample-scenario" data-i18n-text="0:escolha_um_exemplo_ficticio">Choose a fictional example</label><select id="sample-scenario"><option value="family" data-i18n-text="0:familia_3_pessoas">Family · 3 people</option><option value="high-consumption" data-i18n-text="0:alto_consumo_5_pessoas">High consumption · 5 people</option><option value="industrial" data-i18n-text="0:industria_embalagens">Industry · packaging</option></select><button class="button secondary" id="load-demo" data-i18n-text="0:carregar_exemplo">↻ Load example</button></div></div>
+    <div class="evidence-banner"><span class="evidence-dot"></span><strong id="data-label" data-i18n-text="0:estimativa_manual">Manual estimate</strong><span data-i18n-text="0:os_valores_vem_das_potencias_e_dos_horarios">Values come from the power and usage times you enter. They are not actual measurements.</span></div>
+    <section class="home-settings" aria-label="Consumption settings" data-i18n-aria-label="parametros_de_consumo">
+      <label data-i18n-text="0:preco_da_energia">Energy price <div class="input-unit"><span>R$</span><input id="rate" type="number" min="0" step="0.01" required aria-label="Energy price per kWh" data-i18n-aria-label="preco_da_energia_por_kwh"><span>/ kWh</span></div></label>
+      <label data-i18n-text="0:periodo">Period <div class="input-unit"><input id="days" type="number" min="1" max="366" step="1" required aria-label="Period in days" data-i18n-aria-label="periodo_em_dias"><span data-i18n-text="0:dias">days</span></div></label>
+      <p data-i18n-text="0:o_consumo_e_calculado_com|2:informe_uma_potencia_media_e_seu_tempo_de">Consumption is calculated as <strong>W × h ÷ 1000</strong>. Enter average power and usage time.</p>
     </section>
-    <section id="storage-recovery" class="error recovery" role="status" aria-label="Recuperação dos dados salvos" hidden>
+    <section id="storage-recovery" class="error recovery" role="status" aria-label="Saved data recovery" hidden data-i18n-aria-label="recuperacao_dos_dados_salvos">
       <p id="recovery-summary"></p>
-      <details><summary>Ver detalhes da recuperação</summary><ul id="recovery-details"></ul></details>
+      <details><summary data-i18n-text="0:ver_detalhes_da_recuperacao">View recovery details</summary><ul id="recovery-details"></ul></details>
       <p id="recovery-backup"></p>
-      <button id="download-recovery" class="button secondary small" type="button" hidden>Baixar dados originais</button>
+      <button id="download-recovery" class="button secondary small" type="button" hidden data-i18n-text="0:baixar_dados_originais">Download original data</button>
     </section>
     <p id="form-error" class="error" role="alert" hidden></p>
-    <section class="metrics" aria-label="Resumo estimado" aria-live="polite">
-      <article class="metric"><div class="metric-label">Custo de energia estimado <span>↗</span></div><div class="metric-value" id="cost">—</div><p id="cost-caption">Para o período informado</p></article>
-      <article class="metric"><div class="metric-label">Consumo estimado <span>ϟ</span></div><div class="metric-value" id="consumption">—</div><p>A partir da sua lista de aparelhos</p></article>
-      <article class="metric highlight"><div class="metric-label">Potencial da melhor mudança <span>✧</span></div><div class="metric-value" id="potential">—</div><p id="potential-caption">Cadastre uma proposta para comparar</p></article>
+    <section class="metrics" aria-label="Estimated overview" aria-live="polite" data-i18n-aria-label="resumo_estimado">
+      <article class="metric"><div class="metric-label" data-i18n-text="0:custo_de_energia_estimado">Estimated energy cost <span>↗</span></div><div class="metric-value" id="cost">—</div><p id="cost-caption" data-i18n-text="0:para_o_periodo_informado">For the selected period</p></article>
+      <article class="metric"><div class="metric-label" data-i18n-text="0:consumo_estimado">Estimated consumption <span>ϟ</span></div><div class="metric-value" id="consumption">—</div><p data-i18n-text="0:a_partir_da_sua_lista_de_aparelhos">Based on your appliance list</p></article>
+      <article class="metric highlight"><div class="metric-label" data-i18n-text="0:potencial_da_melhor_mudanca">Best change potential <span>✧</span></div><div class="metric-value" id="potential">—</div><p id="potential-caption" data-i18n-text="0:cadastre_uma_proposta_para_comparar">Add a proposal to compare</p></article>
     </section>
     <div class="content-grid">
       <section class="panel" id="devices-section">
-        <div class="panel-heading"><div><div class="eyebrow">01 / CONHECER</div><h2 id="devices-title">O que consome na sua casa</h2></div><button class="button small secondary" id="add-device">+ Aparelho</button></div>
-        <p class="section-description">Cadastre um aparelho ou componente por linha. Use modos separados para períodos diferentes, sem contar o mesmo consumo duas vezes.</p>
+        <div class="panel-heading"><div><div class="eyebrow" data-i18n-text="0:01_conhecer">01 / UNDERSTAND</div><h2 id="devices-title" data-i18n-text="0:o_que_consome_na_sua_casa">What uses energy in your home</h2></div><button class="button small secondary" id="add-device" data-i18n-text="0:aparelho">+ Appliance</button></div>
+        <p class="section-description" data-i18n-text="0:cadastre_um_aparelho_ou_componente_por_linha_use">Add one appliance or component per row. Use separate modes for different periods without counting the same consumption twice.</p>
         <div id="devices" class="device-list"></div>
-        <div id="empty-devices" class="empty" hidden><span>⌂</span><h3>Sua casa começa aqui</h3><p>Adicione seu primeiro aparelho ou carregue o exemplo para explorar.</p><button class="button primary" id="empty-add">Adicionar aparelho</button></div>
-        <div class="calculation-note"><span>ⓘ</span><p>Potências de etiqueta podem ser máximas. Informe uma média de uso quando souber. Horas não cadastradas são consideradas sem consumo.</p></div>
+        <div id="empty-devices" class="empty" hidden><span>⌂</span><h3 data-i18n-text="0:sua_casa_comeca_aqui">Your home starts here</h3><p data-i18n-text="0:adicione_seu_primeiro_aparelho_ou_carregue_o_exemplo">Add your first appliance or load an example to explore.</p><button class="button primary" id="empty-add" data-i18n-text="0:adicionar_aparelho">Add appliance</button></div>
+        <div class="calculation-note"><span>ⓘ</span><p data-i18n-text="0:potencias_de_etiqueta_podem_ser_maximas_informe_uma">Nameplate power may be a maximum. Enter average usage power when known. Unlisted hours are treated as no consumption.</p></div>
       </section>
       <section class="panel coach-panel" id="plan-section">
-        <div class="panel-heading"><div><div class="eyebrow">02 / ESCOLHER</div><h2>Seu próximo passo</h2></div><span class="ai-emblem">✧</span></div>
-        <p class="section-description" id="advisor-description">Gemma considera sua rotina, esclarece dúvidas e orienta uma experiência que preserve o que importa para sua casa.</p>
-        <label for="context" class="context-label">O que precisamos respeitar?</label><textarea id="context" rows="3" maxlength="2000" placeholder="Ex.: trabalho em casa e não quero reduzir meu horário de trabalho."></textarea>
-        <div class="model-status"><span id="advisor-memory">Sua rotina orienta a escolha.</span><button class="text-button" id="clear-answers" hidden>Recomeçar conversa</button></div>
-        <div class="model-status"><span id="model-dot" class="status-dot"></span><span id="model-status">Verificando Gemma local…</span><button class="text-button" id="check-model" aria-label="Verificar conexão com Ollama">↻</button></div>
-        <button class="button primary full" id="ask-ai">✧ Encontrar uma mudança com Gemma</button>
-        <button class="button text full" id="use-demo-plan">Usar maior potencial, sem IA</button>
+        <div class="panel-heading"><div><div class="eyebrow" data-i18n-text="0:02_escolher">02 / CHOOSE</div><h2 data-i18n-text="0:seu_proximo_passo">Your next step</h2></div><span class="ai-emblem">✧</span></div>
+        <p class="section-description" id="advisor-description" data-i18n-text="0:gemma_considera_sua_rotina_esclarece_duvidas_e_orienta">Gemma considers your routine, asks questions, and guides an experiment that preserves what matters to your household.</p>
+        <label for="context" class="context-label" data-i18n-text="0:o_que_precisamos_respeitar">What should we preserve?</label><textarea id="context" rows="3" maxlength="2000" placeholder="E.g. I work from home and do not want to reduce my working hours." data-i18n-placeholder="ex_trabalho_em_casa_e_nao_quero_reduzir"></textarea>
+        <div class="model-status"><span id="advisor-memory" data-i18n-text="0:sua_rotina_orienta_a_escolha">Your routine guides the choice.</span><button class="text-button" id="clear-answers" hidden data-i18n-text="0:recomecar_conversa">Restart conversation</button></div>
+        <div class="model-status"><span id="model-dot" class="status-dot"></span><span id="model-status" data-i18n-text="0:verificando_gemma_local">Checking local Gemma…</span><button class="text-button" id="check-model" aria-label="Check Ollama connection" data-i18n-aria-label="verificar_conexao_com_ollama">↻</button></div>
+        <button class="button primary full" id="ask-ai" data-i18n-text="0:encontrar_uma_mudanca_com_gemma">✧ Find a change with Gemma</button>
+        <button class="button text full" id="use-demo-plan" data-i18n-text="0:usar_maior_potencial_sem_ia">Use highest potential, without AI</button>
         <div id="ai-error" class="error" role="alert" hidden></div>
-        <details id="model-setup"><summary>Como conectar o Gemma local</summary><p>Instale o Ollama e execute no terminal:</p><code>ollama run gemma4:e2b</code><p>Depois, use ↻ para verificar. O modelo roda no seu computador. A primeira execução exige o download dos pesos.</p></details>
+        <details id="model-setup"><summary data-i18n-text="0:como_conectar_o_gemma_local">How to connect local Gemma</summary><p data-i18n-text="0:instale_o_ollama_e_execute_no_terminal">Install Ollama and run in a terminal:</p><code>ollama run gemma4:e2b</code><p data-i18n-text="0:depois_use_para_verificar_o_modelo_roda_no">Then use ↻ to check. The model runs on your computer. The first run requires downloading its weights.</p></details>
         <div id="chosen-plan" hidden></div>
-        <form id="advisor-followup" hidden><label for="advisor-answer" id="advisor-question" class="context-label"></label><textarea id="advisor-answer" rows="2" maxlength="300" required placeholder="Conte o que funciona para sua família."></textarea><button class="button secondary full" type="submit" id="send-answer">Responder e atualizar com Gemma ↗</button></form>
-        <div class="plan-placeholder" id="plan-placeholder"><span>↗</span><p>Uma mudança possível.<br><strong>Um resultado para acompanhar.</strong></p></div>
+        <form id="advisor-followup" hidden><label for="advisor-answer" id="advisor-question" class="context-label"></label><textarea id="advisor-answer" rows="2" maxlength="300" required placeholder="Tell us what works for your household." data-i18n-placeholder="conte_o_que_funciona_para_sua_familia"></textarea><button class="button secondary full" type="submit" id="send-answer" data-i18n-text="0:responder_e_atualizar_com_gemma">Reply and update with Gemma ↗</button></form>
+        <div class="plan-placeholder" id="plan-placeholder"><span>↗</span><p data-i18n-text="0:uma_mudanca_possivel">One practical change.<br><strong data-i18n-text="0:um_resultado_para_acompanhar">One result to follow.</strong></p></div>
       </section>
     </div>
     <section class="panel comparison-panel" id="comparison-section" hidden>
-      <div class="panel-heading"><div><div class="eyebrow">03 / EXPERIMENTAR</div><h2>Veja o efeito da sua escolha</h2></div><span class="pill">Projeção · não medido</span></div>
-      <div class="comparison-content"><div class="comparison-chart" id="comparison-chart"></div><div class="comparison-insight"><div class="eyebrow">REDUÇÃO ESTIMADA NO PERÍODO</div><div class="big-saving" id="chosen-saving"></div><p id="chosen-caption"></p><button class="button primary" id="save-experiment">Salvar esta simulação ↗</button><button class="button text" id="export-report">Exportar relatório</button></div></div>
-      <p class="footnote">Comparação calculada com suas hipóteses de uso. Um medidor será necessário para acompanhar consumo real. O custo usa o preço por kWh informado; não reconstrói taxas ou a conta completa.</p>
+      <div class="panel-heading"><div><div class="eyebrow" data-i18n-text="0:03_experimentar">03 / TRY</div><h2 data-i18n-text="0:veja_o_efeito_da_sua_escolha">See the effect of your choice</h2></div><span class="pill" data-i18n-text="0:projecao_nao_medido">Projection · not measured</span></div>
+      <div class="comparison-content"><div class="comparison-chart" id="comparison-chart"></div><div class="comparison-insight"><div class="eyebrow" data-i18n-text="0:reducao_estimada_no_periodo">ESTIMATED REDUCTION OVER THE PERIOD</div><div class="big-saving" id="chosen-saving"></div><p id="chosen-caption"></p><button class="button primary" id="save-experiment" data-i18n-text="0:salvar_esta_simulacao">Save this simulation ↗</button><button class="button text" id="export-report" data-i18n-text="0:exportar_relatorio">Export report</button></div></div>
+      <p class="footnote" data-i18n-text="0:comparacao_calculada_com_suas_hipoteses_de_uso_um">Comparison calculated from your usage assumptions. A meter is needed to track actual consumption. Cost uses the entered price per kWh; it does not reconstruct fees or the full bill.</p>
     </section>
-    <section class="panel history-panel" id="history-section"><div class="panel-heading"><div><div class="eyebrow">SEU CAMINHO</div><h2>Simulações salvas</h2></div><span id="history-count" class="pill">0 registros</span></div><div id="history-list"></div></section>
-    <footer><span class="footer-brand">ϟ WattWise</span><span>Construído para o Hackday 2026 · ODS 7.3</span><span>Dados locais. Escolhas suas.</span></footer>
+    <section class="panel history-panel" id="history-section"><div class="panel-heading"><div><div class="eyebrow" data-i18n-text="0:seu_caminho">YOUR JOURNEY</div><h2 data-i18n-text="0:simulacoes_salvas_2">Saved simulations</h2></div><span id="history-count" class="pill" data-i18n-text="0:0_registros">0 records</span></div><div id="history-list"></div></section>
+    <footer><span class="footer-brand">ϟ WattWise</span><span data-i18n-text="0:construido_para_o_hackday_2026_ods_7_3">Built for Hackday 2026 · SDG 7.3</span><span data-i18n-text="0:dados_locais_escolhas_suas">Local data. Your choices.</span></footer>
   </main>
 </div>
-<dialog id="device-dialog"><form id="device-form"><div class="dialog-heading"><div><div class="eyebrow">SUA CASA</div><h2 id="dialog-title">Novo aparelho</h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Fechar">×</button></div>
-  <label>Nome do aparelho ou modo de uso<input id="device-name" maxlength="100" required placeholder="Ex.: televisão da sala"></label>
-  <fieldset><legend>Como você usa hoje</legend><div class="two-columns"><label>Potência média (W)<input id="device-watts" type="number" min="0" max="100000" step="0.1" required></label><label>Horas por dia<input id="device-hours" type="number" min="0" max="24" step="0.01" required></label></div></fieldset>
-  <label class="checkbox-label"><input id="device-protected" type="checkbox"> Preservar este uso: é essencial para minha rotina</label>
-  <fieldset id="proposed-fields"><legend>Uma mudança que você pode experimentar</legend><p>Altere o tempo ou a potência média. Se não tiver uma proposta, mantenha os valores atuais.</p><div class="two-columns"><label>Potência proposta (W)<input id="device-planned-watts" type="number" min="0" max="100000" step="0.1" required></label><label>Horas propostas por dia<input id="device-planned-hours" type="number" min="0" max="24" step="0.01" required></label></div></fieldset>
-  <p id="device-error" class="error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button danger" id="delete-device" hidden>Excluir</button><button type="submit" class="button primary">Salvar aparelho</button></div>
+<dialog id="device-dialog"><form id="device-form"><div class="dialog-heading"><div><div class="eyebrow" data-i18n-text="0:sua_casa">YOUR HOME</div><h2 id="dialog-title" data-i18n-text="0:novo_aparelho">New appliance</h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Close" data-i18n-aria-label="fechar">×</button></div>
+  <label data-i18n-text="0:nome_do_aparelho_ou_modo_de_uso">Appliance or usage mode name<input id="device-name" maxlength="100" required placeholder="E.g. living room TV" data-i18n-placeholder="ex_televisao_da_sala"></label>
+  <fieldset><legend data-i18n-text="0:como_voce_usa_hoje">Current usage</legend><div class="two-columns"><label data-i18n-text="0:potencia_media_w">Average power (W)<input id="device-watts" type="number" min="0" max="100000" step="0.1" required></label><label data-i18n-text="0:horas_por_dia">Hours per day<input id="device-hours" type="number" min="0" max="24" step="0.01" required></label></div></fieldset>
+  <label class="checkbox-label" data-i18n-text="1:preservar_este_uso_e_essencial_para_minha_rotina"><input id="device-protected" type="checkbox"> Preserve this usage: it is essential to my routine</label>
+  <fieldset id="proposed-fields"><legend data-i18n-text="0:uma_mudanca_que_voce_pode_experimentar">A change you can try</legend><p data-i18n-text="0:altere_o_tempo_ou_a_potencia_media_se">Change the time or average power. If you have no proposal, keep the current values.</p><div class="two-columns"><label data-i18n-text="0:potencia_proposta_w">Proposed power (W)<input id="device-planned-watts" type="number" min="0" max="100000" step="0.1" required></label><label data-i18n-text="0:horas_propostas_por_dia">Proposed hours per day<input id="device-planned-hours" type="number" min="0" max="24" step="0.01" required></label></div></fieldset>
+  <p id="device-error" class="error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button danger" id="delete-device" hidden data-i18n-text="0:excluir">Delete</button><button type="submit" class="button primary" data-i18n-text="0:salvar_aparelho">Save appliance</button></div>
 </form></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 </body></html>

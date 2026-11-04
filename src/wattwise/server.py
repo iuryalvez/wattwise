@@ -15,7 +15,7 @@ class Handler(BaseHTTPRequestHandler):
     server_version = "WattWise/0.1"
 
     def send(self, status, body, content_type="application/json; charset=utf-8"):
-        data = json.dumps(body, ensure_ascii=False).encode() if content_type.startswith("application/json") else body
+        data = json.dumps(body, ensure_ascii=False).encode() if content_type.startswith("application/json") and not isinstance(body, bytes) else body
         self.send_response(status)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(data)))
@@ -47,6 +47,12 @@ class Handler(BaseHTTPRequestHandler):
         files.update({"/monitor.css": ("monitor.css", "text/css; charset=utf-8"),
                       "/monitor-core.js": ("monitor-core.js", "text/javascript; charset=utf-8"),
                       "/monitor.js": ("monitor.js", "text/javascript; charset=utf-8")})
+        files.update({"/i18n.js": ("i18n.js", "text/javascript; charset=utf-8"),
+                      "/locales.js": ("locales.js", "text/javascript; charset=utf-8"),
+                      "/locales/manifest.json": ("locales/manifest.json", "application/json; charset=utf-8"),
+                      "/vendor/i18next-25.6.0.min.js": ("vendor/i18next-25.6.0.min.js", "text/javascript; charset=utf-8")})
+        files.update({f"/locales/{locale}.json": (f"locales/{locale}.json", "application/json; charset=utf-8")
+                      for locale in ("en", "pt-BR", "es")})
         if self.path not in files:
             return self.send(404, {"error": "Página não encontrada.", "code": "not_found"})
         name, content_type = files[self.path]

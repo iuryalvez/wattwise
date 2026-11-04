@@ -1,16 +1,16 @@
 'use strict';
 (function(root) {
-  const rooms = {living:'Sala', kitchen:'Cozinha', bedroom:'Quarto', bathroom:'Banheiro', laundry:'Lavanderia'};
+  const rooms = {living:'sala', kitchen:'cozinha', bedroom:'quarto', bathroom:'banheiro', laundry:'lavanderia'};
   const devices = [
-    {id:'tv', name:'Televisão', room:'living', kind:'Tomada de energia demo', power:100},
-    {id:'fridge', name:'Geladeira', room:'kitchen', kind:'Sensor de energia demo', power:180},
-    {id:'ac', name:'Ar-condicionado', room:'bedroom', kind:'Medidor de energia demo', power:900},
-    {id:'shower', name:'Chuveiro elétrico', room:'bathroom', kind:'Medidor de circuito demo', power:5500},
-    {id:'work', name:'Computador de trabalho', room:'living', kind:'Tomada de energia demo', power:180},
-    {id:'router', name:'Roteador', room:'living', kind:'Sensor de energia demo', power:12},
-    {id:'light', name:'Iluminação', room:'bedroom', kind:'Sensor de energia demo', power:60},
-    {id:'washer', name:'Máquina de lavar', room:'laundry', kind:'Tomada de energia demo', power:450},
-    {id:'airfryer', name:'Air fryer', room:'kitchen', kind:'Tomada de energia demo', power:1400}
+    {id:'tv', name:'televisao', room:'living', kind:'tomada_de_energia_demo', power:100},
+    {id:'fridge', name:'fridge', room:'kitchen', kind:'sensor_de_energia_demo', power:180},
+    {id:'ac', name:'ac', room:'bedroom', kind:'medidor_de_energia_demo', power:900},
+    {id:'shower', name:'chuveiro_eletrico', room:'bathroom', kind:'medidor_de_circuito_demo', power:5500},
+    {id:'work', name:'computador_de_trabalho', room:'living', kind:'tomada_de_energia_demo', power:180},
+    {id:'router', name:'router', room:'living', kind:'sensor_de_energia_demo', power:12},
+    {id:'light', name:'iluminacao', room:'bedroom', kind:'sensor_de_energia_demo', power:60},
+    {id:'washer', name:'maquina_de_lavar', room:'laundry', kind:'tomada_de_energia_demo', power:450},
+    {id:'airfryer', name:'air_fryer', room:'kitchen', kind:'tomada_de_energia_demo', power:1400}
   ];
   function samplePower(device, scenario, seconds) {
     let active;

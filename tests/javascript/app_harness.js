@@ -8,8 +8,9 @@ const high = JSON.parse(fs.readFileSync(path.join(root, 'examples/high-consumpti
 const industry = JSON.parse(fs.readFileSync(path.join(root, 'examples/industrial-packaging.json'), 'utf8'));
 const original = {rate: 0.9, days: 20, context: 'Meus dados', devices: []};
 function createApp(saved = JSON.stringify({config: original, history: [], sample: false}), options = {}) {
-  const elements = new Map(), calls = [], downloads = [];
+  const elements = new Map(), calls = [], downloads = [], documentListeners = {};
   const storage = new Map();
+  if (options.locale !== null) storage.set('wattwise-locale-v1', options.locale || 'pt-BR');
   if (saved !== null) storage.set('wattwise-mvp-v1', saved);
   const writes = [];
   function element() {
@@ -21,10 +22,12 @@ function createApp(saved = JSON.stringify({config: original, history: [], sample
   const get = id => { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); };
   get('sample-scenario').value = 'family';
   get('storage-recovery').hidden = true;
-  const app = {get, calls, storage, writes, downloads, ...options, fail: false, missingSample: false,
+  const app = {get, calls, storage, writes, downloads, documentListeners, ...options, fail: false, missingSample: false,
     stored: () => storage.get('wattwise-mvp-v1') ?? null};
   const context = {
-    document: {getElementById: get, querySelectorAll: () => [], createTextNode: text => text, createElement: element},
+    document: {documentElement: {}, getElementById: get, querySelectorAll: () => [], createTextNode: text => text, createElement: element,
+      addEventListener: (event, listener) => { documentListeners[event] = listener; }},
+    navigator: {languages: options.languages || ['pt-BR']},
     localStorage: {
       getItem: key => { if (app.failRead) throw new Error('Blocked'); return storage.get(key) ?? null; },
       setItem: (key, value) => {
@@ -52,8 +55,15 @@ function createApp(saved = JSON.stringify({config: original, history: [], sample
     }
   };
   vm.createContext(context);
+  for (const file of ['vendor/i18next-25.6.0.min.js', 'locales.js', 'i18n.js']) {
+    vm.runInContext(fs.readFileSync(path.join(root, 'web', file), 'utf8'), context);
+    if (file === 'locales.js') {
+      for (const locale of options.pendingLocales || []) vm.runInContext(`WattWiseLocaleManifest.locales[${JSON.stringify(locale)}].review.status = 'pending'`, context);
+    }
+  }
   vm.runInContext(fs.readFileSync(path.join(root, 'web/app.js'), 'utf8'), context);
   app.read = expression => JSON.parse(vm.runInContext(`JSON.stringify(${expression})`, context));
+  app.select = locale => vm.runInContext(`WattWiseI18n.select(${JSON.stringify(locale)})`, context);
   return app;
 }
 

@@ -20,6 +20,11 @@ WattWise is a local application with a Python standard-library backend and plain
 | `web/app.js` | Planning-page state, forms, local storage, API requests, comparisons, and saved simulations |
 | `web/monitor-core.js` | Synthetic power snapshots and session-energy integration |
 | `web/monitor.js` | Monitoring-page interaction, connection simulation, and chart updates |
+| `web/i18n.js`, `web/locales/`, `web/locales.js` | Shared locale resolution, formatting, reviewed JSON catalogs and generated local bundle |
+| `web/vendor/` | Pinned i18next browser runtime and license, with no CDN dependency |
+| `src/wattwise/i18n.py` | Shared locale manifest, validated advisor locale, and local experiment descriptions |
+| `scripts/build_locales.py`, `scripts/update_i18next.py` | Offline catalog bundling and explicit integrity-checked runtime updates |
+| `scripts/evaluate_advisor_locales.py` | Optional real-model locale cases with separate pending language/grounding review |
 | `web/*.html`, `web/*.css` | Page structure, accessibility hooks, and responsive styles |
 | `examples/` | Fictional input fixtures for the web app and CLI |
 | `tests/python/` | Python unit tests and command-entry checks |
@@ -74,7 +79,7 @@ The web profile uses `rate`, `days`, `devices`, `context`, optional `siteType`, 
 | POST | `/api/analyze` | Validated manual estimates and eligible opportunities |
 | POST | `/api/advise` | Structured local-model recommendation or clarification |
 
-Static assets use explicit route mappings. POST bodies must use JSON and are limited to 64 KB. Host and supplied Origin headers must match the loopback origin. Expected failures preserve `error` and add stable `code` and optional `field` values. Status checks return HTTP 200 with diagnostic availability; advisor failures use 502/503/504 and invalid client input uses 400. See [API errors](API_ERRORS.md) for the contract. This surface is an internal development interface rather than a versioned public API.
+Static assets use explicit route mappings, including local i18next and catalog assets. POST bodies must use JSON and are limited to 64 KB. Host and supplied Origin headers must match the loopback origin. Expected failures preserve `error` and add stable `code` and optional `field` values. Application exceptions also supply a localizable `message_key` and optional scalar `params`; browsers can localize envelope errors by diagnostic code. Status checks return HTTP 200 with diagnostic availability; advisor failures use 502/503/504 and invalid client input uses 400. See [API errors](API_ERRORS.md) for the contract. This surface is an internal development interface rather than a versioned public API.
 
 ## Calculation and evidence boundaries
 
@@ -89,6 +94,8 @@ Protected usage is validated in the backend. Candidate membership is also valida
 Planning data uses browser key `wattwise-mvp-v1`; simulated sensor connections use `wattwise-simulated-connections-v1`. There is no cross-device synchronization or server-side history. Saved planning records are capped at ten and do not yet include a complete reusable input snapshot. Startup validates each stored section independently, retains usable records, and explains recovery. The original active value is not overwritten on startup; a verified separate raw backup is required before later writes after recovery. Storage failures leave the calculator usable in memory. See [saved-state recovery](API_ERRORS.md#browser-recovery).
 
 The web advisor calls loopback Ollama at `127.0.0.1:11434`. Only the explicit CLI `--gemma` option invokes the hosted provider. See [SECURITY.md](../SECURITY.md) before changing deployment or data-flow assumptions.
+
+Language preference uses a separate `wattwise-locale-v1` key. English is the first-visit default; optional browser detection runs only for the saved `auto` choice. The reviewed locale manifest is shared by the frontend bundle and backend allowlist. Switching language rerenders presentation without persisting or changing household inputs or sensor state. The advisor receives a strictly validated locale in a trusted system instruction and reports it alongside the unchanged reply contract. See [translation architecture and contributions](TRANSLATING.md).
 
 ## Verification limits
 

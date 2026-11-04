@@ -62,3 +62,7 @@ The behavioral script checks decision and candidate identity; it does not valida
 | Unknown candidate or malformed reply | The app explains the failure without substituting a fabricated plan |
 
 A valid response shape alone does not establish useful advice. The small household evaluation does not establish industrial behavior or general model quality. Real measurements and suitable comparison windows are future work.
+
+## Locale evaluation
+
+Run `python -B scripts/evaluate_advisor_locales.py` with local Ollama available to exercise real recommendation, clarification, and no-candidate cases for `en`, `pt-BR`, and `es`. Repeat `--locale` to limit the run. The ignored `artifacts/evaluations/advisor-locales.json` records commit, dirty state, model, skill hash, timing, and the actual prose. Its language and grounding reviews start as pending; a successful exit establishes only contract and expected-decision checks. Review every generated sentence before claiming language compliance, including adherence to the selected language despite Portuguese household inputs. This complements the broader issue #6 work rather than replacing it. See [translation review instructions](TRANSLATING.md#browser-and-local-model-review) and [current verification status](I18N_REVIEW.md).
