@@ -1,0 +1,14 @@
+{
+  "name": "wattwise-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Build-time styling for the local WattWise application",
+  "scripts": {
+    "build:css": "tailwindcss -i ./web/design.css -o ./web/styles.css --minify",
+    "watch:css": "tailwindcss -i ./web/design.css -o ./web/styles.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.4",
+    "tailwindcss": "4.3.4"
+  }
+}

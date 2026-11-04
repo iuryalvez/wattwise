@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#174d40">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f2e9">
   <meta name="description" content="Understand your home&#x27;s energy use and try one change at a time with WattWise." data-i18n-content="entenda_o_consumo_da_sua_casa_e_experimente">
   <title data-i18n-text="0:wattwise_energia_com_proposito">WattWise · Energy with purpose</title>
   <link rel="stylesheet" href="/styles.css">
@@ -14,22 +14,62 @@
 </head>
 <body>
 <a href="#main" class="skip" data-i18n-text="0:pular_para_o_conteudo">Skip to content</a>
-<aside class="sidebar">
+<header class="sidebar">
   <a class="brand" href="/"><span class="brand-icon">ϟ</span> WattWise<span class="brand-dot">.</span></a>
   <p class="sidebar-label" id="sidebar-context" data-i18n-text="0:sua_casa_mais_consciente">YOUR HOME, MORE MINDFUL</p>
   <nav aria-label="Main navigation" data-i18n-aria-label="navegacao_principal">
-    <a class="nav-link active" href="/" data-i18n-text="1:visao_geral"><span>◫</span> Overview</a>
-    <a class="nav-link" href="/monitor" data-i18n-text="1:casa_conectada"><span>⌁</span> Connected home</a>
-    <a class="nav-link" href="/#devices-section" data-i18n-text="1:meus_aparelhos"><span>⌂</span> My appliances</a>
-    <a class="nav-link" href="/#plan-section" data-i18n-text="1:plano_de_economia"><span>✧</span> Savings plan</a>
-    <a class="nav-link" href="/#history-section" data-i18n-text="1:simulacoes_salvas"><span>↺</span> Saved simulations</a>
+    <a class="nav-link active" href="/" aria-current="page"><span class="nav-icon" aria-hidden="true">◫</span><span class="nav-label" data-i18n-text="0:visao_geral"> Overview</span><span class="nav-mobile-label" aria-hidden="true" data-i18n-text="0:nav.overview">Home</span></a>
+    <a class="nav-link" href="/monitor"><span class="nav-icon" aria-hidden="true">⌁</span><span class="nav-label" data-i18n-text="0:casa_conectada"> Connected home</span><span class="nav-mobile-label" aria-hidden="true" data-i18n-text="0:nav.monitor">Monitor</span></a>
+    <a class="nav-link" href="/#devices-section"><span class="nav-icon" aria-hidden="true">⌂</span><span class="nav-label" data-i18n-text="0:meus_aparelhos"> My appliances</span><span class="nav-mobile-label" aria-hidden="true" data-i18n-text="0:nav.devices">Devices</span></a>
+    <a class="nav-link" href="/#plan-section"><span class="nav-icon" aria-hidden="true">✧</span><span class="nav-label" data-i18n-text="0:plano_de_economia"> Savings plan</span><span class="nav-mobile-label" aria-hidden="true" data-i18n-text="0:nav.plan">Plan</span></a>
+    <a class="nav-link" href="/#history-section"><span class="nav-icon" aria-hidden="true">↺</span><span class="nav-label" data-i18n-text="0:simulacoes_salvas"> Saved simulations</span><span class="nav-mobile-label" aria-hidden="true" data-i18n-text="0:nav.history">Saved</span></a>
   </nav>
   <div class="sidebar-bottom"><div class="leaf">↗</div><strong data-i18n-text="0:menos_desperdicio|2:mais_possibilidades">Less waste.<br>More possibilities.</strong><p data-i18n-text="0:uma_mudanca_possivel_de_cada_vez">One practical change at a time.</p><span class="sdg" data-i18n-text="0:ods_7_energia_acessivel_e_limpa">SDG 7 · Affordable and clean energy</span></div>
-</aside>
+</header>
 <div class="workspace">
-  <header class="topbar"><span><span id="site-name" data-i18n-text="0:minha_casa">My home</span> <span class="breadcrumb" data-i18n-text="0:visao_geral_2">/ Overview</span></span><div class="topbar-right currency-topbar"><div class="locale-controls"><label class="language-control" for="language-select"><span data-i18n-text="0:language">Language</span><select id="language-select"><option value="en">English</option><option value="pt-BR">Português (Brasil)</option><option value="es">Español</option><option value="auto" data-i18n-text="0:automatic">Automatic (browser)</option></select></label><label class="language-control currency-control" for="display-currency"><span data-i18n-text="0:currency.label">Display currency</span><select id="display-currency" aria-describedby="currency-notice"><option value="BRL" data-i18n-text="0:currency.brl">BRL · Brazilian real</option><option value="USD" selected data-i18n-text="0:currency.usd">USD · US dollar</option><option value="EUR" data-i18n-text="0:currency.eur">EUR · Euro</option></select></label><button type="button" id="open-settings" class="button secondary small settings-button" aria-haspopup="dialog" aria-controls="settings-dialog" aria-label="Settings" data-i18n-aria-label="settings.title"><span aria-hidden="true">⚙</span><span data-i18n-text="0:settings.title">Settings</span></button></div><span id="currency-notice" class="sr-only" role="status" aria-live="polite"></span><span class="sr-only" id="language-notice" role="status" aria-live="polite"></span><span id="storage-status" class="saved" data-i18n-text="0:salvo_neste_navegador">● Saved in this browser</span><span class="avatar" aria-label="Local profile" data-i18n-aria-label="perfil_local">MC</span></div></header>
-  <main id="main">
-    <div class="page-heading"><div><div class="eyebrow" data-i18n-text="0:energia_que_faz_sentido">ENERGY THAT MAKES SENSE</div><h1 data-i18n-text="0:entenda_sua_energia">Understand your energy.<br><span data-i18n-text="0:escolha_como_economizar">Choose how to save.</span></h1><p data-i18n-text="0:descubra_o_que_pesa_no_consumo_e_teste">Discover what uses the most energy and try a change that fits your routine.</p></div><div class="sample-controls"><label for="sample-scenario" data-i18n-text="0:escolha_um_exemplo_ficticio">Choose a fictional example</label><select id="sample-scenario"><option value="family" data-i18n-text="0:familia_3_pessoas">Family · 3 people</option><option value="high-consumption" data-i18n-text="0:alto_consumo_5_pessoas">High consumption · 5 people</option><option value="industrial" data-i18n-text="0:industria_embalagens">Industry · packaging</option></select><button class="button secondary" id="load-demo" data-i18n-text="0:carregar_exemplo">↻ Load example</button></div></div>
+  <div class="topbar"><span><span id="site-name" data-i18n-text="0:minha_casa">My home</span> <span class="breadcrumb" data-i18n-text="0:visao_geral_2">/ Overview</span></span><div class="topbar-right currency-topbar"><div class="locale-controls"><label class="language-control" for="language-select"><span data-i18n-text="0:language">Language</span><select id="language-select"><option value="en">English</option><option value="pt-BR">Português (Brasil)</option><option value="es">Español</option><option value="auto" data-i18n-text="0:automatic">Automatic (browser)</option></select></label><label class="language-control currency-control" for="display-currency"><span data-i18n-text="0:currency.label">Display currency</span><select id="display-currency" aria-describedby="currency-notice"><option value="BRL" data-i18n-text="0:currency.brl">BRL · Brazilian real</option><option value="USD" selected data-i18n-text="0:currency.usd">USD · US dollar</option><option value="EUR" data-i18n-text="0:currency.eur">EUR · Euro</option></select></label><button type="button" id="open-settings" class="button secondary small settings-button" aria-haspopup="dialog" aria-controls="settings-dialog" aria-label="Settings" data-i18n-aria-label="settings.title"><span aria-hidden="true">⚙</span><span data-i18n-text="0:settings.title">Settings</span></button></div><span id="currency-notice" class="sr-only" role="status" aria-live="polite"></span><span class="sr-only" id="language-notice" role="status" aria-live="polite"></span><span id="storage-status" class="saved" data-i18n-text="0:salvo_neste_navegador">● Saved in this browser</span><span class="avatar" aria-label="Local profile" data-i18n-aria-label="perfil_local">MC</span></div></div>
+  <main id="main" tabindex="-1">
+    <section class="page-heading" aria-labelledby="overview-title">
+      <div class="hero-copy">
+        <div class="eyebrow" data-i18n-text="0:energia_que_faz_sentido">ENERGY THAT MAKES SENSE</div>
+        <h1 id="overview-title" data-i18n-text="0:entenda_sua_energia">Understand your energy.<br><span data-i18n-text="0:escolha_como_economizar">Choose how to save.</span></h1>
+        <p data-i18n-text="0:descubra_o_que_pesa_no_consumo_e_teste">Discover what uses the most energy and try a change that fits your routine.</p>
+        <a class="hero-link" href="#devices-section"><span data-i18n-text="0:01_conhecer">01 / UNDERSTAND</span><span aria-hidden="true">↘</span></a>
+      </div>
+      <div class="hero-aside">
+        <div class="energy-study" aria-hidden="true">
+          <span class="study-index">W—01 / WattWise</span>
+          <svg viewBox="0 0 420 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="305" cy="84" r="49" fill="#bc6b43"/>
+            <circle cx="305" cy="84" r="64" stroke="#bc6b43" stroke-opacity=".35"/>
+            <path d="M305 10V1M379 84H391M365 25L374 16M365 143L374 152M246 25L237 16" stroke="#bc6b43"/>
+            <path d="M33 209L197 249L389 192L225 153L33 209Z" fill="#dedbce"/>
+            <path d="M93 127L206 158V230L93 199V127Z" fill="#e8e2d2" stroke="#6c705d" stroke-width="1.2"/>
+            <path d="M206 158L326 122V194L206 230V158Z" fill="#f6f3e9" stroke="#6c705d" stroke-width="1.2"/>
+            <path d="M93 127L146 67L263 98L206 158L93 127Z" fill="#59634c" stroke="#59634c" stroke-width="1.2"/>
+            <path d="M206 158L263 98L326 122L206 158Z" fill="#d0cbb9" stroke="#6c705d" stroke-width="1.2"/>
+            <path d="M117 120L149 84L232 107L199 143L117 120Z" stroke="#c6cbb9"/>
+            <path d="M132 102L215 125M159 87L127 123M185 94L153 130M211 101L179 137" stroke="#c6cbb9" stroke-width=".8"/>
+            <path d="M112 151L142 159V184L112 176V151ZM158 164L187 172V197L158 189V164Z" fill="#b6bda7" stroke="#6c705d"/>
+            <path d="M233 171L260 163V214L233 222V171Z" fill="#d3ccb8" stroke="#6c705d"/>
+            <path d="M280 154L307 146V172L280 180V154Z" fill="#b6bda7" stroke="#6c705d"/>
+            <path d="M293 150V176M280 167L307 159M126 155V180M172 168V193" stroke="#6c705d"/>
+            <path d="M62 178V208M62 178C43 170 43 146 62 133C81 146 81 170 62 178Z" fill="#c4c9b4" stroke="#6c705d"/>
+            <path d="M358 164V191M358 164C343 155 346 138 358 127C371 138 374 155 358 164Z" fill="#c4c9b4" stroke="#6c705d"/>
+            <path d="M43 226H104M43 221V231M104 221V231M341 218H382M382 213V223" stroke="#a5a38e"/>
+            <path d="M46 66H92M69 43V89" stroke="#b3b19f" stroke-width=".8"/>
+            <circle cx="69" cy="66" r="14" stroke="#b3b19f" stroke-width=".8"/>
+            <path d="M266 51H245V72M266 51L245 72" stroke="#59634c" stroke-width="1.5"/>
+          </svg>
+          <span class="study-unit">W × h ÷ 1000 = kWh</span>
+        </div>
+        <div class="sample-controls">
+          <label for="sample-scenario" data-i18n-text="0:escolha_um_exemplo_ficticio">Choose a fictional example</label>
+          <select id="sample-scenario"><option value="family" data-i18n-text="0:familia_3_pessoas">Family · 3 people</option><option value="high-consumption" data-i18n-text="0:alto_consumo_5_pessoas">High consumption · 5 people</option><option value="industrial" data-i18n-text="0:industria_embalagens">Industry · packaging</option></select>
+          <button class="button secondary" id="load-demo" data-i18n-text="0:carregar_exemplo">↻ Load example</button>
+        </div>
+      </div>
+    </section>
     <div class="evidence-banner"><span class="evidence-dot"></span><strong id="data-label" data-i18n-text="0:estimativa_manual">Manual estimate</strong><span data-i18n-text="0:os_valores_vem_das_potencias_e_dos_horarios">Values come from the power and usage times you enter. They are not actual measurements.</span></div>
     <section id="storage-recovery" class="error recovery" role="status" aria-label="Saved data recovery" hidden data-i18n-aria-label="recuperacao_dos_dados_salvos">
       <p id="recovery-summary"></p>
@@ -39,16 +79,16 @@
     </section>
     <p id="form-error" class="error" role="alert" hidden></p>
     <section class="metrics" aria-label="Estimated overview" aria-live="polite" data-i18n-aria-label="resumo_estimado">
-      <article class="metric"><div class="metric-label" data-i18n-text="0:custo_de_energia_estimado">Estimated energy cost <span>↗</span></div><div class="metric-value" id="cost">—</div><p id="cost-caption" data-i18n-text="0:para_o_periodo_informado">For the selected period</p></article>
-      <article class="metric"><div class="metric-label" data-i18n-text="0:consumo_estimado">Estimated consumption <span>ϟ</span></div><div class="metric-value" id="consumption">—</div><p data-i18n-text="0:a_partir_da_sua_lista_de_aparelhos">Based on your appliance list</p></article>
-      <article class="metric highlight"><div class="metric-label" data-i18n-text="0:potencial_da_melhor_mudanca">Best change potential <span>✧</span></div><div class="metric-value" id="potential">—</div><p id="potential-caption" data-i18n-text="0:cadastre_uma_proposta_para_comparar">Add a proposal to compare</p></article>
+      <article class="metric"><span class="metric-index" aria-hidden="true">01 —</span><div class="metric-label" data-i18n-text="0:custo_de_energia_estimado">Estimated energy cost <span aria-hidden="true">↗</span></div><div class="metric-value" id="cost">—</div><p id="cost-caption" data-i18n-text="0:para_o_periodo_informado">For the selected period</p></article>
+      <article class="metric"><span class="metric-index" aria-hidden="true">02 —</span><div class="metric-label" data-i18n-text="0:consumo_estimado">Estimated consumption <span aria-hidden="true">ϟ</span></div><div class="metric-value" id="consumption">—</div><p data-i18n-text="0:a_partir_da_sua_lista_de_aparelhos">Based on your appliance list</p></article>
+      <article class="metric highlight"><span class="metric-index" aria-hidden="true">03 —</span><div class="metric-label" data-i18n-text="0:potencial_da_melhor_mudanca">Best change potential <span aria-hidden="true">↘</span></div><div class="metric-value" id="potential">—</div><p id="potential-caption" data-i18n-text="0:cadastre_uma_proposta_para_comparar">Add a proposal to compare</p></article>
     </section>
     <div class="content-grid">
       <section class="panel" id="devices-section">
         <div class="panel-heading"><div><div class="eyebrow" data-i18n-text="0:01_conhecer">01 / UNDERSTAND</div><h2 id="devices-title" data-i18n-text="0:o_que_consome_na_sua_casa">What uses energy in your home</h2></div><button class="button small secondary" id="add-device" data-i18n-text="0:aparelho">+ Appliance</button></div>
         <p class="section-description" data-i18n-text="0:cadastre_um_aparelho_ou_componente_por_linha_use">Add one appliance or component per row. Use separate modes for different periods without counting the same consumption twice.</p>
         <div id="devices" class="device-list"></div>
-        <div id="empty-devices" class="empty" hidden><span>⌂</span><h3 data-i18n-text="0:sua_casa_comeca_aqui">Your home starts here</h3><p data-i18n-text="0:adicione_seu_primeiro_aparelho_ou_carregue_o_exemplo">Add your first appliance or load an example to explore.</p><button class="button primary" id="empty-add" data-i18n-text="0:adicionar_aparelho">Add appliance</button></div>
+        <div id="empty-devices" class="empty" hidden><span aria-hidden="true">⌂</span><h3 data-i18n-text="0:sua_casa_comeca_aqui">Your home starts here</h3><p data-i18n-text="0:adicione_seu_primeiro_aparelho_ou_carregue_o_exemplo">Add your first appliance or load an example to explore.</p><button class="button primary" id="empty-add" data-i18n-text="0:adicionar_aparelho">Add appliance</button></div>
         <div class="calculation-note"><span>ⓘ</span><p data-i18n-text="0:potencias_de_etiqueta_podem_ser_maximas_informe_uma">Nameplate power may be a maximum. Enter average usage power when known. Unlisted hours are treated as no consumption.</p></div>
       </section>
       <section class="panel coach-panel" id="plan-section">
@@ -75,23 +115,23 @@
     <footer><span class="footer-brand">ϟ WattWise</span><span data-i18n-text="0:construido_para_o_hackday_2026_ods_7_3">Built for Hackday 2026 · SDG 7.3</span><span data-i18n-text="0:dados_locais_escolhas_suas">Local data. Your choices.</span></footer>
   </main>
 </div>
-<dialog id="device-dialog"><form id="device-form"><div class="dialog-heading"><div><div class="eyebrow" data-i18n-text="0:sua_casa">YOUR HOME</div><h2 id="dialog-title" data-i18n-text="0:novo_aparelho">New appliance</h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Close" data-i18n-aria-label="fechar">×</button></div>
+<dialog id="device-dialog" aria-labelledby="dialog-title"><form id="device-form"><div class="dialog-heading"><div><div class="eyebrow" data-i18n-text="0:sua_casa">YOUR HOME</div><h2 id="dialog-title" data-i18n-text="0:novo_aparelho">New appliance</h2></div><button type="button" class="icon-button" id="close-dialog" aria-label="Close" data-i18n-aria-label="fechar">×</button></div>
   <label data-i18n-text="0:nome_do_aparelho_ou_modo_de_uso">Appliance or usage mode name<input id="device-name" maxlength="100" required placeholder="E.g. living room TV" data-i18n-placeholder="ex_televisao_da_sala"></label>
-  <fieldset><legend data-i18n-text="0:como_voce_usa_hoje">Current usage</legend><div class="two-columns"><label data-i18n-text="0:potencia_media_w">Average power (W)<input id="device-watts" type="number" min="0" max="100000" step="0.1" required></label><label data-i18n-text="0:horas_por_dia">Hours per day<input id="device-hours" type="number" min="0" max="24" step="0.01" required></label></div></fieldset>
+  <fieldset><legend data-i18n-text="0:como_voce_usa_hoje">Current usage</legend><div class="two-columns"><label data-i18n-text="0:potencia_media_w">Average power (W)<input id="device-watts" type="number" inputmode="decimal" min="0" max="100000" step="0.1" required></label><label data-i18n-text="0:horas_por_dia">Hours per day<input id="device-hours" type="number" inputmode="decimal" min="0" max="24" step="0.01" required></label></div></fieldset>
   <label class="checkbox-label" data-i18n-text="1:preservar_este_uso_e_essencial_para_minha_rotina"><input id="device-protected" type="checkbox"> Preserve this usage: it is essential to my routine</label>
-  <fieldset id="proposed-fields"><legend data-i18n-text="0:uma_mudanca_que_voce_pode_experimentar">A change you can try</legend><p data-i18n-text="0:altere_o_tempo_ou_a_potencia_media_se">Change the time or average power. If you have no proposal, keep the current values.</p><div class="two-columns"><label data-i18n-text="0:potencia_proposta_w">Proposed power (W)<input id="device-planned-watts" type="number" min="0" max="100000" step="0.1" required></label><label data-i18n-text="0:horas_propostas_por_dia">Proposed hours per day<input id="device-planned-hours" type="number" min="0" max="24" step="0.01" required></label></div></fieldset>
+  <fieldset id="proposed-fields"><legend data-i18n-text="0:uma_mudanca_que_voce_pode_experimentar">A change you can try</legend><p data-i18n-text="0:altere_o_tempo_ou_a_potencia_media_se">Change the time or average power. If you have no proposal, keep the current values.</p><div class="two-columns"><label data-i18n-text="0:potencia_proposta_w">Proposed power (W)<input id="device-planned-watts" type="number" inputmode="decimal" min="0" max="100000" step="0.1" required></label><label data-i18n-text="0:horas_propostas_por_dia">Proposed hours per day<input id="device-planned-hours" type="number" inputmode="decimal" min="0" max="24" step="0.01" required></label></div></fieldset>
   <p id="device-error" class="error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button danger" id="delete-device" hidden data-i18n-text="0:excluir">Delete</button><button type="submit" class="button primary" data-i18n-text="0:salvar_aparelho">Save appliance</button></div>
 </form></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 <dialog id="settings-dialog" aria-labelledby="settings-title"><form id="settings-form">
   <div class="dialog-heading"><h2 id="settings-title" data-i18n-text="0:settings.title">Settings</h2><button type="button" class="icon-button" id="close-settings" aria-label="Close settings" data-i18n-aria-label="settings.close">×</button></div>
     <fieldset><legend data-i18n-text="0:settings.consumption">Consumption settings</legend><div class="two-columns">
-      <label data-i18n-text="0:currency.price_brl">Energy price (BRL)<div class="input-unit"><span>R$</span><input id="rate" type="number" min="0" max="1000" step="0.01" required aria-label="Energy price per kWh in BRL" data-i18n-aria-label="currency.price_label_brl"><span>/ kWh</span></div></label>
-      <label data-i18n-text="0:periodo">Period <div class="input-unit"><input id="days" type="number" min="1" max="366" step="1" required aria-label="Period in days" data-i18n-aria-label="periodo_em_dias"><span data-i18n-text="0:dias">days</span></div></label>
+      <label data-i18n-text="0:currency.price_brl">Energy price (BRL)<div class="input-unit"><span>R$</span><input id="rate" type="number" inputmode="decimal" min="0" max="1000" step="0.01" required aria-label="Energy price per kWh in BRL" data-i18n-aria-label="currency.price_label_brl"><span>/ kWh</span></div></label>
+      <label data-i18n-text="0:periodo">Period <div class="input-unit"><input id="days" type="number" inputmode="numeric" min="1" max="366" step="1" required aria-label="Period in days" data-i18n-aria-label="periodo_em_dias"><span data-i18n-text="0:dias">days</span></div></label>
       </div><p data-i18n-text="0:o_consumo_e_calculado_com|2:informe_uma_potencia_media_e_seu_tempo_de">Consumption is calculated as <strong>W × h ÷ 1000</strong>. Enter average power and usage time.</p>
     </fieldset>
   <fieldset><legend data-i18n-text="0:settings.exchange_rates">Exchange rates</legend><p id="exchange-help" data-i18n-text="0:settings.help">Set BRL and EUR units per 1 USD. USD is the default display currency. Energy prices, calculations and saved amounts remain in BRL; configure BRL per USD to display dollar costs.</p>
-    <div class="two-columns"><label for="exchange-brl"><span data-i18n-text="0:settings.brl_rate">BRL per 1 USD</span><input id="exchange-brl" type="number" min="0.00000001" max="1000000" step="any" inputmode="decimal" aria-describedby="exchange-help"></label><label for="exchange-eur"><span data-i18n-text="0:settings.eur_rate">EUR per 1 USD</span><input id="exchange-eur" type="number" min="0.00000001" max="1000000" step="any" inputmode="decimal" aria-describedby="exchange-help"></label></div>
+    <div class="two-columns"><label for="exchange-brl"><span data-i18n-text="0:settings.brl_rate">BRL per 1 USD</span><input id="exchange-brl" type="number" inputmode="decimal" min="0.00000001" max="1000000" step="any" aria-describedby="exchange-help"></label><label for="exchange-eur"><span data-i18n-text="0:settings.eur_rate">EUR per 1 USD</span><input id="exchange-eur" type="number" inputmode="decimal" min="0.00000001" max="1000000" step="any" aria-describedby="exchange-help"></label></div>
   </fieldset>
   <p id="settings-pending" role="status" class="currency-status" hidden></p><p id="currency-status" class="currency-status"></p><p id="currency-error" class="error" role="alert" hidden></p>
   <div class="dialog-actions"><button type="button" class="button secondary" id="cancel-settings" data-i18n-text="0:settings.cancel">Cancel</button><button type="submit" class="button primary" data-i18n-text="0:settings.save">Save settings</button></div>
