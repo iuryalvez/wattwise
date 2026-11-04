@@ -7,9 +7,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "f875b7bc7ad38afd107a62d217268854f13a68c66aa1fcd350b27332b6ae01cb",
+        "catalog_sha256": "d2055fdcc19edeecc4f7b350e985f5c42d32d4c858abd40b545f9205fe317cd1",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels; mobile navigation labels reviewed for coverage and meaning (implementation review)",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -20,9 +20,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "e3c10fc821af3a8e052212e6e8cb533524e7bee3dcee3a0c5b4b1daf9f01840f",
+        "catalog_sha256": "92f64d6dfa96b9252fdb874d365156e2b2cb720575fa946c89f87f06cc988ebe",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels; mobile navigation labels reviewed for coverage and meaning (implementation review)",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -33,9 +33,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "b0ef2b385e3d41b04c30e56e0cc9f2de8a667db772508cb07e773ffca98bad40",
+        "catalog_sha256": "f54d6f91e3c795c1dd0a632594a8faed755f6610337534c48529f5e5ee4597fa",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels; mobile navigation labels reviewed for coverage and meaning (implementation review)",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }

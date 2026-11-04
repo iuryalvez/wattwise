@@ -421,9 +421,25 @@ $('export-report').onclick = () => {
   const url = URL.createObjectURL(blob), a = document.createElement('a');
   a.href = url; a.download = 'wattwise-simulacao.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
-document.querySelectorAll('.nav-link').forEach(link => link.onclick = () => {
-  document.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active')); link.classList.add('active');
-});
+const navigationLinks = document.querySelectorAll('.nav-link');
+function activateNavigation(link) {
+  navigationLinks.forEach(item => {
+    item.classList.remove('active');
+    item.removeAttribute('aria-current');
+  });
+  link.classList.add('active');
+  link.setAttribute('aria-current', link.hash ? 'location' : 'page');
+}
+navigationLinks.forEach(link => link.onclick = () => activateNavigation(link));
+function syncNavigation() {
+  const current = [...navigationLinks].find(link => link.hash === location.hash && link.pathname === location.pathname);
+  if (current) activateNavigation(current);
+}
+// Also honor section links opened from the monitoring page and browser history.
+if (typeof location !== 'undefined') {
+  syncNavigation();
+  globalThis.addEventListener('hashchange', syncNavigation);
+}
 function renderAmounts() {
   renderDevices(); renderMetrics(); renderHistory();
   if (activePlan) pickPlan(activePlan, true);

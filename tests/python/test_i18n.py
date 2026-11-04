@@ -92,7 +92,7 @@ class I18nTests(unittest.TestCase):
                 for index, child in enumerate(node["children"]):
                     if not isinstance(child, str) or not re.search(r"[A-Za-zÀ-ÿ]{2}", child) or node["tag"] in {"code", "script", "style"}:
                         continue
-                    invariant = child.strip() in {"WattWise", "ϟ WattWise", "MC", "kWh", "/ kWh"}
+                    invariant = child.strip() in {"WattWise", "ϟ WattWise", "MC", "kWh", "/ kWh", "W—01 / WattWise", "W × h ÷ 1000 = kWh"}
                     native_name = node["tag"] == "option" and attrs.get("value") in MANIFEST["locales"] and child == MANIFEST["locales"][attrs["value"]]["native_name"]
                     self.assertTrue(index in localized_indexes or invariant or native_name, f"{filename}: unlocalized text {child!r}")
                 for attr in ("aria-label", "placeholder", "title"):

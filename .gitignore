@@ -5,6 +5,7 @@ __pycache__/
 !.env.example
 .venv/
 .devtools/
+node_modules/
 
 # Local evaluation reports and other generated outputs.
 /artifacts/

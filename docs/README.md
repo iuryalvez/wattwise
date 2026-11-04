@@ -20,6 +20,7 @@ Start with the [project README](../README.md) for a quick introduction and a loc
 - [Internationalization review](I18N_REVIEW.md): verification performed and remaining browser/model limitations.
 - [API errors and recovery](API_ERRORS.md): diagnostic codes, field validation, original backups, and storage failures.
 - [Architecture](ARCHITECTURE.md): where the code lives and how data flows.
+- [Interface design](INTERFACE.md): visual conventions, Tailwind theme, and local CSS build commands.
 - [Roadmap](ROADMAP.md): product priorities and scoped contribution ideas.
 - [Maintainer guide](MAINTAINING.md): triage, repository settings, and release preparation.
 - [Evaluation guide](EVALUATION.md): offline checks, browser verification, and local-model reports.
