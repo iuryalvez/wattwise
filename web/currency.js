@@ -1,12 +1,18 @@
 'use strict';
-// Manual rates use USD as the base. Tariffs, calculations and saved amounts stay BRL.
+// Editable local reference rates use USD as the base. Calculated/saved amounts stay BRL.
 (() => {
   const I = globalThis.WattWiseI18n, t = I.text, el = id => document.getElementById(id);
   const KEY = 'wattwise-display-currency-v2', LEGACY_KEY = 'wattwise-display-currency-v1', supported = ['USD', 'BRL', 'EUR'];
   const MIN_RATE = 0.00000001, MAX_RATE = 1000000;
+  // ECB 2026-11-03: EUR 1 = USD 1.1179 = BRL 6.1411; cross rates rounded to eight decimals.
+  const REFERENCE = {date:'2026-11-03',BRL:5.49342517,EUR:0.89453439,
+    url:'https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html'};
+  const referenceEntry = code => ({value:REFERENCE[code],updatedAt:null,source:'ecb_reference',referenceDate:REFERENCE.date});
   const validRate = value => typeof value === 'number' && Number.isFinite(value) && value >= MIN_RATE && value <= MAX_RATE;
   const validDate = value => typeof value === 'string' && value.length <= 80 && Number.isFinite(Date.parse(value));
-  let currency = 'USD', rates = {}, persistence = true, recovered = false, errorKey = null, errorCurrency = null, pendingCurrency = null;
+  const validReferenceDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+    && validDate(value+'T00:00:00Z') && new Date(value+'T00:00:00Z').toISOString().slice(0,10) === value;
+  let currency = 'USD', rates = {BRL:referenceEntry('BRL'),EUR:referenceEntry('EUR')}, persistence = true, recovered = false, errorKey = null, errorCurrency = null, pendingCurrency = null;
   let settingsOpener = null;
   const sourceCurrency = 'BRL';
   let settingsHooks = {};
@@ -14,6 +20,7 @@
   try {
     const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
     if (raw !== null) {
+      rates = {};
       let saved;
       try { saved = JSON.parse(raw); } catch { recovered = true; }
       if (!saved || ![1,2].includes(saved.version) || !supported.includes(saved.currency) || !saved.rates || typeof saved.rates !== 'object' || Array.isArray(saved.rates)) {
@@ -21,7 +28,11 @@
       } else {
         for (const code of saved.version === 1 ? ['USD','EUR'] : ['BRL','EUR']) {
           const rate = saved.rates[code];
-          if (rate && validRate(rate.value) && validDate(rate.updatedAt)) rates[code] = {value:rate.value, updatedAt:rate.updatedAt};
+          if (saved.version === 2 && rate?.source === 'ecb_reference' && validRate(rate.value)
+              && validReferenceDate(rate.referenceDate) && rate.updatedAt === null) {
+            rates[code] = {value:rate.value,updatedAt:null,source:'ecb_reference',referenceDate:rate.referenceDate};
+          }
+          else if (rate && validRate(rate.value) && validDate(rate.updatedAt)) rates[code] = {value:rate.value, updatedAt:rate.updatedAt};
           else if (rate !== undefined) recovered = true;
         }
         if (saved.version === 1) {
@@ -43,10 +54,14 @@
     }
   } catch { persistence = false; }
   const rateFor = code => code === 'USD' ? 1 : rates[code]?.value ?? null;
+  const rateSource = code => code === 'USD' ? 'identity' : rates[code]?.source || 'manual';
   function snapshot(source=sourceCurrency) {
     return {base_currency:'USD', currency, units_per_usd:rateFor(currency),
-      rate_source:currency === 'USD' ? 'identity' : 'manual', rate_updated_at:rates[currency]?.updatedAt ?? null,
-      source_currency:source, source_units_per_usd:rateFor(source), source_rate_updated_at:rates[source]?.updatedAt ?? null};
+      rate_source:rateSource(currency), rate_updated_at:rates[currency]?.updatedAt ?? null,
+      rate_reference_date:rates[currency]?.referenceDate ?? null,
+      source_currency:source, source_units_per_usd:rateFor(source), source_rate_updated_at:rates[source]?.updatedAt ?? null,
+      source_rate_source:rateSource(source), source_rate_reference_date:rates[source]?.referenceDate ?? null,
+      reference_source_url:rateSource(currency) === 'ecb_reference' || rateSource(source) === 'ecb_reference' ? REFERENCE.url : null};
   }
   function format(value, locale = I.locale, source = sourceCurrency) {
     if (typeof value !== 'number' || !Number.isFinite(value)) return '—';
@@ -63,7 +78,13 @@
     const missingCurrency = sourceCurrency === currency ? null : current.units_per_usd === null ? currency : rateFor(sourceCurrency) === null ? sourceCurrency : null;
     const missingRate = missingCurrency !== null;
     let message = missingRate ? t('settings.configure_currency',{currency:missingCurrency}) : currency === sourceCurrency && current.units_per_usd === null ? t('settings.currency_applied',{currency}) + ' ' + t('settings.help') : currency === 'USD' ? t('currency.base_status') : t('currency.converted_status', {
-      currency, rate:I.number(current.units_per_usd,20), date:I.date(current.rate_updated_at,{dateStyle:'short',timeStyle:'short'})});
+      currency, rate:I.number(current.units_per_usd,20), date:current.rate_reference_date
+        ? I.date(current.rate_reference_date+'T12:00:00Z',{dateStyle:'short',timeZone:'UTC'})
+        : I.date(current.rate_updated_at,{dateStyle:'short',timeStyle:'short'})});
+    const referenceDates = new Set([rates[sourceCurrency],rates[currency]].filter(rate=>rate?.source === 'ecb_reference').map(rate=>rate.referenceDate));
+    for (const date of referenceDates) {
+      message += ' ' + t('currency.reference_notice',{date:I.date(date+'T12:00:00Z',{dateStyle:'long',timeZone:'UTC'})});
+    }
     if (recovered) message += ' ' + t('currency.recovered');
     if (!persistence) message += ' ' + t('currency.session');
     if (el('currency-status')) el('currency-status').textContent = message;

@@ -1,6 +1,6 @@
 # Display currencies and settings
 
-The planning page supports **USD**, **BRL** and **EUR** independently of interface language. **USD is the initial display default and the exchange-rate base**; a valid saved display preference takes precedence. The energy price is **always entered in BRL/kWh**. Backend calculations, API fields and stored numeric results remain BRL. CLI output remains BRL. Monitoring displays energy units without currency conversion.
+The planning page supports **USD**, **BRL** and **EUR** independently of interface language. **USD is the initial display default and the exchange-rate base**; a valid saved display preference takes precedence. New browsers start with editable, bundled ECB reference rates dated **3 November 2026**: **5.49342517 BRL per USD** and **0.89453439 EUR per USD**. The energy price is **always entered in BRL/kWh**. Backend calculations, API fields and stored numeric results remain BRL. CLI output remains BRL. Monitoring displays energy units without currency conversion.
 
 ## Settings
 
@@ -34,11 +34,13 @@ The [European Central Bank reference rates for 3 November 2026](https://www.ecb.
 | BRL per 1 USD | 5.49342517 | 6.1411 / 1.1179 |
 | EUR per 1 USD | 0.89453439 | 1 / 1.1179 |
 
-These dated reference values can be entered manually; they are not live rates or automatic defaults. They exclude transaction spreads and fees. The application makes no exchange-rate request and never replaces a saved parameter with this documentation reference.
+These dated reference values are the bundled initial defaults when no currency preference exists. They exclude transaction spreads and fees and are not live quotes. Settings identifies the reference date and allows manual edits. Existing preferences, including intentionally missing parameters, are never replaced by the bundled values. The application makes no exchange-rate request.
+
+To update the bundled reference, check the official source, record the new quote date and both source EUR quotes, calculate the USD cross rates and round to eight decimals. Update `REFERENCE` in `web/currency.js`, this documentation and the reference-rate tests together. Preserve stored references and manual overrides. Do not replace the dated snapshot with a runtime network call.
 
 ## Persistence and exports
 
-`wattwise-display-currency-v2` stores `{version:2,currency,rates:{BRL:{value,updatedAt},EUR:{value,updatedAt}}}` separately from household and language preferences. Corrupt preferences fall back to USD and retain usable rates where possible, without startup writes. If browser storage is unavailable, settings remain available in memory for the session.
+`wattwise-display-currency-v2` stores `{version:2,currency,rates:{BRL:{value,updatedAt},EUR:{value,updatedAt}}}` separately from household and language preferences. Reference entries additionally contain `source: "ecb_reference"`, an ISO `referenceDate` and `updatedAt: null`; an actual manual edit replaces these with a manual timestamp. Saving identical reference values preserves their provenance. Previously saved reference dates/rates survive later bundle updates. Corrupt preferences fall back to USD and retain usable rates where possible, without startup writes or silently replacing invalid data with defaults. If browser storage is unavailable, the bundled reference remains available in memory for the session.
 
 Older `wattwise-display-currency-v1` settings expressed USD/EUR units per BRL. When no v2 entry exists, valid old parameters are converted in memory: `BRL/USD = 1 / old USD/BRL`, and `EUR/USD = old EUR/BRL / old USD/BRL`. The old entry is preserved unchanged; v2 is written only after an explicit settings/currency action. Rates that cannot be derived or validated require reconfiguration. The EUR cross-rate timestamp reflects the more recent source parameter. Existing simulations and their metadata are never rewritten by conversion or migration.
 
@@ -57,7 +59,7 @@ New saved simulations and JSON exports add a `display_currency` snapshot, for ex
 }
 ```
 
-For display USD, `units_per_usd` is `1`, source is `identity` and its timestamp is `null`. Missing manual parameters have `null` rates/timestamps. Original `*_brl` numeric fields remain BRL. History uses the current display conversion while historical snapshots retain their original schema and rates.
+For display USD, `units_per_usd` is `1`, source is `identity` and its timestamp is `null`. Snapshots additionally report `source_rate_source`, `rate_reference_date`, `source_rate_reference_date` and `reference_source_url` to distinguish ECB references from manual edits. A reference has a date, not a fabricated manual-edit timestamp. Missing manual parameters have `null` rates/timestamps. Original `*_brl` numeric fields remain BRL. History uses the current display conversion while historical snapshots retain their original schema and rates.
 
 ## Verification
 
@@ -66,3 +68,5 @@ For display USD, `units_per_usd` is `1`, source is `identity` and its timestamp 
 Independent native-speaker translation review and the full application/model browser journey remain separate from this configuration flow; see [i18n review status](I18N_REVIEW.md).
 
 The real browser configuration flow was verified with the fictional family profile: saving `5` BRL/USD and `0.9` EUR/USD displayed BRL 504.25 as USD 100.85 while energy stayed 480.24 kWh. The price and period were absent from the main overview and present in Settings. Escape discarded drafts of BRL 2/kWh and 7 days. Saving BRL 1.2/kWh and 14 days recalculated the estimate to 224.11 kWh and USD 53.79; reloading preserved these settings, and selecting EUR displayed EUR 48.41. Native validation rejected day 367. The Spanish dialog was checked at 360 × 800 with no horizontal overflow and keyboard access to Save in its scrollable content. The monitoring Settings menu loaded the same USD-based rate values and saved successfully.
+
+After applying the bundled ECB references, a fresh browser origin displayed the same fictional family profile as USD 91.79 or EUR 82.11, with 480.24 kWh unchanged. Settings opened with Enter and showed both prefilled rates plus the 3 November 2026 reference disclosure. Saving unchanged values and reloading preserved the reference entries. The Spanish reference notice and settings dialog were checked at 360 × 800 without horizontal overflow. The offline suite was run against an export of the exact staged tree, excluding concurrent layout work.

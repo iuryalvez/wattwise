@@ -30,6 +30,8 @@ After updating Python server code, stop the running app with **Ctrl+C**, run `py
 
 ### Display currencies
 
+New browsers start with editable ECB references dated 3 November 2026: **1 USD = 5.49342517 BRL** and **0.89453439 EUR**. Settings identifies the dated reference; no automatic updates occur and saved preferences are never replaced. These initial values work offline. See [source and update procedure](CURRENCIES.md#researched-reference-for-manual-configuration).
+
 USD is the initial display currency and the exchange-rate base; a valid saved display preference takes precedence. Open **Settings** (⚙) in the planning top bar to edit **Energy price (BRL)**, **Period** in days, and manual rates **BRL per 1 USD** and **EUR per 1 USD**, then choose **Save settings**. The monitoring Settings menu contains exchange rates. Until BRL per USD is configured, dollar costs show “—” with a configuration notice. For example, the fictional parameters `1 USD = 5 BRL` and `1 USD = 0.9 EUR` display BRL 100 as USD 20 or EUR 18. On the planning page, **Display currency** beside Language applies configured choices directly; missing parameters open Settings. Cancel, close or Escape discards drafts. Parameters are validated before any are applied. Saving changed price/period recalculates the estimate and invalidates the old plan; currency-only changes preserve it. No exchange-rate service is contacted. Prices, calculations and saved/exported numeric fields remain BRL, with a separate display-currency snapshot for provenance. See [currency behavior and verification](CURRENCIES.md).
 
 ### Smart-home monitoring mockup

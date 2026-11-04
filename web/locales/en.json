@@ -349,7 +349,7 @@
   "currency.usd": "USD · US dollar",
   "currency.eur": "EUR · Euro",
   "currency.base_status": "Showing USD. Rates are based on 1 USD. Energy prices, calculations and saved/exported amounts remain in BRL; history uses the configured display conversion.",
-  "currency.converted_status": "Showing {{currency}} at your manual rate: 1 USD = {{rate}} {{currency}} (updated {{date}}). All displayed costs, including history, use USD-based conversion. The energy price and stored/exported amounts remain in BRL.",
+  "currency.converted_status": "Showing {{currency}} at the configured rate: 1 USD = {{rate}} {{currency}} (dated {{date}}). All displayed costs, including history, use USD-based conversion. The energy price and stored/exported amounts remain in BRL.",
   "currency.recovered": "Invalid currency preferences were ignored. Review the displayed currency and rate.",
   "currency.session": "This preference is available only in this session; browser storage is unavailable.",
   "currency.invalid_rate": "Enter a finite rate between {{min}} and {{max}} units per USD. The applied currency has not changed.",
@@ -367,5 +367,6 @@
   "settings.brl_rate": "BRL per 1 USD",
   "currency.price_brl": "Energy price (BRL)",
   "currency.price_label_brl": "Energy price per kWh in BRL",
-  "settings.consumption": "Consumption settings"
+  "settings.consumption": "Consumption settings",
+  "currency.reference_notice": "Initial ECB reference from {{date}}. Editable in Settings; rates are not updated automatically."
 }

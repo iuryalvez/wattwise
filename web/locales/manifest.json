@@ -7,9 +7,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "719ddbcfe58e2267ae911fffcc4152fe4cdc6e083c6d70765eb27929fa0a87e8",
+        "catalog_sha256": "f875b7bc7ad38afd107a62d217268854f13a68c66aa1fcd350b27332b6ae01cb",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency and configuration labels",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -20,9 +20,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "1cfafae1c87faad4b6cf9e4663da24c78002e061920247fcd835fff592c9a44b",
+        "catalog_sha256": "e3c10fc821af3a8e052212e6e8cb533524e7bee3dcee3a0c5b4b1daf9f01840f",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency and configuration labels",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -33,9 +33,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "0bb6f8b6b53a3bf092dcb2fe2053aa7f51c7bbcc1ede2beb9522ac4caa8847b0",
+        "catalog_sha256": "b0ef2b385e3d41b04c30e56e0cc9f2de8a667db772508cb07e773ffca98bad40",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency and configuration labels",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency, ECB reference disclosure and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }

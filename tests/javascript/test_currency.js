@@ -9,9 +9,34 @@ const format=(value,currency,locale='en')=>new Intl.NumberFormat(locale,{style:'
 const apply=(app,currency,rate)=>app.read(`WattWiseCurrency.apply(${JSON.stringify(currency)},${String(rate)})`);
 const select=(app,code)=>{app.get('display-currency').value=code;app.get('display-currency').onchange();};
 const submit=app=>app.get('settings-form').onsubmit({preventDefault(){}});
+const emptyPreference=JSON.stringify({version:2,currency:'USD',rates:{}});
 
 (async()=>{
-  const app=createApp(null,{locale:'en',report}),get=app.get;
+  const initial=createApp(null,{locale:'en',report});
+  assert.equal(initial.read('money(100)'),format(100/5.49342517,'USD'),'Bundled reference rates make USD immediately usable offline');
+  assert.equal(initial.read('WattWiseCurrency.snapshot().source_rate_source'),'ecb_reference');
+  assert.equal(initial.read('WattWiseCurrency.snapshot().source_rate_reference_date'),'2026-11-03');
+  assert.equal(initial.read('WattWiseCurrency.snapshot().source_rate_updated_at'),null,'A reference date is never fabricated into a manual edit timestamp');
+  assert(initial.get('currency-status').textContent.includes('Initial ECB reference from November 3, 2026'));
+  assert.deepEqual(initial.writes,[]);initial.get('open-settings').onclick();
+  assert.equal(initial.get('exchange-brl').value,'5.49342517');assert.equal(initial.get('exchange-eur').value,'0.89453439');
+  submit(initial);select(initial,'EUR');
+  assert.equal(initial.read('money(100)'),format(100/5.49342517*0.89453439,'EUR'));
+  assert.equal(initial.read('WattWiseCurrency.snapshot().rate_source'),'ecb_reference');
+  const restoredReference=createApp(null,{locale:'en',currencyPreference:initial.storage.get(KEY)});
+  assert.equal(restoredReference.read('WattWiseCurrency.snapshot().rate_reference_date'),'2026-11-03');
+  assert.equal(restoredReference.read('money(100)'),initial.read('money(100)'));assert.deepEqual(restoredReference.writes,[]);
+  restoredReference.get('open-settings').onclick();restoredReference.get('exchange-eur').value='0.95';submit(restoredReference);
+  assert.equal(restoredReference.read('WattWiseCurrency.snapshot().rate_source'),'manual');
+  assert.equal(restoredReference.read('WattWiseCurrency.snapshot().rate_reference_date'),null);
+  assert(Number.isFinite(Date.parse(restoredReference.read('WattWiseCurrency.snapshot().rate_updated_at'))));
+  assert.equal(restoredReference.read('WattWiseCurrency.snapshot().source_rate_source'),'ecb_reference');
+  const preservedManual=JSON.stringify({version:2,currency:'USD',rates:{BRL:{value:6,updatedAt:'2026-10-01T12:00:00Z'},EUR:{value:0.8,updatedAt:'2026-10-01T12:00:00Z'}}});
+  const custom=createApp(null,{locale:'en',currencyPreference:preservedManual});
+  assert.equal(custom.read('money(100)'),format(100/6,'USD'));assert.equal(custom.storage.get(KEY),preservedManual);assert.deepEqual(custom.writes,[]);
+  const blockedDefault=createApp(null,{locale:'en',failRead:true,failWrite:true});
+  assert.equal(blockedDefault.read('money(100)'),format(100/5.49342517,'USD'));
+  const app=createApp(null,{locale:'en',report,currencyPreference:emptyPreference}),get=app.get;
   assert.equal(get('display-currency').value,'USD');
   assert.equal(app.read('WattWiseCurrency.snapshot().base_currency'),'USD');
   assert.equal(app.read('WattWiseCurrency.snapshot().units_per_usd'),1);
@@ -68,9 +93,9 @@ const submit=app=>app.get('settings-form').onsubmit({preventDefault(){}});
   assert.equal(app.read('config.rate'),0.95);assert.equal(app.read('config.days'),14);assert.equal(get('rate').value,0.95);
   get('open-settings').onclick();get('rate').value='2';get('settings-dialog').close();assert.equal(app.read('config.rate'),0.95,'Escape-like close discards planning drafts');
 
-  const cancel=createApp(null,{locale:'en'});let focused=false;cancel.get('display-currency').focus=()=>{focused=true;};
+  const cancel=createApp(null,{locale:'en',currencyPreference:emptyPreference});let focused=false;cancel.get('display-currency').focus=()=>{focused=true;};
   select(cancel,'EUR');cancel.get('exchange-eur').value='0.9';cancel.get('settings-dialog').close();
-  assert(focused);assert.equal(cancel.get('display-currency').value,'USD');assert.equal(cancel.storage.has(KEY),false);
+  assert(focused);assert.equal(cancel.get('display-currency').value,'USD');assert.equal(cancel.storage.get(KEY),emptyPreference);
   select(cancel,'JPY');assert.equal(cancel.get('display-currency').value,'USD');assert.equal(cancel.get('settings-dialog').open,false);
   for(const raw of ['{broken','null','[]',JSON.stringify({version:2,currency:'JPY',rates:{}}),JSON.stringify({version:2,currency:'EUR',rates:{EUR:{value:-1,updatedAt:'bad'}}})]){
     const recovered=createApp(null,{locale:'en',currencyPreference:raw});assert.equal(recovered.read('WattWiseCurrency.currency'),'USD');assert.equal(recovered.read('money(100)'),'—');

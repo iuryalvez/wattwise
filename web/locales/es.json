@@ -358,7 +358,7 @@
   "currency.usd": "USD · Dólar estadounidense",
   "currency.eur": "EUR · Euro",
   "currency.base_status": "Mostrando USD. Las tasas usan 1 USD como base. Los precios de energía, cálculos e importes guardados/exportados siguen en BRL; el historial usa la conversión de visualización configurada.",
-  "currency.converted_status": "Mostrando {{currency}} con tu tasa manual: 1 USD = {{rate}} {{currency}} (actualizada el {{date}}). Todos los costes mostrados, incluido el historial, usan la conversión con base en USD. El precio de la energía y los importes guardados/exportados siguen en BRL.",
+  "currency.converted_status": "Mostrando {{currency}} con la tasa configurada: 1 USD = {{rate}} {{currency}} (fecha: {{date}}). Todos los costes mostrados, incluido el historial, usan la conversión con base en USD. El precio de la energía y los importes guardados/exportados siguen en BRL.",
   "currency.recovered": "Se han ignorado preferencias de moneda inválidas. Comprueba la moneda y la tasa mostradas.",
   "currency.session": "Esta preferencia solo está disponible en esta sesión; el almacenamiento del navegador no está disponible.",
   "currency.invalid_rate": "Introduce una tasa finita entre {{min}} y {{max}} unidades por USD. La moneda aplicada no ha cambiado.",
@@ -376,5 +376,6 @@
   "settings.brl_rate": "BRL por 1 USD",
   "currency.price_brl": "Precio de la energía (BRL)",
   "currency.price_label_brl": "Precio de la energía por kWh en BRL",
-  "settings.consumption": "Parámetros de consumo"
+  "settings.consumption": "Parámetros de consumo",
+  "currency.reference_notice": "Referencia inicial del BCE del {{date}}. Editable en Configuración; las tasas no se actualizan automáticamente."
 }
