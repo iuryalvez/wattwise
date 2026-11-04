@@ -11,6 +11,8 @@ User-facing changes and contributor infrastructure will be recorded here. There 
 
 ### Added
 
+- Local i18next catalogs for English, Brazilian Portuguese, and Spanish on both pages; an accessible persistent language selector, localized formatting and structured API messages, and validated local-advisor locale instructions. BRL and calculations remain unchanged.
+- A translation contribution/review workflow, pinned runtime update procedure, and real-model locale evaluation. Browser verification remains pending; live Gemma evaluation found a Spanish recommendation-language failure and prose-quality concerns. See `docs/I18N_REVIEW.md`.
 - Contribution guide, support guidance, code of conduct, and security-reporting policy.
 - Architecture documentation, a scoped roadmap, and a maintainer guide.
 - Bug-report and feature-proposal forms and a pull request template.
@@ -20,6 +22,7 @@ User-facing changes and contributor infrastructure will be recorded here. There 
 
 ### Changed
 
+- English is the initial interface language and fallback; Portuguese is second in the selector. Browser-language detection is available through Automatic (browser).
 - Moved backend code into `src/wattwise/`, with separate calculation, planning, server, CLI, and advisor modules. Start the app with `python scripts/run.py serve` and the calculator with `python scripts/run.py estimate`.
 - Grouped tests by language, placed the optional BDGD tool under `scripts/research/`, and moved its dependency file to `requirements/bdgd.txt`.
 - Reorganized the README around product capabilities, a quick start, and contribution entry points.

@@ -173,9 +173,9 @@ class AppTests(unittest.TestCase):
             result = advise(config)
         payload = json.loads(mocked.call_args.args[0].data)
         self.assertEqual(json.loads(payload["messages"][1]["content"])["site_type"], "industrial")
-        self.assertIn("produção", result["experiment"]["check"])
-        self.assertIn("qualidade", result["experiment"]["check"])
-        self.assertNotIn("conforto", result["experiment"]["check"])
+        self.assertIn("production", result["experiment"]["check"])
+        self.assertIn("quality", result["experiment"]["check"])
+        self.assertNotIn("comfort", result["experiment"]["check"])
         self.assertEqual(result["candidate"]["household_after_cost_brl"], 20308.68)
         with patch("wattwise.advisor.ollama.request.urlopen", return_value=self.model_response("compressor-active")):
             with self.assertRaisesRegex(ValueError, "fora das opções"):
@@ -211,7 +211,8 @@ class AppTests(unittest.TestCase):
             result = advise(self.config)
         payload = json.loads(mocked.call_args.args[0].data)
         from wattwise.advisor.skill import load_skill
-        self.assertEqual(payload["messages"][0]["content"], load_skill()["body"])
+        self.assertIn(load_skill()["body"], payload["messages"][0]["content"])
+        self.assertIn("Response locale: en.", payload["messages"][0]["content"])
         supplied = json.loads(payload["messages"][1]["content"])
         self.assertEqual(supplied["answers"], self.config["advisorAnswers"])
         self.assertEqual(result["answers_considered"], 1)

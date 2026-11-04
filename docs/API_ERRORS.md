@@ -1,16 +1,20 @@
 # API errors and saved-state recovery
 
-The loopback API preserves the `error` string for existing clients. Expected failures also include a stable `code` and, when relevant, a `field` path. Messages are Brazilian Portuguese and may improve over time; use codes rather than matching message text.
+The loopback API preserves the Brazilian Portuguese `error` string for existing clients. Expected failures also include a stable `code` and, when relevant, a `field` path. Application exceptions now include an additive `message_key` and optional scalar `params` for local browser translation. Messages may improve over time; use codes/keys rather than matching message text. Envelope errors can be translated directly by code without a `message_key`. Unknown errors use a useful local generic message rather than displaying arbitrary upstream text.
 
 ```json
 {
   "error": "Horas por dia: informe um valor de até 24.",
   "code": "invalid_input",
-  "field": "devices[0].hours"
+  "field": "devices[0].hours",
+  "message_key": "errors.maximum",
+  "params": {"max": 24}
 }
 ```
 
 Field paths use zero-based array indexes. Profile fields include `config`, `rate`, `days`, `siteType`, `devices`, and `context`; device fields use `devices[index].field`. Follow-up errors use `advisorAnswers`, `advisorAnswers[index]`, or its `.question`/`.answer` field. Both POST endpoints validate supplied follow-up answers before contacting Ollama. Configuration failures can identify `OLLAMA_MODEL`.
+
+Optional `locale` is validated against the enabled locale manifest (`en`, `pt-BR`, `es`); absent means English, and unsupported/non-string values return `400 invalid_input`, field `locale`, key `errors.locale`. The browser sends the resolved locale with advisor requests, separately from stored household data. Advisor responses add `locale` without changing the decision schema, evidence IDs or candidate validation. This records the **requested** language, not detected or guaranteed model-language compliance; read the generated text and evaluation report. The browser formats parameter numbers and field labels locally, accepts only known `errors.*` catalog keys, and passes only the permitted scalar interpolation parameters to i18next. Existing API clients can continue using `error`, `code`, and `field`.
 
 | Code | POST HTTP status | Meaning / recovery |
 | --- | --- | --- |

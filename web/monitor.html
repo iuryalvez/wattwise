@@ -1,66 +1,69 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#174d40">
-  <meta name="description" content="Entenda o consumo da sua casa e experimente uma mudança por vez com o WattWise.">
-  <title>Casa conectada · WattWise</title>
+  <meta name="description" content="Understand your home&#x27;s energy use and try one change at a time with WattWise." data-i18n-content="entenda_o_consumo_da_sua_casa_e_experimente">
+  <title data-i18n-text="0:casa_conectada_wattwise">Connected home · WattWise</title>
   <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/monitor.css">
+  <script src="/vendor/i18next-25.6.0.min.js" defer></script>
+  <script src="/locales.js" defer></script>
+  <script src="/i18n.js" defer></script>
   <script src="/monitor-core.js" defer></script><script src="/monitor.js" defer></script>
 </head>
 <body>
-<a href="#main" class="skip">Pular para o conteúdo</a>
+<a href="#main" class="skip" data-i18n-text="0:pular_para_o_conteudo">Skip to content</a>
 <aside class="sidebar">
   <a class="brand" href="/"><span class="brand-icon">ϟ</span> WattWise<span class="brand-dot">.</span></a>
-  <p class="sidebar-label">SUA CASA, MAIS CONSCIENTE</p>
-  <nav aria-label="Navegação principal">
-    <a class="nav-link" href="/"><span>◫</span> Visão geral</a>
-    <a class="nav-link active" href="/monitor" aria-current="page"><span>⌁</span> Casa conectada</a>
-    <a class="nav-link" href="/#devices-section"><span>⌂</span> Meus aparelhos</a>
-    <a class="nav-link" href="/#plan-section"><span>✧</span> Plano de economia</a>
-    <a class="nav-link" href="/#history-section"><span>↺</span> Simulações salvas</a>
+  <p class="sidebar-label" data-i18n-text="0:sua_casa_mais_consciente">YOUR HOME, MORE MINDFUL</p>
+  <nav aria-label="Main navigation" data-i18n-aria-label="navegacao_principal">
+    <a class="nav-link" href="/" data-i18n-text="1:visao_geral"><span>◫</span> Overview</a>
+    <a class="nav-link active" href="/monitor" aria-current="page" data-i18n-text="1:casa_conectada"><span>⌁</span> Connected home</a>
+    <a class="nav-link" href="/#devices-section" data-i18n-text="1:meus_aparelhos"><span>⌂</span> My appliances</a>
+    <a class="nav-link" href="/#plan-section" data-i18n-text="1:plano_de_economia"><span>✧</span> Savings plan</a>
+    <a class="nav-link" href="/#history-section" data-i18n-text="1:simulacoes_salvas"><span>↺</span> Saved simulations</a>
   </nav>
-  <div class="sidebar-bottom"><div class="leaf">↗</div><strong>Menos desperdício.<br>Mais possibilidades.</strong><p>Uma mudança possível de cada vez.</p><span class="sdg">ODS 7 · Energia acessível e limpa</span></div>
+  <div class="sidebar-bottom"><div class="leaf">↗</div><strong data-i18n-text="0:menos_desperdicio|2:mais_possibilidades">Less waste.<br>More possibilities.</strong><p data-i18n-text="0:uma_mudanca_possivel_de_cada_vez">One practical change at a time.</p><span class="sdg" data-i18n-text="0:ods_7_energia_acessivel_e_limpa">SDG 7 · Affordable and clean energy</span></div>
 </aside>
 <div class="workspace">
-  <header class="topbar"><span>Minha casa <span class="breadcrumb">/ Casa conectada</span></span><div class="topbar-right"><span class="saved">● Ambiente simulado</span><span class="avatar" aria-label="Perfil local">MC</span></div></header>
+  <header class="topbar"><span data-i18n-text="0:minha_casa_2">My home <span class="breadcrumb" data-i18n-text="0:casa_conectada_2">/ Connected home</span></span><div class="topbar-right"><label class="language-control" for="language-select"><span data-i18n-text="0:language">Language</span><select id="language-select"><option value="en">English</option><option value="pt-BR">Português (Brasil)</option><option value="es">Español</option><option value="auto" data-i18n-text="0:automatic">Automatic (browser)</option></select></label><span class="sr-only" id="language-notice" role="status" aria-live="polite"></span><span class="saved" data-i18n-text="0:ambiente_simulado">● Simulated environment</span><span class="avatar" aria-label="Local profile" data-i18n-aria-label="perfil_local">MC</span></div></header>
   <main id="main">
-    <div class="page-heading"><div><div class="eyebrow">CASA CONECTADA</div><h1>Sua casa, em movimento.<br><span>Explore cada ambiente.</span></h1><p>Uma demonstração de monitoramento com sensores, cenários e leituras simuladas.</p></div><a class="button secondary" href="/">← Voltar à visão geral</a></div>
-    <section class="panel smart-home" id="smart-home" aria-label="Demonstração de monitoramento da casa">
-      <div class="panel-heading"><div><div class="eyebrow">EXPLORE SUA CASA</div><h2>Uma casa conectada, ambiente por ambiente.</h2></div><span class="pill demo-pill">SIMULADOR</span></div>
-      <p class="section-description">Veja como seria acompanhar seus aparelhos em uma planta da casa. As conexões e todas as leituras abaixo são fictícias.</p>
-      <div class="monitor-toolbar"><div class="scenario-control"><label for="monitor-scenario">Cenário</label><select id="monitor-scenario"><option value="day">Durante o dia</option><option value="bath">Hora do banho</option><option value="night">Noite de descanso</option></select></div><div class="monitor-actions"><button class="button secondary small" id="pause-monitor">Ⅱ Pausar simulação</button><button class="button primary small" id="connect-demo-device">+ Conectar dispositivo demo</button></div></div>
-      <div class="monitor-layout"><div class="house-column"><div class="blueprint-header"><span>PLANTA ILUSTRATIVA · SEM ESCALA</span><span class="simulation-live" id="monitor-live">● Simulação em andamento</span></div>
+    <div class="page-heading"><div><div class="eyebrow" data-i18n-text="0:casa_conectada_3">CONNECTED HOME</div><h1 data-i18n-text="0:sua_casa_em_movimento">Your home in motion.<br><span data-i18n-text="0:explore_cada_ambiente">Explore every room.</span></h1><p data-i18n-text="0:uma_demonstracao_de_monitoramento_com_sensores_cenarios_e">A monitoring demonstration with simulated sensors, scenarios, and readings.</p></div><a class="button secondary" href="/" data-i18n-text="0:voltar_a_visao_geral">← Back to overview</a></div>
+    <section class="panel smart-home" id="smart-home" aria-label="Home monitoring demonstration" data-i18n-aria-label="demonstracao_de_monitoramento_da_casa">
+      <div class="panel-heading"><div><div class="eyebrow" data-i18n-text="0:explore_sua_casa">EXPLORE YOUR HOME</div><h2 data-i18n-text="0:uma_casa_conectada_ambiente_por_ambiente">A connected home, room by room.</h2></div><span class="pill demo-pill" data-i18n-text="0:simulador">SIMULATOR</span></div>
+      <p class="section-description" data-i18n-text="0:veja_como_seria_acompanhar_seus_aparelhos_em_uma">Explore appliance monitoring on a floor plan. All connections and readings below are fictional.</p>
+      <div class="monitor-toolbar"><div class="scenario-control"><label for="monitor-scenario" data-i18n-text="0:cenario">Scenario</label><select id="monitor-scenario"><option value="day" data-i18n-text="0:durante_o_dia">Daytime</option><option value="bath" data-i18n-text="0:hora_do_banho">Shower time</option><option value="night" data-i18n-text="0:noite_de_descanso">Restful night</option></select></div><div class="monitor-actions"><button class="button secondary small" id="pause-monitor" data-i18n-text="0:ii_pausar_simulacao">Ⅱ Pause simulation</button><button class="button primary small" id="connect-demo-device" data-i18n-text="0:conectar_dispositivo_demo">+ Connect demo device</button></div></div>
+      <div class="monitor-layout"><div class="house-column"><div class="blueprint-header"><span data-i18n-text="0:planta_ilustrativa_sem_escala">ILLUSTRATIVE FLOOR PLAN · NOT TO SCALE</span><span class="simulation-live" id="monitor-live" data-i18n-text="0:simulacao_em_andamento">● Simulation running</span></div>
         <div class="house-blueprint" id="house-blueprint">
-          <svg viewBox="0 0 700 430" role="img" aria-label="Planta ilustrativa com sala, cozinha, quarto, banheiro e lavanderia">
-            <defs><pattern id="blueprint-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dce8df" stroke-width="0.6"/></pattern></defs>
-            <rect width="700" height="430" fill="url(#blueprint-grid)"/>
-            <g class="room-floors"><rect data-floor="living" x="28" y="34" width="333" height="204"/><rect data-floor="kitchen" x="369" y="34" width="303" height="204"/><rect data-floor="bedroom" x="28" y="246" width="333" height="144"/><rect data-floor="bathroom" x="369" y="246" width="174" height="144"/><rect data-floor="laundry" x="551" y="246" width="121" height="144"/></g>
-            <g class="furniture" fill="none" stroke-width="2"><rect x="67" y="83" width="178" height="64" rx="9"/><path d="M80 86V133H232V86M130 87V133M183 87V133"/><rect x="125" y="166" width="66" height="39" rx="8"/><rect x="117" y="48" width="100" height="9" rx="3"/>
-              <path d="M390 55H649V159H626V79H390Z"/><rect x="397" y="58" width="45" height="15" rx="3"/><circle cx="475" cy="67" r="5"/><circle cx="493" cy="67" r="5"/><rect x="617" y="170" width="37" height="49" rx="4"/><path d="M617 188H654"/><rect x="445" y="124" width="106" height="53" rx="6"/>
-              <rect x="59" y="266" width="153" height="105" rx="6"/><rect x="70" y="273" width="57" height="25" rx="5"/><rect x="141" y="273" width="57" height="25" rx="5"/><path d="M59 306H212M66 306V364M206 306V364"/><rect x="236" y="267" width="27" height="27" rx="4"/>
-              <rect x="385" y="262" width="67" height="63" rx="3"/><path d="M391 268L445 319M445 268L391 319"/><circle cx="419" cy="283" r="8"/><rect x="487" y="269" width="30" height="18" rx="4"/><ellipse cx="502" cy="304" rx="14" ry="19"/>
-              <rect x="573" y="268" width="73" height="70" rx="5"/><circle cx="609" cy="307" r="22"/><circle cx="587" cy="279" r="3"/><path d="M599 278H635"/>
+          <svg viewbox="0 0 700 430" role="img" aria-label="Illustrative floor plan with living room, kitchen, bedroom, bathroom, and laundry" data-i18n-aria-label="planta_ilustrativa_com_sala_cozinha_quarto_banheiro_e">
+            <defs><pattern id="blueprint-grid" width="20" height="20" patternunits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dce8df" stroke-width="0.6"></path></pattern></defs>
+            <rect width="700" height="430" fill="url(#blueprint-grid)"></rect>
+            <g class="room-floors"><rect data-floor="living" x="28" y="34" width="333" height="204"></rect><rect data-floor="kitchen" x="369" y="34" width="303" height="204"></rect><rect data-floor="bedroom" x="28" y="246" width="333" height="144"></rect><rect data-floor="bathroom" x="369" y="246" width="174" height="144"></rect><rect data-floor="laundry" x="551" y="246" width="121" height="144"></rect></g>
+            <g class="furniture" fill="none" stroke-width="2"><rect x="67" y="83" width="178" height="64" rx="9"></rect><path d="M80 86V133H232V86M130 87V133M183 87V133"></path><rect x="125" y="166" width="66" height="39" rx="8"></rect><rect x="117" y="48" width="100" height="9" rx="3"></rect>
+              <path d="M390 55H649V159H626V79H390Z"></path><rect x="397" y="58" width="45" height="15" rx="3"></rect><circle cx="475" cy="67" r="5"></circle><circle cx="493" cy="67" r="5"></circle><rect x="617" y="170" width="37" height="49" rx="4"></rect><path d="M617 188H654"></path><rect x="445" y="124" width="106" height="53" rx="6"></rect>
+              <rect x="59" y="266" width="153" height="105" rx="6"></rect><rect x="70" y="273" width="57" height="25" rx="5"></rect><rect x="141" y="273" width="57" height="25" rx="5"></rect><path d="M59 306H212M66 306V364M206 306V364"></path><rect x="236" y="267" width="27" height="27" rx="4"></rect>
+              <rect x="385" y="262" width="67" height="63" rx="3"></rect><path d="M391 268L445 319M445 268L391 319"></path><circle cx="419" cy="283" r="8"></circle><rect x="487" y="269" width="30" height="18" rx="4"></rect><ellipse cx="502" cy="304" rx="14" ry="19"></ellipse>
+              <rect x="573" y="268" width="73" height="70" rx="5"></rect><circle cx="609" cy="307" r="22"></circle><circle cx="587" cy="279" r="3"></circle><path d="M599 278H635"></path>
             </g>
-            <g class="house-walls" fill="none" stroke-width="7"><path d="M28 34H672V390H28V34ZM365 34V127M365 187V390M28 242H77M130 242H365M365 242H451M507 242H672M547 242V305M547 354V390"/></g>
-            <g class="doors" fill="none" stroke-width="1.5"><path d="M365 127H305A60 60 0 0 0 365 187M77 242V189A53 53 0 0 1 130 242M451 242V186A56 56 0 0 1 507 242M547 305H596A49 49 0 0 1 547 354"/></g>
-            <g class="house-windows" stroke-width="6"><path d="M70 34H170M449 34H552M28 285V347M90 390H192M672 87V170"/></g>
-            <text x="28" y="414" class="blueprint-caption">CLIQUE EM UM AMBIENTE PARA EXPLORAR</text><path d="M646 412V399M640 405L646 399L652 405" fill="none" stroke="#8da396" stroke-width="1.5"/><text x="660" y="413" class="blueprint-caption">N</text>
+            <g class="house-walls" fill="none" stroke-width="7"><path d="M28 34H672V390H28V34ZM365 34V127M365 187V390M28 242H77M130 242H365M365 242H451M507 242H672M547 242V305M547 354V390"></path></g>
+            <g class="doors" fill="none" stroke-width="1.5"><path d="M365 127H305A60 60 0 0 0 365 187M77 242V189A53 53 0 0 1 130 242M451 242V186A56 56 0 0 1 507 242M547 305H596A49 49 0 0 1 547 354"></path></g>
+            <g class="house-windows" stroke-width="6"><path d="M70 34H170M449 34H552M28 285V347M90 390H192M672 87V170"></path></g>
+            <text x="28" y="414" class="blueprint-caption" data-i18n-text="0:clique_em_um_ambiente_para_explorar">SELECT A ROOM TO EXPLORE</text><path d="M646 412V399M640 405L646 399L652 405" fill="none" stroke="#8da396" stroke-width="1.5"></path><text x="660" y="413" class="blueprint-caption">N</text>
           </svg>
-          <button class="room-marker room-living" data-room="living" aria-pressed="true"><span>Sala</span><strong data-room-power="living">—</strong></button>
-          <button class="room-marker room-kitchen" data-room="kitchen" aria-pressed="false"><span>Cozinha</span><strong data-room-power="kitchen">—</strong></button>
-          <button class="room-marker room-bedroom" data-room="bedroom" aria-pressed="false"><span>Quarto</span><strong data-room-power="bedroom">—</strong></button>
-          <button class="room-marker room-bathroom" data-room="bathroom" aria-pressed="false"><span>Banheiro</span><strong data-room-power="bathroom">—</strong></button>
-          <button class="room-marker room-laundry" data-room="laundry" aria-pressed="false"><span>Lavanderia</span><strong data-room-power="laundry">—</strong></button>
+          <button class="room-marker room-living" data-room="living" aria-pressed="true"><span data-i18n-text="0:sala">Living room</span><strong data-room-power="living">—</strong></button>
+          <button class="room-marker room-kitchen" data-room="kitchen" aria-pressed="false"><span data-i18n-text="0:cozinha">Kitchen</span><strong data-room-power="kitchen">—</strong></button>
+          <button class="room-marker room-bedroom" data-room="bedroom" aria-pressed="false"><span data-i18n-text="0:quarto">Bedroom</span><strong data-room-power="bedroom">—</strong></button>
+          <button class="room-marker room-bathroom" data-room="bathroom" aria-pressed="false"><span data-i18n-text="0:banheiro">Bathroom</span><strong data-room-power="bathroom">—</strong></button>
+          <button class="room-marker room-laundry" data-room="laundry" aria-pressed="false"><span data-i18n-text="0:lavanderia">Laundry</span><strong data-room-power="laundry">—</strong></button>
         </div>
-        <div class="map-legend"><span><i class="legend-online"></i> Com sensor demo conectado</span><span><i></i> Sem leitura disponível</span></div>
-        <div class="telemetry-chart"><div><span>Potência dos sensores conectados</span><strong id="monitor-power">—</strong></div><svg id="power-sparkline" viewBox="0 0 600 76" role="img" aria-label="Últimas leituras de potência simuladas"><path id="sparkline-fill"/><polyline id="sparkline-line" points=""/></svg><div class="chart-bottom"><span>Últimas leituras · atualização a cada 3 s</span><span id="monitor-updated">Aguardando simulação</span></div></div>
-      </div><aside class="room-inspector"><div class="eyebrow">AMBIENTE SELECIONADO</div><h3 id="selected-room">Sala</h3><p id="room-description"></p><div id="room-sensors"></div><div class="session-energy"><span>Energia simulada nesta sessão</span><strong id="monitor-energy">0,00000 kWh</strong><small>Somente sensores conectados, enquanto a simulação está ativa.</small></div><div class="sensor-events"><h4>Atividade do simulador</h4><ol id="sensor-events"></ol></div></aside></div>
-      <p id="monitor-notice" class="monitor-notice" role="status">Conexões de demonstração. Nenhum aparelho real é acessado ou controlado.</p>
-      <p class="footnote">As leituras instantâneas desta demonstração ficam separadas das estimativas e dos planos do Gemma. Elas não comprovam consumo ou economia reais.</p>
+        <div class="map-legend"><span data-i18n-text="1:com_sensor_demo_conectado"><i class="legend-online"></i> With a connected demo sensor</span><span data-i18n-text="1:sem_leitura_disponivel"><i></i> No reading available</span></div>
+        <div class="telemetry-chart"><div><span data-i18n-text="0:potencia_dos_sensores_conectados">Connected sensor power</span><strong id="monitor-power">—</strong></div><svg id="power-sparkline" viewbox="0 0 600 76" role="img" aria-label="Latest simulated power readings" data-i18n-aria-label="ultimas_leituras_de_potencia_simuladas"><path id="sparkline-fill"></path><polyline id="sparkline-line" points=""></polyline></svg><div class="chart-bottom"><span data-i18n-text="0:ultimas_leituras_atualizacao_a_cada_3_s">Latest readings · updated every 3 s</span><span id="monitor-updated" data-i18n-text="0:aguardando_simulacao">Waiting for simulation</span></div></div>
+      </div><aside class="room-inspector"><div class="eyebrow" data-i18n-text="0:ambiente_selecionado">SELECTED ROOM</div><h3 id="selected-room" data-i18n-text="0:sala">Living room</h3><p id="room-description"></p><div id="room-sensors"></div><div class="session-energy"><span data-i18n-text="0:energia_simulada_nesta_sessao">Simulated energy this session</span><strong id="monitor-energy" data-i18n-text="0:0_00000_kwh">0.00000 kWh</strong><small data-i18n-text="0:somente_sensores_conectados_enquanto_a_simulacao_esta_ativa">Connected sensors only, while the simulation is active.</small></div><div class="sensor-events"><h4 data-i18n-text="0:atividade_do_simulador">Simulator activity</h4><ol id="sensor-events"></ol></div></aside></div>
+      <p id="monitor-notice" class="monitor-notice" role="status" data-i18n-text="0:conexoes_de_demonstracao_nenhum_aparelho_real_e_acessado">Demo connections. No actual appliance is accessed or controlled.</p>
+      <p class="footnote" data-i18n-text="0:as_leituras_instantaneas_desta_demonstracao_ficam_separadas_das">These demo readings are separate from Gemma estimates and plans. They do not establish actual consumption or savings.</p>
     </section>
-    <footer><span class="footer-brand">ϟ WattWise</span><span>Construído para o Hackday 2026 · ODS 7.3</span><span>Dados locais. Escolhas suas.</span></footer>
+    <footer><span class="footer-brand">ϟ WattWise</span><span data-i18n-text="0:construido_para_o_hackday_2026_ods_7_3">Built for Hackday 2026 · SDG 7.3</span><span data-i18n-text="0:dados_locais_escolhas_suas">Local data. Your choices.</span></footer>
   </main>
 </div>
-<dialog id="connect-dialog"><form id="connect-form"><div class="dialog-heading"><div><div class="eyebrow">CONEXÃO SIMULADA</div><h2>Adicionar um sensor demo</h2></div><button type="button" class="icon-button" id="close-connect" aria-label="Fechar conexão">×</button></div><p class="section-description">Explore o fluxo de conexão sem instalar ou parear equipamentos reais.</p><label for="demo-device">Dispositivo disponível<select id="demo-device" required></select></label><div class="connection-provider"><span>⌁</span><div><strong>Simulador WattWise</strong><p>Leituras fictícias geradas neste navegador. Não solicita senhas nem acessa sua rede.</p></div></div><p id="connect-preview" class="section-description"></p><div class="dialog-actions"><button type="submit" class="button primary" id="pair-demo">Simular conexão</button></div></form></dialog>
+<dialog id="connect-dialog"><form id="connect-form"><div class="dialog-heading"><div><div class="eyebrow" data-i18n-text="0:conexao_simulada">SIMULATED CONNECTION</div><h2 data-i18n-text="0:adicionar_um_sensor_demo">Add a demo sensor</h2></div><button type="button" class="icon-button" id="close-connect" aria-label="Close connection dialog" data-i18n-aria-label="fechar_conexao">×</button></div><p class="section-description" data-i18n-text="0:explore_o_fluxo_de_conexao_sem_instalar_ou">Explore the connection flow without installing or pairing actual equipment.</p><label for="demo-device" data-i18n-text="0:dispositivo_disponivel">Available device<select id="demo-device" required></select></label><div class="connection-provider"><span>⌁</span><div><strong data-i18n-text="0:simulador_wattwise">WattWise simulator</strong><p data-i18n-text="0:leituras_ficticias_geradas_neste_navegador_nao_solicita_senhas">Fictional readings generated in this browser. No passwords requested or network access.</p></div></div><p id="connect-preview" class="section-description"></p><div class="dialog-actions"><button type="submit" class="button primary" id="pair-demo" data-i18n-text="0:simular_conexao">Simulate connection</button></div></form></dialog>
 </body></html>

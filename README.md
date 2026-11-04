@@ -6,7 +6,7 @@ WattWise is an open-source energy planning app that runs on your computer. Compa
 
 [Get started](#get-started) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md) · [Roadmap](docs/ROADMAP.md) · [Report a bug](https://github.com/rafaelsilvabr/wattwise/issues/new?template=bug_report.yml)
 
-**Status: development preview.** The interface is in Brazilian Portuguese, with BRL cost estimates. Household planning is the primary implemented journey; an industrial example explores an additional use case. Real-device monitoring and measured savings are planned work.
+**Status: development preview.** The interface starts in English, with Brazilian Portuguese and Spanish available in the language selector. Costs stay in BRL in every language. Household planning is the primary implemented journey; an industrial example explores an additional use case. Real-device monitoring and measured savings are planned work. See the [translation guide](docs/TRANSLATING.md) and [review status](docs/I18N_REVIEW.md).
 
 ## What you can do today
 
@@ -32,9 +32,9 @@ python scripts/run.py serve
 
 Open **http://127.0.0.1:8765/**.
 
-1. Select **Carregar exemplo** to explore a fictional household or industrial profile, or add your own appliances.
-2. Review watts, hours, proposed usage, and the energy price. Mark essential usage with **Preservar uso**.
-3. Describe your constraints and choose **Usar maior potencial, sem IA** for a calculator comparison.
+1. Select **Load example** to explore a fictional household or industrial profile, or add your own appliances.
+2. Review watts, hours, proposed usage, and the energy price. Mark essential usage with **Preserve usage**.
+3. Describe your constraints and choose **Use highest potential, without AI** for a calculator comparison.
 4. Review the selected change, save the simulation, or export its assumptions and results.
 
 Use `python scripts/run.py serve --port 8766` to choose another port. Browser storage belongs to the address and port you use. Restart the Python process after changing backend code.
@@ -47,7 +47,7 @@ Install [Ollama](https://ollama.com/download) and run:
 ollama run gemma4:e2b
 ```
 
-Keep Ollama running, refresh its connection status in WattWise, and choose **Encontrar uma mudança com Gemma**. Model downloads and inference are optional; response time depends on your hardware. The app does not install or download models for you.
+Keep Ollama running, refresh its connection status in WattWise, and choose **Find a change with Gemma**. New advisor requests use the selected language; model language compliance still needs live evaluation. Model downloads and inference are optional; response time depends on your hardware. The app does not install or download models for you.
 
 See the [usage guide](docs/USAGE.md) for model configuration, troubleshooting, all examples, and the optional hosted CLI integration.
 

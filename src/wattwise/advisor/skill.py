@@ -3,6 +3,7 @@
 import hashlib
 from ..paths import SKILL_PATH
 from ..errors import InputError
+from ..i18n import DEFAULT_LOCALE, description
 
 
 def load_skill():
@@ -20,15 +21,16 @@ def load_skill():
 def answer_history(config):
     answers = config.get("advisorAnswers", [])
     if not isinstance(answers, list) or len(answers) > 4:
-        raise InputError("Use até quatro respostas de acompanhamento; atualize a rotina para recomeçar.", "advisorAnswers")
+        raise InputError("Use até quatro respostas de acompanhamento; atualize a rotina para recomeçar.", "advisorAnswers", message_key="errors.answers")
     for index, item in enumerate(answers):
         field = f"advisorAnswers[{index}]"
         if not isinstance(item, dict):
-            raise InputError("Resposta de acompanhamento inválida.", field)
+            raise InputError("Resposta de acompanhamento inválida.", field, message_key="errors.answer")
         for key, limit in [("question", 180), ("answer", 300)]:
             if not isinstance(item.get(key), str) or not item[key].strip() or len(item[key]) > limit:
                 label = "a pergunta" if key == "question" else "a resposta"
-                raise InputError(f"Preencha {label} com até {limit} caracteres no acompanhamento.", field + "." + key)
+                raise InputError(f"Preencha {label} com até {limit} caracteres no acompanhamento.", field + "." + key,
+                                 message_key="errors.answer_length", params={"max": limit})
     return answers
 
 
@@ -58,14 +60,11 @@ def validate_reply(answer, candidates):
     raise ValueError("A skill retornou uma decisão fora das opções permitidas.")
 
 
-def experiment_for(candidate, site_type="household"):
+def experiment_for(candidate, site_type="household", locale=DEFAULT_LOCALE):
     if candidate is None:
         return None
     return {"duration_days": 7, "evidence": "manual_estimate",
             "appliance_id": candidate["id"],
             "baseline": {"watts": candidate["watts"], "hours_per_day": candidate["hours"]},
             "proposal": {"watts": candidate["plannedWatts"], "hours_per_day": candidate["plannedHours"]},
-            "check": (
-                "Acompanhe uma semana da operação pelo procedimento já aprovado, preservando produção, qualidade e segurança. Sem medidor, registre adesão; a economia continua sendo uma projeção."
-                if site_type == "industrial" else
-                "Observe se a rotina e o conforto foram preservados por uma semana. Sem medidor, registre adesão; a economia continua sendo uma projeção.")}
+            "check": description("experiment.industrial" if site_type == "industrial" else "experiment.household", locale)}
