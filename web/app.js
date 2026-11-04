@@ -283,7 +283,9 @@ for (const id of ['add-device','empty-add']) $(id).onclick = () => {
   delete $('device-planned-watts').dataset.edited; delete $('device-planned-hours').dataset.edited; openDevice();
 };
 function settingsInputs() {
-  $('rate').value = config.rate; $('days').value = config.days;
+  for (const id of ['rate','days']) {
+    $(id).value = config[id]; $(id).setCustomValidity?.('');
+  }
 }
 globalThis.WattWiseCurrency.onSettings({
   open:settingsInputs, close:settingsInputs,

@@ -89,8 +89,13 @@ const emptyPreference=JSON.stringify({version:2,currency:'USD',rates:{}});
   get('days').value='14';app.select('es');assert.equal(get('rate').value,'0.95');assert.equal(get('days').value,'14');submit(app);
   assert.equal(app.read('config.rate'),0.95);assert.equal(app.read('config.days'),14);assert.equal(app.read('chosen'),null,'Changed planning inputs invalidate the old plan');
   assert.equal(JSON.parse(app.stored()).config.days,14);
-  get('open-settings').onclick();get('rate').value='2';get('days').value='7';get('cancel-settings').onclick();
+  let restoredValidity=null;
+  get('days').setCustomValidity=message=>{restoredValidity=message;};
+  get('open-settings').onclick();get('rate').value='2';get('days').value='7';restoredValidity='Previous validation failure';get('cancel-settings').onclick();
   assert.equal(app.read('config.rate'),0.95);assert.equal(app.read('config.days'),14);assert.equal(get('rate').value,0.95);
+  assert.equal(restoredValidity,'','Restoring canceled fields also clears stale custom validation');
+  restoredValidity='Previous validation failure';get('open-settings').onclick();assert.equal(restoredValidity,'','Reopening Settings starts with valid restored inputs');
+  get('cancel-settings').onclick();
   get('open-settings').onclick();get('rate').value='2';get('settings-dialog').close();assert.equal(app.read('config.rate'),0.95,'Escape-like close discards planning drafts');
 
   const cancel=createApp(null,{locale:'en',currencyPreference:emptyPreference});let focused=false;cancel.get('display-currency').focus=()=>{focused=true;};
