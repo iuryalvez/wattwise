@@ -48,6 +48,7 @@ class Handler(BaseHTTPRequestHandler):
                       "/monitor-core.js": ("monitor-core.js", "text/javascript; charset=utf-8"),
                       "/monitor.js": ("monitor.js", "text/javascript; charset=utf-8")})
         files.update({"/i18n.js": ("i18n.js", "text/javascript; charset=utf-8"),
+                      "/currency.js": ("currency.js", "text/javascript; charset=utf-8"),
                       "/locales.js": ("locales.js", "text/javascript; charset=utf-8"),
                       "/locales/manifest.json": ("locales/manifest.json", "application/json; charset=utf-8"),
                       "/vendor/i18next-25.6.0.min.js": ("vendor/i18next-25.6.0.min.js", "text/javascript; charset=utf-8")})

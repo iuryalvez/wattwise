@@ -21,6 +21,7 @@ WattWise is a local application with a Python standard-library backend and plain
 | `web/monitor-core.js` | Synthetic power snapshots and session-energy integration |
 | `web/monitor.js` | Monitoring-page interaction, connection simulation, and chart updates |
 | `web/i18n.js`, `web/locales/`, `web/locales.js` | Shared locale resolution, formatting, reviewed JSON catalogs and generated local bundle |
+| `web/currency.js` | Validated, browser-local manual USD/EUR display conversion of canonical BRL amounts |
 | `web/vendor/` | Pinned i18next browser runtime and license, with no CDN dependency |
 | `src/wattwise/i18n.py` | Shared locale manifest, validated advisor locale, and local experiment descriptions |
 | `scripts/build_locales.py`, `scripts/update_i18next.py` | Offline catalog bundling and explicit integrity-checked runtime updates |
@@ -96,6 +97,8 @@ Planning data uses browser key `wattwise-mvp-v1`; simulated sensor connections u
 The web advisor calls loopback Ollama at `127.0.0.1:11434`. Only the explicit CLI `--gemma` option invokes the hosted provider. See [SECURITY.md](../SECURITY.md) before changing deployment or data-flow assumptions.
 
 Language preference uses a separate `wattwise-locale-v1` key. English is the first-visit default; optional browser detection runs only for the saved `auto` choice. The reviewed locale manifest is shared by the frontend bundle and backend allowlist. Switching language rerenders presentation without persisting or changing household inputs or sensor state. The advisor receives a strictly validated locale in a trusted system instruction and reports it alongside the unchanged reply contract. See [translation architecture and contributions](TRANSLATING.md).
+
+Currency preferences use `wattwise-display-currency-v2`, with USD as the initial display default and exchange-rate base, plus manual BRL/USD and EUR/USD parameters/timestamps. Valid v1 rates are inverted/cross-converted in memory; original storage is preserved. Both pages load the shared Settings dialog; planning also includes the BRL energy price and period. All parameters are validated before saving. Price/period changes invalidate the old plan and schedule recalculation, while currency-only changes make no API/model calls and leave canonical BRL amounts unchanged. Saved simulations and exports add a `display_currency` metadata snapshot including USD-base rates and BRL source provenance. Historical amounts use the current conversion while recorded snapshots remain unchanged. See [currency behavior](CURRENCIES.md).
 
 ## Verification limits
 

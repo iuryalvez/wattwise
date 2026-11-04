@@ -31,7 +31,9 @@
   const html = (key, params) => escape(text(key, params));
   const number = (value, digits = 1, minimum = 0) => new Intl.NumberFormat(engine.language,
     {maximumFractionDigits: digits, minimumFractionDigits: minimum}).format(value);
-  const money = value => new Intl.NumberFormat(engine.language, {style:'currency', currency:'BRL'}).format(value);
+  const money = value => globalThis.WattWiseCurrency
+    ? globalThis.WattWiseCurrency.format(value, engine.language)
+    : new Intl.NumberFormat(engine.language, {style:'currency', currency:'BRL'}).format(value);
   const date = (value, options) => new Intl.DateTimeFormat(engine.language, options).format(new Date(value));
   const listeners = new Set();
   function validateInput(input) {
@@ -42,9 +44,9 @@
     let key = 'validation.invalid', params = {};
     if (validity.valueMissing) key = 'validation.required';
     else if (validity.badInput || validity.typeMismatch) key = 'validation.number';
-    else if (validity.rangeUnderflow) { key = 'validation.min'; params = {min: number(Number(input.min), 5)}; }
-    else if (validity.rangeOverflow) { key = 'validation.max'; params = {max: number(Number(input.max), 5)}; }
-    else if (validity.stepMismatch) { key = 'validation.step'; params = {step: number(Number(input.step), 5)}; }
+    else if (validity.rangeUnderflow) { key = 'validation.min'; params = {min: number(Number(input.min), 20)}; }
+    else if (validity.rangeOverflow) { key = 'validation.max'; params = {max: number(Number(input.max), 20)}; }
+    else if (validity.stepMismatch) { key = 'validation.step'; params = {step: number(Number(input.step), 20)}; }
     else if (validity.tooLong) { key = 'validation.length'; params = {max: number(input.maxLength, 0)}; }
     input.setCustomValidity(text(key, params));
   }

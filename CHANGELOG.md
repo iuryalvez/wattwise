@@ -11,6 +11,7 @@ User-facing changes and contributor infrastructure will be recorded here. There 
 
 ### Added
 
+- USD-default display selection with manual BRL-per-USD and EUR-per-USD rates in Settings, local persistence, migration of older rates, localized validation and export provenance. Planning Settings also contains the BRL energy price and period with explicit Save/Cancel. Tariffs and calculated/stored amounts remain BRL; no exchange-rate service is used.
 - Local i18next catalogs for English, Brazilian Portuguese, and Spanish on both pages; an accessible persistent language selector, localized formatting and structured API messages, and validated local-advisor locale instructions. BRL and calculations remain unchanged.
 - A translation contribution/review workflow, pinned runtime update procedure, and real-model locale evaluation. Browser verification remains pending; live Gemma evaluation found a Spanish recommendation-language failure and prose-quality concerns. See `docs/I18N_REVIEW.md`.
 - Contribution guide, support guidance, code of conduct, and security-reporting policy.

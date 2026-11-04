@@ -7,9 +7,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "666b7ce149dfc59b83c89e88bc9cfaa2275a8910b2d4e130e40f76dc60b74011",
+        "catalog_sha256": "719ddbcfe58e2267ae911fffcc4152fe4cdc6e083c6d70765eb27929fa0a87e8",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, and evidence terminology",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -20,9 +20,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "5f0f1b348690c3f7c279c9cb5732bb388e04d88fe02b600d1996f1d72b3c5d9f",
+        "catalog_sha256": "1cfafae1c87faad4b6cf9e4663da24c78002e061920247fcd835fff592c9a44b",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, and evidence terminology",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }
@@ -33,9 +33,9 @@
       "enabled": true,
       "review": {
         "status": "coverage-reviewed",
-        "catalog_sha256": "f7d1bacc3caf12b22cc4cf2b77a2a92c10e39883f17d4de16a3dc6d890174943",
+        "catalog_sha256": "0bb6f8b6b53a3bf092dcb2fe2053aa7f51c7bbcc1ede2beb9522ac4caa8847b0",
         "date": "2026-11-03",
-        "method": "Codex implementation review of coverage, interpolation, plurals, and evidence terminology",
+        "method": "Codex implementation review of coverage, interpolation, plurals, evidence terminology, USD base currency and configuration labels",
         "independent_native_speaker_review": false,
         "real_browser_review": "pending"
       }

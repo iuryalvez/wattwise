@@ -1,0 +1,101 @@
+'use strict';
+const assert = require('node:assert/strict');
+const {createApp} = require('./app_harness');
+const KEY='wattwise-display-currency-v2', LEGACY='wattwise-display-currency-v1';
+const candidate={id:'tv',name:'TV',watts:100,hours:4,plannedWatts:100,plannedHours:3,
+  energy_reduction_kwh:3,modeled_variable_cost_reduction_brl:3.15,household_after_cost_brl:96.85};
+const report={devices:[{id:'tv',baseline_kwh:12,baseline_cost_brl:12.6}],opportunities:[candidate],total:{baseline_kwh:100,baseline_cost_brl:100}};
+const format=(value,currency,locale='en')=>new Intl.NumberFormat(locale,{style:'currency',currency,currencyDisplay:'code'}).format(value);
+const apply=(app,currency,rate)=>app.read(`WattWiseCurrency.apply(${JSON.stringify(currency)},${String(rate)})`);
+const select=(app,code)=>{app.get('display-currency').value=code;app.get('display-currency').onchange();};
+const submit=app=>app.get('settings-form').onsubmit({preventDefault(){}});
+
+(async()=>{
+  const app=createApp(null,{locale:'en',report}),get=app.get;
+  assert.equal(get('display-currency').value,'USD');
+  assert.equal(app.read('WattWiseCurrency.snapshot().base_currency'),'USD');
+  assert.equal(app.read('WattWiseCurrency.snapshot().units_per_usd'),1);
+  assert.equal(app.read('money(100)'),'—','BRL input cannot be relabeled USD without a BRL/USD rate');
+  assert(get('currency-notice').textContent.includes('Configure the BRL exchange rate'));
+  assert.deepEqual(app.writes,[]);
+  get('sample-scenario').value='family';await get('load-demo').onclick();
+  await get('use-demo-plan').onclick();get('save-experiment').onclick();
+  const saved=app.stored(),config=app.read('config'),chosen=app.read('chosen'),analysis=app.read('report'),calls=app.calls.length;
+  get('context').value='Draft routine';get('device-name').value='Draft appliance';get('advisor-answer').value='Draft answer';
+  get('open-settings').onclick();assert.equal(get('exchange-brl').required,true);
+  assert.equal(get('rate').value,config.rate);assert.equal(get('days').value,config.days);
+  get('exchange-brl').value='5';get('exchange-eur').value='0.9';submit(app);
+  assert.equal(get('settings-dialog').open,false);assert.equal(get('display-currency').value,'USD');
+  assert.equal(get('cost').textContent,format(20,'USD'));
+  assert.equal(get('chosen-saving').textContent,format(0.63,'USD'));
+  assert(get('devices').innerHTML.includes(format(2.52,'USD')));
+  assert(get('history-list').innerHTML.includes(format(0.63,'USD')));
+  assert.equal(app.stored(),saved);assert.deepEqual(app.read('config'),config);assert.deepEqual(app.read('chosen'),chosen);assert.deepEqual(app.read('report'),analysis);
+  assert.equal(app.calls.length,calls,'Changing rates makes no API/model/network calls');
+  assert.equal(get('context').value,'Draft routine');assert.equal(get('device-name').value,'Draft appliance');assert.equal(get('advisor-answer').value,'Draft answer');
+  const preference=app.storage.get(KEY),snapshot=app.read('WattWiseCurrency.snapshot()');
+  assert.equal(snapshot.rate_source,'identity');assert.equal(snapshot.source_currency,'BRL');assert.equal(snapshot.source_units_per_usd,5);
+  assert(Number.isFinite(Date.parse(snapshot.source_rate_updated_at)));
+  const reloaded=createApp(saved,{locale:'es',currencyPreference:preference});
+  assert.equal(reloaded.read('money(100)'),format(20,'USD','es'));assert.deepEqual(reloaded.writes,[]);
+  select(app,'BRL');assert.equal(get('settings-dialog').open,false);assert.equal(get('cost').textContent,format(100,'BRL'));
+  assert(get('currency-status').textContent.includes('1 USD = 5 BRL'));
+  const rateDate=app.read('WattWiseCurrency.snapshot().rate_updated_at');
+  select(app,'EUR');
+  for(const locale of ['en','pt-BR','es']){app.select(locale);assert.equal(get('cost').textContent,format(18,'EUR',locale));assert.equal(get('rate').value,config.rate);}
+  select(app,'BRL');assert.equal(app.read('WattWiseCurrency.snapshot().rate_updated_at'),rateDate);
+  get('export-report').onclick();const exported=JSON.parse(await app.downloads.at(-1).text());
+  assert.equal(exported.report.total.baseline_cost_brl,100);assert.equal(exported.config.rate,config.rate);
+  assert.equal(exported.display_currency.units_per_usd,5);assert.equal(exported.display_currency.source_units_per_usd,5);
+  get('save-experiment').onclick();assert.equal(app.read('history[0].display_currency.base_currency'),'USD');
+  assert.equal(app.read('history[1].display_currency.currency'),'USD','Earlier snapshots remain unchanged');
+  for(const value of [0,-1,NaN,Infinity,0.000000001,1000001,'"5"','true','null']){
+    const before=app.storage.get(KEY);assert.equal(app.read(`WattWiseCurrency.apply('BRL',${String(value)}).ok`),false);assert.equal(app.storage.get(KEY),before);
+  }
+  assert.equal(apply(app,'JPY',1).ok,false);assert.equal(apply(app,'BRL',0.01).ok,true);select(app,'USD');
+  assert.equal(app.read('money(Number.MAX_VALUE)'),'—');assert.equal(app.read('money(null)'),'—');
+  const tiny={min:'0.00000001',validity:{rangeUnderflow:true},setCustomValidity(message){this.validationMessage=message;}};
+  app.documentListeners.invalid({target:tiny});assert.equal(tiny.validationMessage,'Introduce un valor de al menos 0,00000001.');
+
+  app.select('en');get('open-settings').onclick();get('exchange-brl').value='5';get('exchange-eur').value='invalid';
+  get('rate').value='0.95';get('days').value='14';const beforeInvalid=app.storage.get(KEY);submit(app);
+  assert.equal(get('settings-dialog').open,true);assert.equal(app.storage.get(KEY),beforeInvalid);assert.deepEqual(app.read('config'),config,'Invalid rates cannot partially apply tariff/period drafts');
+  get('exchange-eur').value='0.9';get('days').value='367';submit(app);assert.deepEqual(app.read('config'),config);
+  get('days').value='14';app.select('es');assert.equal(get('rate').value,'0.95');assert.equal(get('days').value,'14');submit(app);
+  assert.equal(app.read('config.rate'),0.95);assert.equal(app.read('config.days'),14);assert.equal(app.read('chosen'),null,'Changed planning inputs invalidate the old plan');
+  assert.equal(JSON.parse(app.stored()).config.days,14);
+  get('open-settings').onclick();get('rate').value='2';get('days').value='7';get('cancel-settings').onclick();
+  assert.equal(app.read('config.rate'),0.95);assert.equal(app.read('config.days'),14);assert.equal(get('rate').value,0.95);
+  get('open-settings').onclick();get('rate').value='2';get('settings-dialog').close();assert.equal(app.read('config.rate'),0.95,'Escape-like close discards planning drafts');
+
+  const cancel=createApp(null,{locale:'en'});let focused=false;cancel.get('display-currency').focus=()=>{focused=true;};
+  select(cancel,'EUR');cancel.get('exchange-eur').value='0.9';cancel.get('settings-dialog').close();
+  assert(focused);assert.equal(cancel.get('display-currency').value,'USD');assert.equal(cancel.storage.has(KEY),false);
+  select(cancel,'JPY');assert.equal(cancel.get('display-currency').value,'USD');assert.equal(cancel.get('settings-dialog').open,false);
+  for(const raw of ['{broken','null','[]',JSON.stringify({version:2,currency:'JPY',rates:{}}),JSON.stringify({version:2,currency:'EUR',rates:{EUR:{value:-1,updatedAt:'bad'}}})]){
+    const recovered=createApp(null,{locale:'en',currencyPreference:raw});assert.equal(recovered.read('WattWiseCurrency.currency'),'USD');assert.equal(recovered.read('money(100)'),'—');
+    assert.equal(recovered.storage.get(KEY),raw);assert.deepEqual(recovered.writes,[]);assert(recovered.get('currency-status').textContent.includes('Invalid currency preferences'));
+  }
+  const blocked=createApp(null,{locale:'en',failRead:true,failWrite:true});
+  assert.deepEqual(apply(blocked,'BRL',5),{ok:true,persisted:false});select(blocked,'USD');
+  assert.equal(blocked.read('money(100)'),format(20,'USD'));assert(blocked.get('currency-status').textContent.includes('only in this session'));
+  const originalBrl=JSON.stringify({version:1,currency:'BRL',rates:{}});
+  const unchangedBrl=createApp(null,{locale:'en',legacyCurrencyPreference:originalBrl});
+  assert.equal(unchangedBrl.read('money(100)'),format(100,'BRL'),'Original BRL preferences require no conversion');
+  assert.equal(unchangedBrl.storage.get(LEGACY),originalBrl);assert.deepEqual(unchangedBrl.writes,[]);
+  const directBrl=createApp(null,{locale:'en'});select(directBrl,'BRL');
+  assert.equal(directBrl.get('settings-dialog').open,false);assert.equal(directBrl.read('money(100)'),format(100,'BRL'));
+  const old=JSON.stringify({version:1,currency:'EUR',rates:{USD:{value:0.2,updatedAt:'2026-11-01T12:00:00Z'},EUR:{value:0.18,updatedAt:'2026-11-02T12:00:00Z'}}});
+  const migrated=createApp(null,{locale:'en',legacyCurrencyPreference:old});
+  assert.equal(migrated.read('WattWiseCurrency.currency'),'EUR');assert(Math.abs(migrated.read('WattWiseCurrency.snapshot().units_per_usd')-0.9)<1e-12);
+  assert.equal(migrated.read('money(100)'),format(18,'EUR'));assert.equal(migrated.storage.get(LEGACY),old);assert.deepEqual(migrated.writes,[]);
+  select(migrated,'BRL');assert.equal(migrated.read('money(100)'),format(100,'BRL'));assert.equal(migrated.storage.get(LEGACY),old);assert.equal(JSON.parse(migrated.storage.get(KEY)).version,2);
+  const legacyRecord={date:'2026-10-01T12:00:00Z',days:30,plan:{candidate},display_currency:{base_currency:'BRL',currency:'BRL'}};
+  const legacySaved=JSON.stringify({config,history:[legacyRecord],sample:false});
+  const legacy=createApp(legacySaved,{locale:'en',currencyPreference:preference});
+  assert(legacy.get('history-list').innerHTML.includes(format(0.63,'USD')));assert.equal(legacy.stored(),legacySaved);
+  assert.equal(legacy.read('history[0].display_currency.base_currency'),'BRL');
+  const precise=createApp(null,{locale:'en'});apply(precise,'BRL',5);apply(precise,'EUR',0.123456789);
+  assert(precise.get('currency-status').textContent.includes('1 USD = 0.123456789 EUR'));
+  console.log('Currency/settings checks passed: USD-based rates, canonical BRL, migration, formatting, persistence, validation, cancel, planning changes and export provenance.');
+})().catch(error=>{console.error(error);process.exitCode=1;});

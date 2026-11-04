@@ -5,6 +5,7 @@ Start with the [project README](../README.md) for a quick introduction and a loc
 ## Use the application
 
 - [Usage guide](USAGE.md): installation, Ollama, command-line modes, evidence labels, and limitations.
+- [Display currencies](CURRENCIES.md): manual BRL/USD/EUR conversion, persistence and export provenance.
 - [Family example](FAMILY_USE_CASE.md): the fictional three-person household and its assumptions.
 - [High-consumption example](HIGH_CONSUMPTION_USE_CASE.md): the fictional five-person household.
 - [Industrial example](INDUSTRIAL_USE_CASE.md): packaging operations, protected loads, and calendar-day equivalents.

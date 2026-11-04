@@ -6,13 +6,14 @@ WattWise is an open-source energy planning app that runs on your computer. Compa
 
 [Get started](#get-started) · [Documentation](docs/README.md) · [Contribute](CONTRIBUTING.md) · [Roadmap](docs/ROADMAP.md) · [Report a bug](https://github.com/rafaelsilvabr/wattwise/issues/new?template=bug_report.yml)
 
-**Status: development preview.** The interface starts in English, with Brazilian Portuguese and Spanish available in the language selector. Costs stay in BRL in every language. Household planning is the primary implemented journey; an industrial example explores an additional use case. Real-device monitoring and measured savings are planned work. See the [translation guide](docs/TRANSLATING.md) and [review status](docs/I18N_REVIEW.md).
+**Status: development preview.** The interface starts in English, with Brazilian Portuguese and Spanish available in the language selector. Costs are calculated in BRL; display conversion to USD and EUR is available with your manual exchange rate. Household planning is the primary implemented journey; an industrial example explores an additional use case. Real-device monitoring and measured savings are planned work. See [display currencies](docs/CURRENCIES.md), the [translation guide](docs/TRANSLATING.md) and [review status](docs/I18N_REVIEW.md).
 
 ## What you can do today
 
 - Enter appliances, current usage, proposed usage, and an energy price.
 - Protect essential activities from proposed reductions.
 - Compare the projected energy and variable cost of one selected change.
+- Display BRL cost estimates in USD (default) or EUR using saved manual rates based on 1 USD, independently of language.
 - Ask Gemma through local Ollama to choose among eligible changes or clarify your routine.
 - Use a deterministic ranking when you prefer the calculator without AI.
 - Save the last ten simulations in your browser and export a JSON report.

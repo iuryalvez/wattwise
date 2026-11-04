@@ -282,12 +282,27 @@ $('close-dialog').onclick = () => $('device-dialog').close();
 for (const id of ['add-device','empty-add']) $(id).onclick = () => {
   delete $('device-planned-watts').dataset.edited; delete $('device-planned-hours').dataset.edited; openDevice();
 };
-for (const [id, key] of [['rate','rate'], ['days','days']]) {
-  $(id).onchange = () => {
-    if (!$(id).checkValidity() || $(id).value === '') { $(id).reportValidity(); return; }
-    config[key] = Number($(id).value); changed();
-  };
+function settingsInputs() {
+  $('rate').value = config.rate; $('days').value = config.days;
 }
+globalThis.WattWiseCurrency.onSettings({
+  open:settingsInputs, close:settingsInputs,
+  validate:() => {
+    for (const [id,max,positive] of [['rate',1000,false],['days',366,true]]) {
+      const input = $(id), value = Number(input.value);
+      if (input.value === '' || !bounded(value,max,positive) || (id === 'days' && !Number.isInteger(value)) || !input.checkValidity()) {
+        input.reportValidity(); return false;
+      }
+    }
+    return true;
+  },
+  save:() => {
+    const rate = Number($('rate').value), days = Number($('days').value);
+    if (rate !== config.rate || days !== config.days) {
+      config.rate = rate; config.days = days; changed();
+    } else if (storageMessage === 'nao_foi_possivel_salvar_dados_apenas_nesta_sessao') persist();
+  }
+});
 $('context').onchange = () => { config.context = $('context').value; changed(); };
 $('load-demo').onclick = async () => {
   const previous = structuredClone(config), oldSample = sample;
@@ -392,21 +407,28 @@ function renderHistory() {
 }
 $('save-experiment').onclick = () => {
   if (!chosen) return;
-  history.unshift({date: new Date().toISOString(), days: config.days, sample, plan: structuredClone(chosen)});
+  history.unshift({date: new Date().toISOString(), days: config.days, sample, plan: structuredClone(chosen),
+    display_currency: globalThis.WattWiseCurrency.snapshot()});
   history = history.slice(0, 10); persist(); renderHistory(); toast('simulacao_salva_o_resultado_continua_sendo_uma_projecao');
 };
 $('export-report').onclick = () => {
   if (!chosen || !report) return;
   const blob = new Blob([JSON.stringify({product: 'WattWise', evidence: 'manual_estimate', sample,
-    created_at: new Date().toISOString(), config, report, selected_plan: chosen}, null, 2)], {type: 'application/json'});
+    created_at: new Date().toISOString(), config, report, selected_plan: chosen,
+    display_currency: globalThis.WattWiseCurrency.snapshot()}, null, 2)], {type: 'application/json'});
   const url = URL.createObjectURL(blob), a = document.createElement('a');
   a.href = url; a.download = 'wattwise-simulacao.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 document.querySelectorAll('.nav-link').forEach(link => link.onclick = () => {
   document.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active')); link.classList.add('active');
 });
+function renderAmounts() {
+  renderDevices(); renderMetrics(); renderHistory();
+  if (activePlan) pickPlan(activePlan, true);
+}
+globalThis.WattWiseCurrency.onChange(renderAmounts);
 I.onChange(() => {
-  syncFields(false); renderDevices(); renderMetrics(); renderHistory(); showRecovery();
+  syncFields(false); renderAmounts(); showRecovery();
   storageStatus(storageMessage); renderStatus(); renderToast();
   if (recoveryBackup) $('recovery-backup').textContent = t('backup', {key: recoveryBackup});
   $('dialog-title').textContent = t(editing ? 'editar_aparelho' : 'novo_aparelho');
@@ -414,6 +436,5 @@ I.onChange(() => {
   if (formFailure) $('form-error').textContent = I.error(formFailure);
   if (advisorFailure) $('ai-error').textContent = I.error(advisorFailure);
   $('ask-ai').textContent = t($('ask-ai').disabled ? 'gemma_esta_considerando_sua_rotina' : 'encontrar_uma_mudanca_com_gemma');
-  if (activePlan) pickPlan(activePlan, true);
 });
 syncFields(); renderDevices(); renderMetrics(); renderHistory(); refresh(); status();

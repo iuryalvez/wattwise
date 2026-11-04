@@ -50,6 +50,7 @@ const report = {devices:[],opportunities:[candidate],total:{baseline_kwh:100,bas
   app.select('en');
   assert(app.read('I.html("edit_name", {name:"<script>"})').includes('&lt;script&gt;'));
   assert.equal(app.read('I.text("edit_name", {name:"<script>"})'),'Edit <script>','Text sinks preserve literal user text');
+  app.read("globalThis.WattWiseCurrency.apply('BRL',5)");
   for (const locale of Object.keys(catalogs)) {
     await translator.changeLanguage(locale);
     const rules = new Intl.PluralRules(locale);
@@ -57,7 +58,7 @@ const report = {devices:[],opportunities:[candidate],total:{baseline_kwh:100,bas
       assert.equal(translator.t('history_count',{count}),catalogs[locale][`history_count_${rules.select(count)}`].replace('{{count}}',String(count)));
     }
     app.select(locale);
-    assert.equal(app.read('money(1234.56)'),new Intl.NumberFormat(locale,{style:'currency',currency:'BRL'}).format(1234.56));
+    assert.equal(app.read('money(1234.56)'),new Intl.NumberFormat(locale,{style:'currency',currency:'BRL',currencyDisplay:'code'}).format(1234.56));
     assert.equal(app.read('num(1234.56, 2)'),new Intl.NumberFormat(locale,{maximumFractionDigits:2}).format(1234.56));
     assert.equal(app.read('I.date("2026-11-03T12:00:00Z")'),new Intl.DateTimeFormat(locale).format(new Date('2026-11-03T12:00:00Z')));
     assert(!app.read('I.error({code:"not_a_code", error:"untrusted upstream text"})').includes('untrusted'));
